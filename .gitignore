@@ -18,6 +18,7 @@
 .output
 .tanstack/
 .tanstack/**
+.netlify/
 .vinxi
 .vscode/*
 .wrangler/

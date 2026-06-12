@@ -2,7 +2,8 @@
   command = "npm run build"
   publish = "dist"
 
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+# Pas de redirect SPA vers /index.html : le preset Nitro "netlify" génère une
+# fonction serverless (SSR) qui gère le routage (config.path = "/*",
+# preferStatic = true → fichiers statiques de dist/ servis en priorité,
+# tout le reste passe par la fonction). Un redirect catch-all vers /index.html
+# casserait ce mécanisme (il n'existe pas d'index.html statique en SSR).
