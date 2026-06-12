@@ -5,22 +5,24 @@ import {
   Eye, Heart, Sparkles, Gift, ArrowRight,
 } from "lucide-react";
 import { SiteLayout, Section, SectionHead, GoldButton, OutlineButton } from "@/components/site/SiteLayout";
-import heroImg from "@/assets/hero-couple-voiles-v2.jpg";
-import atelierImg from "@/assets/atelier-papeterie.jpg";
 import { collections, experiences, saveTheDateFormats, offers, reassurance } from "@/lib/eventia-data";
 import { loadDraft } from "@/lib/configurateur-store";
+import { findModelByName, cloudinaryPoster } from "@/lib/cloudinary-models";
 import {
   Marquee,
   CollectionCardPremium,
   SaveTheDateCardPremium,
   SignatureDuMois,
   ExperienceLightbox,
-  EyeInteractionBlock,
+  ThresholdShowcase,
   type LightboxExperience,
 } from "@/components/site/premium";
 
-// Vague 4. Signature du mois (mock : édition se termine dans 30 jours)
-const SIGNATURE_ENDS_AT = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+// Visuels réels Eventia (Cloudinary) pour la page d'accueil
+const heroModel = findModelByName("Versailles d'Or")!;
+const heroPoster = cloudinaryPoster(heroModel.video);
+const thresholdModel = findModelByName("L'Entrée Sacrée")!;
+const signatureModel = findModelByName("Aube Céleste")!;
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -30,11 +32,11 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: "Eventia Signature — Maison d'expériences digitales" },
       { property: "og:description", content: "Des expériences digitales élégantes pour annoncer, accueillir et marquer les esprits." },
       { property: "og:type", content: "website" },
-      { property: "og:image", content: heroImg },
+      { property: "og:image", content: heroPoster },
     ],
     links: [
       { rel: "canonical", href: "https://www.eventiasignature.fr/" },
-      { rel: "preload", as: "image", href: heroImg, fetchpriority: "high" },
+      { rel: "preload", as: "image", href: heroPoster, fetchpriority: "high" },
     ],
   }),
   component: HomePage,
@@ -101,7 +103,7 @@ function HomePage() {
         {/* background image fullscreen mobile + dégradés plus profonds */}
         <div className="absolute inset-0 lg:hidden">
           <img
-            src={heroImg}
+            src={heroPoster}
             alt=""
             aria-hidden
             width={1200}
@@ -178,14 +180,31 @@ function HomePage() {
                 <ArrowRight className="size-4 text-primary group-hover:translate-x-1 transition-transform" />
               </Link>
             )}
+
+            {/* cartes flottantes — version mobile, défilement horizontal */}
+            <div className="lg:hidden -mx-6 pt-2">
+              <div className="flex gap-3 overflow-x-auto px-6 pb-2 snap-x snap-mandatory">
+                {[
+                  { to: "/save-the-date" as const, eyebrow: "Save The Date", text: "Un teaser sur mesure" },
+                  { to: "/portes" as const, eyebrow: "Les Seuils", text: "Un passage qui s'ouvre" },
+                  { to: "/voiles" as const, eyebrow: "Les Voiles", text: "Une lumière qui apparaît" },
+                  { to: "/union" as const, eyebrow: "L'Union", text: "Deux histoires partagées" },
+                ].map((c) => (
+                  <Link key={c.eyebrow} to={c.to} className="snap-center shrink-0 bg-ivory/95 shadow-soft px-4 py-3 w-44">
+                    <div className="eyebrow text-[10px]">{c.eyebrow}</div>
+                    <div className="font-serif-soft italic text-sm mt-1 text-foreground">{c.text}</div>
+                  </Link>
+                ))}
+              </div>
+            </div>
           </div>
 
           {/* desktop visual + cartes flottantes */}
           <div className="hidden lg:block relative">
             <div className="relative overflow-hidden shadow-soft">
               <img
-                src={heroImg}
-                alt="Couple élégant marchant vers une ouverture de voiles monumentale, particules dorées"
+                src={heroPoster}
+                alt="Invitation animée Versailles d'Or, collection Les Seuils — Eventia Signature"
                 width={1600}
                 height={1280}
                 fetchPriority="high"
@@ -257,23 +276,26 @@ function HomePage() {
         </div>
       </Section>
 
-      {/* EXPÉRIENCES. visuel œil interactif demandé */}
-      <EyeInteractionBlock
+      {/* SIGNATURE EVENTIA. visuel encadré, vraie animation Cloudinary */}
+      <ThresholdShowcase
         eyebrow="La signature Eventia"
         title="Vos invités ne reçoivent pas une invitation. Ils entrent dans votre univers."
         intro="Un regard, une lumière, un seuil à franchir. Chaque expérience est pensée comme une première émotion avant le jour J."
+        video={thresholdModel.video}
+        videoLabel="L'Union — L'Entrée Sacrée"
+        href="/union"
+        cta="Découvrir L'Union"
       />
 
-      {/* SIGNATURE DU MOIS. Vague 4 : Eventia Atelier */}
+      {/* MODÈLE DU MOIS. vraie expérience Les Voiles, vraie vidéo */}
       <Section>
         <SignatureDuMois
-          title="Coffret Aube Céleste. Édition d'Atelier"
-          story="Une pièce signée Eventia Atelier : papier coton, dorure à chaud, cachet de cire monogrammé. Pensée pour accompagner vos Save The Date les plus précieux."
-          image={atelierImg}
-          edition="Édition limitée · Juin 2026"
-          remaining={28}
-          endsAt={SIGNATURE_ENDS_AT}
-          href="/atelier"
+          title="Aube Céleste"
+          story="Une aube se lève derrière des voiles clairs. Papier translucide, lumière nacrée et typographies aériennes : cette expérience de la collection Les Voiles respire la tendresse et la promesse."
+          video={signatureModel.video}
+          edition="Les Voiles"
+          href="/experiences/aube-celeste"
+          cta="Découvrir Aube Céleste"
         />
       </Section>
 

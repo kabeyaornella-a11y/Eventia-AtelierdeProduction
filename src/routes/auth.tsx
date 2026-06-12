@@ -33,13 +33,26 @@ function AuthPage() {
     setBusy(true);
     try {
       if (mode === "signup") {
-        const { error } = await supabase.auth.signUp({
+        const { data, error } = await supabase.auth.signUp({
           email,
           password,
           options: { emailRedirectTo: window.location.origin + "/mes-commandes" },
         });
         if (error) throw error;
-        toast.success("Compte créé. Vous êtes connecté·e.");
+
+        if (data.user && data.user.identities && data.user.identities.length === 0) {
+          // Supabase renvoie un utilisateur sans erreur quand l'email existe déjà
+          // (anti-énumération) — on bascule sur la connexion.
+          toast.info("Un compte existe déjà avec cette adresse e-mail. Connectez-vous.");
+          setMode("signin");
+        } else if (data.session) {
+          // Confirmation email désactivée côté Supabase : session immédiate.
+          toast.success("Compte créé. Vous êtes connecté·e.");
+        } else {
+          // Confirmation email requise : pas de session avant le clic dans le mail.
+          toast.success("Compte créé ! Vérifiez votre boîte mail pour confirmer votre adresse, puis connectez-vous.");
+          setMode("signin");
+        }
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
