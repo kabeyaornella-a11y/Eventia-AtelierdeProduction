@@ -1,10 +1,33 @@
 function formatErrorDetails(error: unknown): string {
   if (!error) return "";
-  const message = error instanceof Error ? error.message : String(error);
-  const stack = error instanceof Error ? error.stack ?? "" : "";
   const escape = (s: string) =>
     s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-  return `<pre class="details">${escape(message)}\n\n${escape(stack)}</pre>`;
+
+  const lines: string[] = [];
+  let current: unknown = error;
+  let depth = 0;
+  const seen = new Set<unknown>();
+  while (current && depth < 6 && !seen.has(current)) {
+    seen.add(current);
+    if (current instanceof Error) {
+      lines.push(`[${depth}] ${current.name}: ${current.message}`);
+      if (current.stack) lines.push(current.stack);
+      current = (current as Error & { cause?: unknown }).cause;
+    } else if (typeof current === "object") {
+      const obj = current as Record<string, unknown>;
+      const replacer = (_key: string, value: unknown) =>
+        value instanceof Error
+          ? { name: value.name, message: value.message, stack: value.stack }
+          : value;
+      lines.push(`[${depth}] ${JSON.stringify(obj, replacer, 2)}`);
+      current = obj.cause;
+    } else {
+      lines.push(`[${depth}] ${String(current)}`);
+      current = undefined;
+    }
+    depth++;
+  }
+  return `<pre class="details">${escape(lines.join("\n\n"))}</pre>`;
 }
 
 export function renderErrorPage(error?: unknown): string {
