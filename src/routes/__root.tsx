@@ -10,13 +10,10 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
-import { cloudinaryPoster, findModelByName } from "../lib/cloudinary-models";
+import heroOgImg from "../assets/hero-couple-voiles-v2.jpg";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { AuthProvider } from "@/hooks/use-auth";
-
-// Visuel par défaut pour les partages sociaux (og:image / twitter:image) :
-// vraie animation Eventia (Cloudinary), pas une photo de stock.
-const defaultOgImg = cloudinaryPoster(findModelByName("Versailles d'Or")!.video);
+import { Toaster } from "@/components/ui/sonner";
 
 function NotFoundComponent() {
   return (
@@ -98,8 +95,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "keywords", content: "invitation digitale mariage premium, save the date animé, wedding website luxe, RSVP mariage, album photo live, Eventia Signature" },
       { property: "og:description", content: "Des expériences digitales élégantes pour annoncer, accueillir et marquer les esprits." },
       { name: "twitter:description", content: "Des expériences digitales élégantes pour annoncer, accueillir et marquer les esprits." },
-      { property: "og:image", content: defaultOgImg },
-      { name: "twitter:image", content: defaultOgImg },
+      { property: "og:image", content: heroOgImg },
+      { name: "twitter:image", content: heroOgImg },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -147,6 +144,7 @@ function RootShell({ children }: { children: ReactNode }) {
       </head>
       <body>
         {children}
+        <Toaster richColors closeButton position="top-center" />
         <Scripts />
       </body>
     </html>

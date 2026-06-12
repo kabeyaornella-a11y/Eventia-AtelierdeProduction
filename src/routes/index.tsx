@@ -5,9 +5,10 @@ import {
   Eye, Heart, Sparkles, Gift, ArrowRight,
 } from "lucide-react";
 import { SiteLayout, Section, SectionHead, GoldButton, OutlineButton } from "@/components/site/SiteLayout";
+import heroImg from "@/assets/hero-couple-voiles-v2.jpg";
 import { collections, experiences, saveTheDateFormats, offers, reassurance } from "@/lib/eventia-data";
 import { loadDraft } from "@/lib/configurateur-store";
-import { findModelByName, cloudinaryPoster } from "@/lib/cloudinary-models";
+import { findModelByName } from "@/lib/cloudinary-models";
 import {
   Marquee,
   CollectionCardPremium,
@@ -18,9 +19,7 @@ import {
   type LightboxExperience,
 } from "@/components/site/premium";
 
-// Visuels réels Eventia (Cloudinary) pour la page d'accueil
-const heroModel = findModelByName("Versailles d'Or")!;
-const heroPoster = cloudinaryPoster(heroModel.video);
+// Visuels réels Eventia (Cloudinary) pour les sections "signature" de la page d'accueil
 const thresholdModel = findModelByName("L'Entrée Sacrée")!;
 const signatureModel = findModelByName("Aube Céleste")!;
 
@@ -32,11 +31,11 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: "Eventia Signature — Maison d'expériences digitales" },
       { property: "og:description", content: "Des expériences digitales élégantes pour annoncer, accueillir et marquer les esprits." },
       { property: "og:type", content: "website" },
-      { property: "og:image", content: heroPoster },
+      { property: "og:image", content: heroImg },
     ],
     links: [
       { rel: "canonical", href: "https://www.eventiasignature.fr/" },
-      { rel: "preload", as: "image", href: heroPoster, fetchpriority: "high" },
+      { rel: "preload", as: "image", href: heroImg, fetchpriority: "high" },
     ],
   }),
   component: HomePage,
@@ -103,7 +102,7 @@ function HomePage() {
         {/* background image fullscreen mobile + dégradés plus profonds */}
         <div className="absolute inset-0 lg:hidden">
           <img
-            src={heroPoster}
+            src={heroImg}
             alt=""
             aria-hidden
             width={1200}
@@ -203,8 +202,8 @@ function HomePage() {
           <div className="hidden lg:block relative">
             <div className="relative overflow-hidden shadow-soft">
               <img
-                src={heroPoster}
-                alt="Invitation animée Versailles d'Or, collection Les Seuils — Eventia Signature"
+                src={heroImg}
+                alt="Couple élégant marchant vers une ouverture de voiles monumentale, particules dorées"
                 width={1600}
                 height={1280}
                 fetchPriority="high"
