@@ -14,6 +14,7 @@ import { Route as UnionRouteImport } from './routes/union'
 import { Route as SurMesureRouteImport } from './routes/sur-mesure'
 import { Route as StudioRouteImport } from './routes/studio'
 import { Route as SaveTheDateRouteImport } from './routes/save-the-date'
+import { Route as ReinitialiserMotDePasseRouteImport } from './routes/reinitialiser-mot-de-passe'
 import { Route as PortesRouteImport } from './routes/portes'
 import { Route as PartenairesRouteImport } from './routes/partenaires'
 import { Route as OffresRouteImport } from './routes/offres'
@@ -82,6 +83,11 @@ const StudioRoute = StudioRouteImport.update({
 const SaveTheDateRoute = SaveTheDateRouteImport.update({
   id: '/save-the-date',
   path: '/save-the-date',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReinitialiserMotDePasseRoute = ReinitialiserMotDePasseRouteImport.update({
+  id: '/reinitialiser-mot-de-passe',
+  path: '/reinitialiser-mot-de-passe',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PortesRoute = PortesRouteImport.update({
@@ -332,6 +338,7 @@ export interface FileRoutesByFullPath {
   '/offres': typeof OffresRoute
   '/partenaires': typeof PartenairesRoute
   '/portes': typeof PortesRoute
+  '/reinitialiser-mot-de-passe': typeof ReinitialiserMotDePasseRoute
   '/save-the-date': typeof SaveTheDateRouteWithChildren
   '/studio': typeof StudioRouteWithChildren
   '/sur-mesure': typeof SurMesureRoute
@@ -382,6 +389,7 @@ export interface FileRoutesByTo {
   '/offres': typeof OffresRoute
   '/partenaires': typeof PartenairesRoute
   '/portes': typeof PortesRoute
+  '/reinitialiser-mot-de-passe': typeof ReinitialiserMotDePasseRoute
   '/studio': typeof StudioRouteWithChildren
   '/sur-mesure': typeof SurMesureRoute
   '/union': typeof UnionRoute
@@ -432,6 +440,7 @@ export interface FileRoutesById {
   '/offres': typeof OffresRoute
   '/partenaires': typeof PartenairesRoute
   '/portes': typeof PortesRoute
+  '/reinitialiser-mot-de-passe': typeof ReinitialiserMotDePasseRoute
   '/save-the-date': typeof SaveTheDateRouteWithChildren
   '/studio': typeof StudioRouteWithChildren
   '/sur-mesure': typeof SurMesureRoute
@@ -484,6 +493,7 @@ export interface FileRouteTypes {
     | '/offres'
     | '/partenaires'
     | '/portes'
+    | '/reinitialiser-mot-de-passe'
     | '/save-the-date'
     | '/studio'
     | '/sur-mesure'
@@ -534,6 +544,7 @@ export interface FileRouteTypes {
     | '/offres'
     | '/partenaires'
     | '/portes'
+    | '/reinitialiser-mot-de-passe'
     | '/studio'
     | '/sur-mesure'
     | '/union'
@@ -583,6 +594,7 @@ export interface FileRouteTypes {
     | '/offres'
     | '/partenaires'
     | '/portes'
+    | '/reinitialiser-mot-de-passe'
     | '/save-the-date'
     | '/studio'
     | '/sur-mesure'
@@ -635,6 +647,7 @@ export interface RootRouteChildren {
   OffresRoute: typeof OffresRoute
   PartenairesRoute: typeof PartenairesRoute
   PortesRoute: typeof PortesRoute
+  ReinitialiserMotDePasseRoute: typeof ReinitialiserMotDePasseRoute
   SaveTheDateRoute: typeof SaveTheDateRouteWithChildren
   StudioRoute: typeof StudioRouteWithChildren
   SurMesureRoute: typeof SurMesureRoute
@@ -687,6 +700,13 @@ declare module '@tanstack/react-router' {
       path: '/save-the-date'
       fullPath: '/save-the-date'
       preLoaderRoute: typeof SaveTheDateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reinitialiser-mot-de-passe': {
+      id: '/reinitialiser-mot-de-passe'
+      path: '/reinitialiser-mot-de-passe'
+      fullPath: '/reinitialiser-mot-de-passe'
+      preLoaderRoute: typeof ReinitialiserMotDePasseRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/portes': {
@@ -1115,6 +1135,7 @@ const rootRouteChildren: RootRouteChildren = {
   OffresRoute: OffresRoute,
   PartenairesRoute: PartenairesRoute,
   PortesRoute: PortesRoute,
+  ReinitialiserMotDePasseRoute: ReinitialiserMotDePasseRoute,
   SaveTheDateRoute: SaveTheDateRouteWithChildren,
   StudioRoute: StudioRouteWithChildren,
   SurMesureRoute: SurMesureRoute,

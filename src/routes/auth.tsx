@@ -16,6 +16,18 @@ export const Route = createFileRoute("/auth")({
   component: AuthPage,
 });
 
+/** Traduit les messages d'erreur Supabase les plus fréquents en français. */
+function translateAuthError(message: string): string {
+  const map: Record<string, string> = {
+    "Invalid login credentials": "Email ou mot de passe incorrect.",
+    "Email not confirmed": "Veuillez confirmer votre adresse e-mail avant de vous connecter (pensez à vérifier vos spams).",
+    "User already registered": "Un compte existe déjà avec cette adresse e-mail.",
+    "Password should be at least 6 characters": "Le mot de passe doit contenir au moins 6 caractères.",
+    "Signup requires a valid password": "Veuillez saisir un mot de passe valide.",
+  };
+  return map[message] ?? message;
+}
+
 function AuthPage() {
   const navigate = useNavigate();
   const { user, loading } = useAuth();
@@ -23,6 +35,7 @@ function AuthPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
+  const [resetSent, setResetSent] = useState(false);
 
   useEffect(() => {
     if (!loading && user) navigate({ to: "/mes-commandes" });
@@ -59,7 +72,27 @@ function AuthPage() {
         toast.success("Bienvenue dans votre espace.");
       }
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Erreur d'authentification");
+      toast.error(err instanceof Error ? translateAuthError(err.message) : "Erreur d'authentification");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const requestPasswordReset = async () => {
+    if (!email) {
+      toast.error("Saisissez votre email ci-dessus, puis cliquez sur « Mot de passe oublié ? ».");
+      return;
+    }
+    setBusy(true);
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: window.location.origin + "/reinitialiser-mot-de-passe",
+      });
+      if (error) throw error;
+      setResetSent(true);
+      toast.success("Si un compte existe avec cette adresse, un email de réinitialisation vient d'être envoyé.");
+    } catch (err) {
+      toast.error(err instanceof Error ? translateAuthError(err.message) : "Erreur d'authentification");
     } finally {
       setBusy(false);
     }
@@ -101,6 +134,21 @@ function AuthPage() {
             />
             {mode === "signup" && (
               <div className="text-[11px] text-muted-foreground mt-1">Min. 8 caractères. Les mots de passe compromis sont refusés.</div>
+            )}
+            {mode === "signin" && (
+              <div className="text-right mt-2">
+                {resetSent ? (
+                  <span className="text-[11px] text-muted-foreground">Email envoyé — vérifiez votre boîte mail.</span>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={requestPasswordReset}
+                    className="text-[11px] text-muted-foreground hover:text-primary underline underline-offset-4"
+                  >
+                    Mot de passe oublié ?
+                  </button>
+                )}
+              </div>
             )}
           </div>
           <GoldButton type="submit" disabled={busy} className="w-full">
