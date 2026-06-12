@@ -5,6 +5,7 @@ import process from "node:process";
 import { createMiddleware } from "@tanstack/react-start";
 import { getRequestHeader, setResponseStatus } from "@tanstack/react-start/server";
 import { createClient } from "@supabase/supabase-js";
+import WS from "ws";
 
 function getPublicConfig() {
   const url =
@@ -35,6 +36,9 @@ export const requireSupabaseAuth = createMiddleware({ type: "function" }).server
     const supabase = createClient(url, anonKey, {
       auth: { persistSession: false, autoRefreshToken: false },
       global: { headers: { Authorization: `Bearer ${token}` } },
+      // Node.js 20 (runtime des fonctions Netlify) n'a pas de WebSocket natif :
+      // sans ce transport, le constructeur SupabaseClient lève immédiatement.
+      realtime: { transport: WS as unknown as typeof WebSocket },
     });
 
     const { data, error } = await supabase.auth.getUser(token);

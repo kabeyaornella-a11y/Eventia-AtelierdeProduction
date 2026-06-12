@@ -1,36 +1,4 @@
-function formatErrorDetails(error: unknown): string {
-  if (!error) return "";
-  const escape = (s: string) =>
-    s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-
-  const lines: string[] = [];
-  let current: unknown = error;
-  let depth = 0;
-  const seen = new Set<unknown>();
-  while (current && depth < 6 && !seen.has(current)) {
-    seen.add(current);
-    if (current instanceof Error) {
-      lines.push(`[${depth}] ${current.name}: ${current.message}`);
-      if (current.stack) lines.push(current.stack);
-      current = (current as Error & { cause?: unknown }).cause;
-    } else if (typeof current === "object") {
-      const obj = current as Record<string, unknown>;
-      const replacer = (_key: string, value: unknown) =>
-        value instanceof Error
-          ? { name: value.name, message: value.message, stack: value.stack }
-          : value;
-      lines.push(`[${depth}] ${JSON.stringify(obj, replacer, 2)}`);
-      current = obj.cause;
-    } else {
-      lines.push(`[${depth}] ${String(current)}`);
-      current = undefined;
-    }
-    depth++;
-  }
-  return `<pre class="details">${escape(lines.join("\n\n"))}</pre>`;
-}
-
-export function renderErrorPage(error?: unknown): string {
+export function renderErrorPage(): string {
   return `<!doctype html>
 <html lang="en">
   <head>
@@ -46,7 +14,6 @@ export function renderErrorPage(error?: unknown): string {
       a, button { padding: 0.5rem 1rem; border-radius: 0.375rem; font: inherit; cursor: pointer; text-decoration: none; border: 1px solid transparent; }
       .primary { background: #111; color: #fff; }
       .secondary { background: #fff; color: #111; border-color: #d1d5db; }
-      .details { margin-top: 1.5rem; text-align: left; white-space: pre-wrap; word-break: break-word; background: #fff; border: 1px solid #e5e7eb; border-radius: 0.375rem; padding: 0.75rem; font-size: 0.75rem; color: #b91c1c; max-height: 40vh; overflow: auto; }
     </style>
   </head>
   <body>
@@ -57,7 +24,6 @@ export function renderErrorPage(error?: unknown): string {
         <button class="primary" onclick="location.reload()">Try again</button>
         <a class="secondary" href="/">Go home</a>
       </div>
-      ${formatErrorDetails(error)}
     </div>
   </body>
 </html>`;

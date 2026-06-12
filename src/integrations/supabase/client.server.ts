@@ -3,6 +3,7 @@
 // Lecture des env au premier accès (compatible Workers où env se lie au moment de la requête).
 import process from "node:process";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import WS from "ws";
 
 let _admin: SupabaseClient | null = null;
 
@@ -19,6 +20,9 @@ function getAdmin(): SupabaseClient {
   }
   _admin = createClient(url, serviceRoleKey, {
     auth: { persistSession: false, autoRefreshToken: false },
+    // Node.js 20 (runtime des fonctions Netlify) n'a pas de WebSocket natif :
+    // sans ce transport, le constructeur SupabaseClient lève immédiatement.
+    realtime: { transport: WS as unknown as typeof WebSocket },
   });
   return _admin;
 }

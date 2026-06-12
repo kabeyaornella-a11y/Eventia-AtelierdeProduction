@@ -21,6 +21,18 @@ if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
   );
 }
 
+// La fonction Netlify tourne sur Node.js 20, qui n'expose pas `WebSocket` en
+// global (ajouté nativement seulement à partir de Node 22). Le constructeur de
+// SupabaseClient instancie systématiquement un RealtimeClient et lève une
+// exception synchrone si aucun WebSocket n'est disponible — ce qui fait planter
+// TOUT rendu SSR ("This page didn't load" sur toutes les pages).
+// `import.meta.env.SSR` est une constante connue au build : Vite élimine cette
+// branche (et donc l'import de "ws") du bundle navigateur, où WebSocket existe
+// nativement.
+const realtimeOptions = import.meta.env.SSR
+  ? { transport: (await import("ws")).default as unknown as typeof WebSocket }
+  : undefined;
+
 export const supabase = createClient(
   SUPABASE_URL || "https://placeholder.supabase.co",
   SUPABASE_PUBLISHABLE_KEY || "placeholder-key",
@@ -30,5 +42,6 @@ export const supabase = createClient(
       persistSession: true,
       autoRefreshToken: true,
     },
+    realtime: realtimeOptions,
   }
 );
