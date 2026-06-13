@@ -21,14 +21,27 @@ function ResetPasswordPage() {
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
-    // Le lien reçu par email établit une session "recovery" temporaire :
-    // Supabase déclenche cet événement une fois le jeton de l'URL traité.
+    // Méthode 1 : token_hash dans le hash de l'URL (notre flow custom via Resend)
+    const hashParams = new URLSearchParams(window.location.hash.slice(1));
+    const tokenHash = hashParams.get("token_hash");
+    const type = hashParams.get("type");
+
+    if (tokenHash && type === "recovery") {
+      supabase.auth
+        .verifyOtp({ token_hash: tokenHash, type: "recovery" })
+        .then(({ error }) => {
+          if (!error) setReady(true);
+          else toast.error("Lien invalide ou expiré. Demandez un nouveau lien.");
+        });
+      return;
+    }
+
+    // Méthode 2 : événement PASSWORD_RECOVERY (flow Supabase natif, fallback)
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event) => {
       if (event === "PASSWORD_RECOVERY") setReady(true);
     });
-    // Si l'événement a déjà été émis avant le montage du composant.
     supabase.auth.getSession().then(({ data }) => {
       if (data.session) setReady(true);
     });

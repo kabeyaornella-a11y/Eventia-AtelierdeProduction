@@ -1,8 +1,10 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
+import { useServerFn } from "@tanstack/react-start";
 import { SiteLayout, Section, GoldButton } from "@/components/site/SiteLayout";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
+import { sendPasswordResetEmail } from "@/lib/auth.functions";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/auth")({
@@ -36,6 +38,7 @@ function AuthPage() {
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
   const [resetSent, setResetSent] = useState(false);
+  const sendReset = useServerFn(sendPasswordResetEmail);
 
   useEffect(() => {
     if (!loading && user) navigate({ to: "/mes-commandes" });
@@ -85,10 +88,8 @@ function AuthPage() {
     }
     setBusy(true);
     try {
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: window.location.origin + "/reinitialiser-mot-de-passe",
-      });
-      if (error) throw error;
+      const result = await sendReset({ data: { email } });
+      if (!result.success) throw new Error(result.error ?? "Erreur envoi email.");
       setResetSent(true);
       toast.success("Si un compte existe avec cette adresse, un email de réinitialisation vient d'être envoyé.");
     } catch (err) {
