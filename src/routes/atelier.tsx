@@ -18,7 +18,7 @@ export const Route = createFileRoute("/atelier")({
       { property: "og:description", content: "L'art du détail, la beauté du tangible." },
       { property: "og:image", content: img },
     ],
-    links: [{ rel: "canonical", href: "https://www.eventiasignature.fr/atelier" }],
+    links: [{ rel: "canonical", href: "https://www.eventiasignature.com/atelier" }],
   }),
   component: AtelierPage,
 });

@@ -12,7 +12,7 @@ export const Route = createFileRoute("/experiences")({
       { property: "og:title", content: "Expériences — Eventia Signature" },
       { property: "og:description", content: "Trouvez l'expérience qui vous ressemble." },
     ],
-    links: [{ rel: "canonical", href: "https://www.eventiasignature.fr/experiences" }],
+    links: [{ rel: "canonical", href: "https://www.eventiasignature.com/experiences" }],
   }),
   component: ExperiencesIndex,
 });

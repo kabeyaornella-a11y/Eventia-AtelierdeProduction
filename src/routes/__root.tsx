@@ -122,7 +122,7 @@ function RootShell({ children }: { children: ReactNode }) {
       {
         "@type": "Organization",
         name: "Eventia Signature",
-        url: "https://www.eventiasignature.fr",
+        url: "https://www.eventiasignature.com",
         slogan: "La signature de vos plus beaux événements.",
         description:
           "Maison d'expériences digitales immersives premium : invitations de mariage animées, Save The Date d'exception, RSVP et galeries live.",
@@ -131,7 +131,7 @@ function RootShell({ children }: { children: ReactNode }) {
       {
         "@type": "WebSite",
         name: "Eventia Signature",
-        url: "https://www.eventiasignature.fr",
+        url: "https://www.eventiasignature.com",
         inLanguage: "fr-FR",
       },
     ],

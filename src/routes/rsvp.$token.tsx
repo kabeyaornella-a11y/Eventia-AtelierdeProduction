@@ -14,7 +14,7 @@ export const Route = createFileRoute("/rsvp/$token")({
       { name: "description", content: "Confirmez votre présence à l'invitation." },
       { name: "robots", content: "noindex" },
     ],
-    links: [{ rel: "canonical", href: `https://www.eventiasignature.fr/rsvp/${params.token}` }],
+    links: [{ rel: "canonical", href: `https://www.eventiasignature.com/rsvp/${params.token}` }],
   }),
   component: RsvpPage,
 });

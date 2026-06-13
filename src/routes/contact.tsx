@@ -17,7 +17,7 @@ export const Route = createFileRoute("/contact")({
       { property: "og:description", content: "Parlons de votre événement." },
       { property: "og:image", content: img },
     ],
-    links: [{ rel: "canonical", href: "https://www.eventiasignature.fr/contact" }],
+    links: [{ rel: "canonical", href: "https://www.eventiasignature.com/contact" }],
   }),
   component: ContactPage,
 });

@@ -10,7 +10,7 @@ export const Route = createFileRoute("/portes")({
       { property: "og:description", content: "Un passage. Une ouverture. Le moment où une histoire commence." },
       { property: "og:image", content: img },
     ],
-    links: [{ rel: "canonical", href: "https://www.eventiasignature.fr/portes" }],
+    links: [{ rel: "canonical", href: "https://www.eventiasignature.com/portes" }],
   }),
   component: () => <CollectionPage slug="portes" />,
 });

@@ -34,7 +34,7 @@ export const Route = createFileRoute("/")({
       { property: "og:image", content: heroImg },
     ],
     links: [
-      { rel: "canonical", href: "https://www.eventiasignature.fr/" },
+      { rel: "canonical", href: "https://www.eventiasignature.com/" },
       { rel: "preload", as: "image", href: heroImg, fetchpriority: "high" },
     ],
   }),

@@ -12,7 +12,7 @@ export const Route = createFileRoute("/offres")({
       { property: "og:title", content: "Offres — Eventia Signature" },
       { property: "og:description", content: "Trois offres signature, sans abonnement." },
     ],
-    links: [{ rel: "canonical", href: "https://www.eventiasignature.fr/offres" }],
+    links: [{ rel: "canonical", href: "https://www.eventiasignature.com/offres" }],
   }),
   component: OffresPage,
 });

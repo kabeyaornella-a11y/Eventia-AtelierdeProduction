@@ -21,7 +21,7 @@ export const Route = createFileRoute("/faq")({
       { property: "og:title", content: "Questions fréquentes. Eventia" },
       { property: "og:description", content: "Nous répondons à vos questions." },
     ],
-    links: [{ rel: "canonical", href: "https://www.eventiasignature.fr/faq" }],
+    links: [{ rel: "canonical", href: "https://www.eventiasignature.com/faq" }],
   }),
   component: () => (
     <SiteLayout>

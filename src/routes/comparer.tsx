@@ -12,7 +12,7 @@ export const Route = createFileRoute("/comparer")({
       { property: "og:title", content: "Comparer les expériences — Eventia Signature" },
       { property: "og:description", content: "Comparez palette, ambiance et immersion." },
     ],
-    links: [{ rel: "canonical", href: "https://www.eventiasignature.fr/comparer" }],
+    links: [{ rel: "canonical", href: "https://www.eventiasignature.com/comparer" }],
   }),
   component: ComparerPage,
 });

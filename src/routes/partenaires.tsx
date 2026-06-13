@@ -12,7 +12,7 @@ export const Route = createFileRoute("/partenaires")({
       { property: "og:description", content: "Programme partenaire haut de gamme." },
       { property: "og:image", content: img },
     ],
-    links: [{ rel: "canonical", href: "https://www.eventiasignature.fr/partenaires" }],
+    links: [{ rel: "canonical", href: "https://www.eventiasignature.com/partenaires" }],
   }),
   component: () => (
     <SiteLayout>

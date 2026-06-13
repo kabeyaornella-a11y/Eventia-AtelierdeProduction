@@ -12,7 +12,7 @@ export const Route = createFileRoute("/studio")({
       { property: "og:title", content: "Studio — Eventia Signature" },
       { property: "og:description", content: "Les réalisations du Studio Eventia." },
     ],
-    links: [{ rel: "canonical", href: "https://www.eventiasignature.fr/studio" }],
+    links: [{ rel: "canonical", href: "https://www.eventiasignature.com/studio" }],
   }),
   component: StudioPage,
 });

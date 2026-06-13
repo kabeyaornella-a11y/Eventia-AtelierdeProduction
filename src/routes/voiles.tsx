@@ -10,7 +10,7 @@ export const Route = createFileRoute("/voiles")({
       { property: "og:description", content: "Univers poétique et lumineux." },
       { property: "og:image", content: img },
     ],
-    links: [{ rel: "canonical", href: "https://www.eventiasignature.fr/voiles" }],
+    links: [{ rel: "canonical", href: "https://www.eventiasignature.com/voiles" }],
   }),
   component: () => <CollectionPage slug="voiles" />,
 });

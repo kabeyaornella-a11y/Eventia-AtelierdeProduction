@@ -17,7 +17,7 @@ export const Route = createFileRoute("/experiences/$slug")({
         { property: "og:description", content: desc },
         ...(e ? [{ property: "og:image" as const, content: e.image }] : []),
       ],
-      links: [{ rel: "canonical", href: `https://www.eventiasignature.fr/experiences/${params.slug}` }],
+      links: [{ rel: "canonical", href: `https://www.eventiasignature.com/experiences/${params.slug}` }],
     };
   },
   loader: ({ params }) => {

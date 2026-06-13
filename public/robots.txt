@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.eventiasignature.fr/sitemap.xml
+Sitemap: https://www.eventiasignature.com/sitemap.xml

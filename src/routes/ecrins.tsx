@@ -10,7 +10,7 @@ export const Route = createFileRoute("/ecrins")({
       { property: "og:description", content: "Univers précieux, intime, délicat." },
       { property: "og:image", content: ecrinsImg },
     ],
-    links: [{ rel: "canonical", href: "https://www.eventiasignature.fr/ecrins" }],
+    links: [{ rel: "canonical", href: "https://www.eventiasignature.com/ecrins" }],
   }),
   component: () => <CollectionPage slug="ecrins" />,
 });

@@ -12,7 +12,7 @@ export const Route = createFileRoute("/save-the-date/")({
       { property: "og:title", content: "Save The Date — Eventia Signature" },
       { property: "og:description", content: "Annoncez avant de révéler." },
     ],
-    links: [{ rel: "canonical", href: "https://www.eventiasignature.fr/save-the-date" }],
+    links: [{ rel: "canonical", href: "https://www.eventiasignature.com/save-the-date" }],
   }),
   component: () => (
     <SiteLayout>

@@ -12,7 +12,7 @@ export const Route = createFileRoute("/sur-mesure")({
       { property: "og:description", content: "Direction artistique dédiée." },
       { property: "og:image", content: img },
     ],
-    links: [{ rel: "canonical", href: "https://www.eventiasignature.fr/sur-mesure" }],
+    links: [{ rel: "canonical", href: "https://www.eventiasignature.com/sur-mesure" }],
   }),
   component: () => (
     <SiteLayout>

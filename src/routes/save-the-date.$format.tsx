@@ -19,7 +19,7 @@ export const Route = createFileRoute("/save-the-date/$format")({
         { property: "og:description", content: desc },
         ...(f ? [{ property: "og:image" as const, content: f.image }] : []),
       ],
-      links: [{ rel: "canonical", href: `https://www.eventiasignature.fr/save-the-date/${params.format}` }],
+      links: [{ rel: "canonical", href: `https://www.eventiasignature.com/save-the-date/${params.format}` }],
     };
   },
   loader: ({ params }) => {

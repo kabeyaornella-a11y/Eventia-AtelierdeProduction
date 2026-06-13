@@ -10,7 +10,7 @@ export const Route = createFileRoute("/union")({
       { property: "og:description", content: "La collection de la rencontre." },
       { property: "og:image", content: img },
     ],
-    links: [{ rel: "canonical", href: "https://www.eventiasignature.fr/union" }],
+    links: [{ rel: "canonical", href: "https://www.eventiasignature.com/union" }],
   }),
   component: () => <CollectionPage slug="union" />,
 });

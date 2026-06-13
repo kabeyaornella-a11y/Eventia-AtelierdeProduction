@@ -18,7 +18,7 @@ export const Route = createFileRoute("/configurateur")({
       { property: "og:title", content: "Configurateur — Eventia Signature" },
       { property: "og:description", content: "Composez votre expérience en 6 étapes." },
     ],
-    links: [{ rel: "canonical", href: "https://www.eventiasignature.fr/configurateur" }],
+    links: [{ rel: "canonical", href: "https://www.eventiasignature.com/configurateur" }],
   }),
   component: Configurateur,
 });
