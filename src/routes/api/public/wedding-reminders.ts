@@ -14,7 +14,7 @@ export const Route = createFileRoute("/api/public/wedding-reminders")({
     handlers: {
       POST: async ({ request }) => {
         const apikey = request.headers.get("apikey");
-        if (!apikey || apikey !== process.env.SUPABASE_PUBLISHABLE_KEY) {
+        if (!apikey || apikey !== process.env.SUPABASE_SERVICE_ROLE_KEY) {
           return new Response("Unauthorized", { status: 401 });
         }
 

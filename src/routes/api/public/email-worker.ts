@@ -85,8 +85,10 @@ export const Route = createFileRoute("/api/public/email-worker")({
     handlers: {
       POST: async ({ request }) => {
         // Auth simple : header apikey doit correspondre à la clé publishable Supabase
+        // Auth simple : header apikey doit correspondre à la clé service role Supabase
+        // (secret déjà configuré côté Netlify, jamais exposé au client).
         const apikey = request.headers.get("apikey");
-        if (!apikey || apikey !== process.env.SUPABASE_PUBLISHABLE_KEY) {
+        if (!apikey || apikey !== process.env.SUPABASE_SERVICE_ROLE_KEY) {
           return new Response("Unauthorized", { status: 401 });
         }
 
@@ -98,12 +100,11 @@ export const Route = createFileRoute("/api/public/email-worker")({
           .limit(25);
         if (error) return Response.json({ error: error.message }, { status: 500 });
 
-        const LOVABLE_API_KEY = process.env.LOVABLE_API_KEY;
         const RESEND_API_KEY = process.env.RESEND_API_KEY;
         const SENDER = process.env.EMAIL_SENDER || "Eventia Signature <onboarding@resend.dev>";
 
-        if (!LOVABLE_API_KEY || !RESEND_API_KEY) {
-          return Response.json({ error: "Email provider not configured" }, { status: 503 });
+        if (!RESEND_API_KEY) {
+          return Response.json({ error: "Email provider not configured (RESEND_API_KEY manquant)" }, { status: 503 });
         }
 
         const results: Array<{ id: string; ok: boolean; error?: string }> = [];
@@ -117,12 +118,11 @@ export const Route = createFileRoute("/api/public/email-worker")({
             continue;
           }
           try {
-            const res = await fetch("https://connector-gateway.lovable.dev/resend/emails", {
+            const res = await fetch("https://api.resend.com/emails", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${LOVABLE_API_KEY}`,
-                "X-Connection-Api-Key": RESEND_API_KEY,
+                Authorization: `Bearer ${RESEND_API_KEY}`,
               },
               body: JSON.stringify({
                 from: SENDER,
