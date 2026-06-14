@@ -249,11 +249,23 @@ function HomePage() {
                   <Link
                     key={c.eyebrow}
                     to={c.to}
-                    className="snap-center shrink-0 bg-ivory/95 shadow-soft px-4 py-3 w-44"
+                    className="snap-center shrink-0 bg-ivory/95 border border-primary/30 shadow-gold px-4 py-4 w-44"
                   >
-                    <div className="eyebrow text-[10px]">{c.eyebrow}</div>
-                    <div className="font-serif-soft italic text-sm mt-1 text-foreground">
+                    <div className="flex items-center gap-1.5 mb-2.5">
+                      <div className="h-px flex-1 bg-primary/40" />
+                      <div className="size-1 rounded-full bg-primary/70 shrink-0" />
+                      <div className="h-px flex-1 bg-primary/40" />
+                    </div>
+                    <div className="eyebrow text-[9px] text-center text-primary/80">
+                      {c.eyebrow}
+                    </div>
+                    <div className="font-script text-lg text-center mt-1.5 leading-snug text-foreground">
                       {c.text}
+                    </div>
+                    <div className="flex items-center gap-1.5 mt-2.5">
+                      <div className="h-px flex-1 bg-primary/40" />
+                      <div className="size-1 rounded-full bg-primary/70 shrink-0" />
+                      <div className="h-px flex-1 bg-primary/40" />
                     </div>
                   </Link>
                 ))}
@@ -273,36 +285,111 @@ function HomePage() {
                 decoding="async"
                 className="w-full h-[620px] object-cover"
               />
-
               <div className="absolute inset-0 bg-gradient-to-t from-cacao/30 to-transparent" />
             </div>
+
+            {/* Carton d'invitation — Save The Date */}
             <div
-              className="absolute -left-10 top-10 bg-ivory shadow-soft px-4 py-3 w-44 animate-float-slow"
+              className="absolute -left-10 top-10 w-48 animate-float-slow"
               style={{ ["--rot" as never]: "-4deg" }}
             >
-              <div className="eyebrow text-[10px]">Save The Date</div>
-              <div className="font-serif-soft italic text-sm mt-1">Un teaser sur mesure</div>
+              <Link
+                to="/save-the-date"
+                className="block bg-ivory border border-primary/35 shadow-gold px-4 py-5 hover:shadow-gold/80 transition-shadow"
+              >
+                <div className="flex items-center gap-1.5 mb-3">
+                  <div className="h-px flex-1 bg-primary/45" />
+                  <div className="size-[5px] rounded-full bg-primary/80 shrink-0" />
+                  <div className="h-px flex-1 bg-primary/45" />
+                </div>
+                <div className="eyebrow text-[9px] text-primary/75 text-center">Save The Date</div>
+                <div className="font-script text-lg text-center mt-1.5 leading-snug text-foreground">
+                  Un teaser sur mesure
+                </div>
+                <div className="flex items-center gap-1.5 mt-3">
+                  <div className="h-px flex-1 bg-primary/45" />
+                  <div className="size-[5px] rounded-full bg-primary/80 shrink-0" />
+                  <div className="h-px flex-1 bg-primary/45" />
+                </div>
+              </Link>
             </div>
+
+            {/* Carton d'invitation — Les Seuils */}
             <div
-              className="absolute -right-6 top-32 bg-ivory shadow-soft px-4 py-3 w-44 animate-float-slow"
+              className="absolute -right-6 top-32 w-48 animate-float-slow"
               style={{ ["--rot" as never]: "3deg", animationDelay: "-2s" }}
             >
-              <div className="eyebrow text-[10px]">Les Seuils</div>
-              <div className="font-serif-soft italic text-sm mt-1">Un passage qui s'ouvre</div>
+              <Link
+                to="/portes"
+                className="block bg-ivory border border-primary/35 shadow-gold px-4 py-5 hover:shadow-gold/80 transition-shadow"
+              >
+                <div className="flex items-center gap-1.5 mb-3">
+                  <div className="h-px flex-1 bg-primary/45" />
+                  <div className="size-[5px] rounded-full bg-primary/80 shrink-0" />
+                  <div className="h-px flex-1 bg-primary/45" />
+                </div>
+                <div className="eyebrow text-[9px] text-primary/75 text-center">Collection</div>
+                <div className="font-script text-lg text-center mt-1.5 leading-snug text-foreground">
+                  Un passage qui s'ouvre
+                </div>
+                <div className="flex items-center gap-1.5 mt-3">
+                  <div className="h-px flex-1 bg-primary/45" />
+                  <div className="size-[5px] rounded-full bg-primary/80 shrink-0" />
+                  <div className="h-px flex-1 bg-primary/45" />
+                </div>
+              </Link>
             </div>
+
+            {/* Carton d'invitation — Les Voiles */}
             <div
-              className="absolute -left-4 bottom-20 bg-ivory shadow-soft px-4 py-3 w-44 animate-float-slow"
+              className="absolute -left-4 bottom-20 w-48 animate-float-slow"
               style={{ ["--rot" as never]: "2deg", animationDelay: "-4s" }}
             >
-              <div className="eyebrow text-[10px]">Les Voiles</div>
-              <div className="font-serif-soft italic text-sm mt-1">Une lumière qui apparaît</div>
+              <Link
+                to="/voiles"
+                className="block bg-ivory border border-primary/35 shadow-gold px-4 py-5 hover:shadow-gold/80 transition-shadow"
+              >
+                <div className="flex items-center gap-1.5 mb-3">
+                  <div className="h-px flex-1 bg-primary/45" />
+                  <div className="size-[5px] rounded-full bg-primary/80 shrink-0" />
+                  <div className="h-px flex-1 bg-primary/45" />
+                </div>
+                <div className="eyebrow text-[9px] text-primary/75 text-center">Collection</div>
+                <div className="font-script text-lg text-center mt-1.5 leading-snug text-foreground">
+                  Une lumière qui apparaît
+                </div>
+                <div className="flex items-center gap-1.5 mt-3">
+                  <div className="h-px flex-1 bg-primary/45" />
+                  <div className="size-[5px] rounded-full bg-primary/80 shrink-0" />
+                  <div className="h-px flex-1 bg-primary/45" />
+                </div>
+              </Link>
             </div>
+
+            {/* Carton d'invitation — L'Union */}
             <div
-              className="absolute -right-10 bottom-6 bg-ivory shadow-soft px-4 py-3 w-44 animate-float-slow"
+              className="absolute -right-10 bottom-6 w-48 animate-float-slow"
               style={{ ["--rot" as never]: "-3deg", animationDelay: "-1s" }}
             >
-              <div className="eyebrow text-[10px]">L'Union</div>
-              <div className="font-serif-soft italic text-sm mt-1">Deux histoires partagées</div>
+              <Link
+                to="/union"
+                className="block bg-ivory border border-primary/35 shadow-gold px-4 py-5 hover:shadow-gold/80 transition-shadow"
+              >
+                <div className="flex items-center gap-1.5 mb-3">
+                  <div className="h-px flex-1 bg-primary/45" />
+                  <div className="size-[5px] rounded-full bg-primary/80 shrink-0" />
+                  <div className="h-px flex-1 bg-primary/45" />
+                </div>
+                <div className="eyebrow text-[9px] text-primary/75 text-center">Collection</div>
+                <div className="font-script text-lg text-center mt-1.5 leading-snug text-foreground">
+                  Deux histoires partagées
+                </div>
+                <div className="flex items-center gap-1.5 mt-3">
+                  <div className="h-px flex-1 bg-primary/45" />
+                  <div className="size-[5px] rounded-full bg-primary/80 shrink-0" />
+                  <div className="h-px flex-1 bg-primary/45" />
+                </div>
+              </Link>
             </div>
           </div>
         </div>
@@ -343,6 +430,7 @@ function HomePage() {
               key={c.slug}
               name={c.name}
               tagline={c.tagline}
+              description={c.description}
               image={c.image}
               href={`/${c.slug}`}
             />

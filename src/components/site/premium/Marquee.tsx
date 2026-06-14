@@ -15,7 +15,7 @@ const DEFAULT_ITEMS = [
 type Props = { items?: string[]; speedSeconds?: number };
 
 export function Marquee({ items = DEFAULT_ITEMS, speedSeconds }: Props) {
-  const [duration, setDuration] = useState(speedSeconds ?? 52);
+  const [duration, setDuration] = useState(speedSeconds ?? 38);
   const [reduced, setReduced] = useState(false);
 
   useEffect(() => {
@@ -29,10 +29,10 @@ export function Marquee({ items = DEFAULT_ITEMS, speedSeconds }: Props) {
     const compute = () => {
       const w = window.innerWidth;
       // vitesse fluide ajustée au viewport
-      if (w < 480) setDuration(32);
-      else if (w < 768) setDuration(40);
-      else if (w < 1280) setDuration(48);
-      else setDuration(58);
+      if (w < 480) setDuration(20);
+      else if (w < 768) setDuration(26);
+      else if (w < 1280) setDuration(32);
+      else setDuration(38);
     };
     compute();
     let raf = 0;

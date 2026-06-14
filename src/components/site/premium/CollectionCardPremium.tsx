@@ -3,6 +3,7 @@ import { ArrowUpRight } from "lucide-react";
 type Props = {
   name: string;
   tagline: string;
+  description?: string;
   image: string;
   href?: string;
   eyebrow?: string;
@@ -11,6 +12,7 @@ type Props = {
 export function CollectionCardPremium({
   name,
   tagline,
+  description,
   image,
   href = "#",
   eyebrow = "Collection",
@@ -18,35 +20,49 @@ export function CollectionCardPremium({
   return (
     <a
       href={href}
-      className="group relative block overflow-hidden shadow-soft hover:shadow-gold transition-shadow duration-500"
+      className="group flex flex-col bg-ivory shadow-soft hover:shadow-gold transition-shadow duration-500 overflow-hidden"
     >
-      <div className="aspect-[3/4] overflow-hidden bg-champagne/20">
+      {/* Image */}
+      <div className="aspect-[4/3] overflow-hidden bg-champagne/20 relative shrink-0">
         <img
           src={image}
           alt={name}
           loading="lazy"
           width={900}
-          height={1200}
+          height={675}
           className="w-full h-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-110"
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-cacao/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
       </div>
-      <div className="absolute inset-0 bg-gradient-to-t from-cacao/90 via-cacao/35 to-transparent" />
-      <div className="absolute inset-x-0 bottom-0 p-5 md:p-6 text-ivory">
-        <div className="flex items-end justify-between gap-4">
-          <div className="min-w-0">
-            <div className="eyebrow !text-ivory/75 text-[10px]">{eyebrow}</div>
-            <div className="font-display text-2xl md:text-3xl mt-1 leading-tight truncate">
-              {name}
-            </div>
-            <div className="font-serif-soft italic text-sm opacity-90 mt-1 line-clamp-1">
-              {tagline}
-            </div>
-          </div>
-          <div className="size-10 shrink-0 rounded-full bg-ivory/15 backdrop-blur grid place-items-center border border-ivory/30 transition-all duration-500 group-hover:rotate-45 group-hover:bg-primary group-hover:border-primary">
-            <ArrowUpRight className="size-4 text-ivory" />
-          </div>
+
+      {/* Panneau contenu */}
+      <div className="flex-1 flex flex-col px-5 py-5 border-t border-primary/15">
+        {/* ornement doré */}
+        <div className="flex items-center gap-2 mb-4">
+          <div className="h-px flex-1 bg-primary/30" />
+          <div className="size-[5px] rounded-full bg-primary/70 shrink-0" />
+          <div className="h-px flex-1 bg-primary/30" />
         </div>
-        <div className="mt-4 h-px w-12 bg-primary-soft transition-all duration-500 group-hover:w-24" />
+
+        <div className="eyebrow text-[10px] text-center">{eyebrow}</div>
+        <div className="font-display text-2xl text-center mt-2 leading-tight tracking-tight">
+          {name}
+        </div>
+        <div className="font-serif-soft italic text-xs text-muted-foreground text-center mt-2 line-clamp-2 min-h-[2.5em]">
+          {tagline}
+        </div>
+
+        {description && (
+          <p className="text-[11px] text-foreground/65 text-center mt-3 leading-relaxed line-clamp-2">
+            {description}
+          </p>
+        )}
+
+        {/* CTA */}
+        <div className="mt-auto pt-5 flex items-center justify-center gap-1.5">
+          <span className="eyebrow text-[10px] text-primary">Découvrir</span>
+          <ArrowUpRight className="size-3 text-primary transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+        </div>
       </div>
     </a>
   );
