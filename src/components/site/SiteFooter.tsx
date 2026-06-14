@@ -45,6 +45,11 @@ export function SiteFooter() {
               </Link>
             </li>
             <li>
+              <Link to="/tarifs" className="hover:text-primary">
+                Tarifs
+              </Link>
+            </li>
+            <li>
               <Link to="/offres" className="hover:text-primary">
                 Offres
               </Link>

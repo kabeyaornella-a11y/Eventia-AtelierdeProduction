@@ -7,8 +7,7 @@ import { useIsAdmin } from "@/hooks/use-admin";
 const navLinks = [
   { to: "/experiences", label: "Univers" },
   { to: "/save-the-date", label: "Save The Date" },
-  { to: "/comparer", label: "Comparer" },
-  { to: "/offres", label: "Offres" },
+  { to: "/tarifs", label: "Tarifs" },
   { to: "/atelier", label: "Atelier" },
   { to: "/entreprises", label: "Entreprises" },
   { to: "/contact", label: "Contact" },

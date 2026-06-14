@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Heart, Check, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { SiteLayout, Section, GoldButton } from "@/components/site/SiteLayout";
@@ -36,6 +36,25 @@ function RsvpPage() {
   const [message, setMessage] = useState("");
   const [done, setDone] = useState(false);
   const [busy, setBusy] = useState(false);
+
+  useEffect(() => {
+    if (!done || status === "no") return;
+    let cancelled = false;
+    import("canvas-confetti").then(({ default: confetti }) => {
+      if (cancelled) return;
+      confetti({
+        particleCount: 120,
+        spread: 80,
+        origin: { y: 0.55 },
+        colors: ["#D8AE67", "#F7EFE3", "#C8A76A", "#211914", "#fff"],
+        scalar: 1.1,
+      });
+      setTimeout(() => {
+        if (!cancelled) confetti({ particleCount: 60, spread: 55, origin: { y: 0.6 }, colors: ["#D8AE67", "#F7EFE3"] });
+      }, 400);
+    });
+    return () => { cancelled = true; };
+  }, [done, status]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();

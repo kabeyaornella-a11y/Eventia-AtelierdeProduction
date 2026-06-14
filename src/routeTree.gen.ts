@@ -17,6 +17,7 @@ import { Route as SaveTheDateRouteImport } from './routes/save-the-date'
 import { Route as ReinitialiserMotDePasseRouteImport } from './routes/reinitialiser-mot-de-passe'
 import { Route as PortesRouteImport } from './routes/portes'
 import { Route as PartenairesRouteImport } from './routes/partenaires'
+import { Route as TarifsRouteImport } from './routes/tarifs'
 import { Route as OffresRouteImport } from './routes/offres'
 import { Route as MentionsLegalesRouteImport } from './routes/mentions-legales'
 import { Route as FaqRouteImport } from './routes/faq'
@@ -98,6 +99,11 @@ const PortesRoute = PortesRouteImport.update({
 const PartenairesRoute = PartenairesRouteImport.update({
   id: '/partenaires',
   path: '/partenaires',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TarifsRoute = TarifsRouteImport.update({
+  id: '/tarifs',
+  path: '/tarifs',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OffresRoute = OffresRouteImport.update({
@@ -336,6 +342,7 @@ export interface FileRoutesByFullPath {
   '/faq': typeof FaqRoute
   '/mentions-legales': typeof MentionsLegalesRoute
   '/offres': typeof OffresRoute
+  '/tarifs': typeof TarifsRoute
   '/partenaires': typeof PartenairesRoute
   '/portes': typeof PortesRoute
   '/reinitialiser-mot-de-passe': typeof ReinitialiserMotDePasseRoute
@@ -387,6 +394,7 @@ export interface FileRoutesByTo {
   '/faq': typeof FaqRoute
   '/mentions-legales': typeof MentionsLegalesRoute
   '/offres': typeof OffresRoute
+  '/tarifs': typeof TarifsRoute
   '/partenaires': typeof PartenairesRoute
   '/portes': typeof PortesRoute
   '/reinitialiser-mot-de-passe': typeof ReinitialiserMotDePasseRoute
@@ -438,6 +446,7 @@ export interface FileRoutesById {
   '/faq': typeof FaqRoute
   '/mentions-legales': typeof MentionsLegalesRoute
   '/offres': typeof OffresRoute
+  '/tarifs': typeof TarifsRoute
   '/partenaires': typeof PartenairesRoute
   '/portes': typeof PortesRoute
   '/reinitialiser-mot-de-passe': typeof ReinitialiserMotDePasseRoute
@@ -491,6 +500,7 @@ export interface FileRouteTypes {
     | '/faq'
     | '/mentions-legales'
     | '/offres'
+    | '/tarifs'
     | '/partenaires'
     | '/portes'
     | '/reinitialiser-mot-de-passe'
@@ -542,6 +552,7 @@ export interface FileRouteTypes {
     | '/faq'
     | '/mentions-legales'
     | '/offres'
+    | '/tarifs'
     | '/partenaires'
     | '/portes'
     | '/reinitialiser-mot-de-passe'
@@ -592,6 +603,7 @@ export interface FileRouteTypes {
     | '/faq'
     | '/mentions-legales'
     | '/offres'
+    | '/tarifs'
     | '/partenaires'
     | '/portes'
     | '/reinitialiser-mot-de-passe'
@@ -645,6 +657,7 @@ export interface RootRouteChildren {
   FaqRoute: typeof FaqRoute
   MentionsLegalesRoute: typeof MentionsLegalesRoute
   OffresRoute: typeof OffresRoute
+  TarifsRoute: typeof TarifsRoute
   PartenairesRoute: typeof PartenairesRoute
   PortesRoute: typeof PortesRoute
   ReinitialiserMotDePasseRoute: typeof ReinitialiserMotDePasseRoute
@@ -721,6 +734,13 @@ declare module '@tanstack/react-router' {
       path: '/partenaires'
       fullPath: '/partenaires'
       preLoaderRoute: typeof PartenairesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tarifs': {
+      id: '/tarifs'
+      path: '/tarifs'
+      fullPath: '/tarifs'
+      preLoaderRoute: typeof TarifsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/offres': {
@@ -1133,6 +1153,7 @@ const rootRouteChildren: RootRouteChildren = {
   FaqRoute: FaqRoute,
   MentionsLegalesRoute: MentionsLegalesRoute,
   OffresRoute: OffresRoute,
+  TarifsRoute: TarifsRoute,
   PartenairesRoute: PartenairesRoute,
   PortesRoute: PortesRoute,
   ReinitialiserMotDePasseRoute: ReinitialiserMotDePasseRoute,
