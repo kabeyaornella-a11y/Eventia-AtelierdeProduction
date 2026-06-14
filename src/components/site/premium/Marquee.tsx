@@ -10,6 +10,12 @@ const DEFAULT_ITEMS = [
   "Plan de table interactif",
   "Confirmations en temps réel",
   "Accompagnement dédié",
+  "Paiement unique",
+  "Sans abonnement",
+  "Envoi illimité",
+  "Modifications possibles",
+  "Paiement en 3 ou 4 fois sans frais",
+  "Compatible France et international",
 ];
 
 type Props = { items?: string[]; speedSeconds?: number };
