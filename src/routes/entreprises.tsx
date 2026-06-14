@@ -13,6 +13,7 @@ export const Route = createFileRoute("/entreprises")({
       { property: "og:title", content: "Eventia B2B. événements signature pour entreprises" },
       { property: "og:description", content: "Invitations, coffrets, expériences live. Sur mesure pour vos collaborateurs et clients." },
     ],
+    links: [{ rel: "canonical", href: "https://www.eventiasignature.com/entreprises" }],
   }),
   component: B2BPage,
 });

@@ -6,6 +6,7 @@ export const Route = createFileRoute("/confidentialite")({
       { title: "Politique de confidentialité — Eventia Signature" },
       { name: "description", content: "Comment Eventia Signature collecte, utilise et protège vos données personnelles." },
     ],
+    links: [{ rel: "canonical", href: "https://www.eventiasignature.com/confidentialite" }],
   }),
   component: Page,
 });

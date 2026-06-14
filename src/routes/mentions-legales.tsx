@@ -6,6 +6,7 @@ export const Route = createFileRoute("/mentions-legales")({
       { title: "Mentions légales — Eventia Signature" },
       { name: "description", content: "Mentions légales d'Eventia Signature, atelier d'invitations et expériences premium." },
     ],
+    links: [{ rel: "canonical", href: "https://www.eventiasignature.com/mentions-legales" }],
   }),
   component: Page,
 });

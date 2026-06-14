@@ -104,16 +104,17 @@ function AuthPage() {
       <Section className="max-w-md mx-auto">
         <div className="text-center">
           <div className="eyebrow text-primary">Eventia Signature</div>
-          <h1 className="font-display text-4xl md:text-5xl mt-3">{mode === "signin" ? "Votre espace" : "Créer un compte"}</h1>
+          <h1 id="auth-form-title" className="font-display text-4xl md:text-5xl mt-3">{mode === "signin" ? "Votre espace" : "Créer un compte"}</h1>
           <p className="font-serif-soft italic text-muted-foreground mt-3">
             Retrouvez vos compositions, commandes et invitations dans un espace privé.
           </p>
         </div>
 
-        <form onSubmit={submit} className="mt-10 bg-ivory border border-primary/15 p-8 shadow-soft space-y-4">
+        <form onSubmit={submit} aria-labelledby="auth-form-title" className="mt-10 bg-ivory border border-primary/15 p-8 shadow-soft space-y-4">
           <div>
-            <label className="eyebrow text-xs">Email</label>
+            <label htmlFor="auth-email" className="eyebrow text-xs">Email</label>
             <input
+              id="auth-email"
               type="email"
               required
               autoComplete="email"
@@ -123,8 +124,9 @@ function AuthPage() {
             />
           </div>
           <div>
-            <label className="eyebrow text-xs">Mot de passe</label>
+            <label htmlFor="auth-password" className="eyebrow text-xs">Mot de passe</label>
             <input
+              id="auth-password"
               type="password"
               required
               minLength={8}

@@ -6,6 +6,7 @@ export const Route = createFileRoute("/cgv")({
       { title: "Conditions générales de vente — Eventia Signature" },
       { name: "description", content: "Conditions générales de vente d'Eventia Signature." },
     ],
+    links: [{ rel: "canonical", href: "https://www.eventiasignature.com/cgv" }],
   }),
   component: Page,
 });

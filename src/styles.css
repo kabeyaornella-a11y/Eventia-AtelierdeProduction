@@ -193,6 +193,20 @@
 .animate-shimmer-gold { animation: shimmer-gold 4s ease-in-out infinite; }
 .animate-zoom-soft { animation: zoom-soft 1.4s cubic-bezier(.2,.7,.2,1) both; }
 
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-up,
+  .animate-float-slow,
+  .animate-word-in,
+  .animate-marquee-x,
+  .animate-shimmer-gold,
+  .animate-zoom-soft {
+    animation: none !important;
+    transition: none !important;
+  }
+  .particles {
+    display: none !important;
+  }
+}
 
 /* Champagne particles */
 .particles {
