@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { timingSafeEqual } from "crypto";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 /**
  * Webhook Gumroad — endpoint public appelé par Gumroad à chaque vente.
@@ -17,6 +18,16 @@ export const Route = createFileRoute("/api/public/gumroad")({
   server: {
     handlers: {
       POST: async ({ request }) => {
+        // 30 appels / minute par IP pour limiter les abus
+        const ip = request.headers.get("x-forwarded-for")?.split(",")[0].trim() ?? "unknown";
+        const rl = checkRateLimit(`gumroad:${ip}`, 30);
+        if (!rl.allowed) {
+          return new Response("Too Many Requests", {
+            status: 429,
+            headers: { "Retry-After": String(Math.ceil((rl.resetAt - Date.now()) / 1000)) },
+          });
+        }
+
         const secret = process.env.GUMROAD_WEBHOOK_SECRET;
         if (!secret) {
           console.error("[gumroad] GUMROAD_WEBHOOK_SECRET manquant");

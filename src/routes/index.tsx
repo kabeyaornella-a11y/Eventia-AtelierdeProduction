@@ -219,13 +219,13 @@ function HomePage() {
                     eyebrow: "Save The Date",
                     text: "Un teaser sur mesure",
                   },
-                  { to: "/portes" as const, eyebrow: "Les Seuils", text: "Un passage qui s'ouvre" },
+                  { to: "/portes" as const, eyebrow: "Les Seuils", text: "Un passage." },
                   {
                     to: "/voiles" as const,
                     eyebrow: "Les Voiles",
-                    text: "Une lumière qui apparaît",
+                    text: "Un voile qui se soulève.",
                   },
-                  { to: "/union" as const, eyebrow: "L'Union", text: "Deux histoires partagées" },
+                  { to: "/union" as const, eyebrow: "L'Union", text: "Deux histoires." },
                 ].map((c) => (
                   <Link
                     key={c.eyebrow}
@@ -311,7 +311,7 @@ function HomePage() {
                 </div>
                 <div className="eyebrow text-[9px] text-primary/75 text-center">Collection</div>
                 <div className="font-script text-lg text-center mt-1.5 leading-snug text-foreground">
-                  Un passage qui s'ouvre
+                  Un passage.
                 </div>
                 <div className="flex items-center gap-1.5 mt-3">
                   <div className="h-px flex-1 bg-primary/45" />
@@ -337,7 +337,7 @@ function HomePage() {
                 </div>
                 <div className="eyebrow text-[9px] text-primary/75 text-center">Collection</div>
                 <div className="font-script text-lg text-center mt-1.5 leading-snug text-foreground">
-                  Une lumière qui apparaît
+                  Un voile qui se soulève.
                 </div>
                 <div className="flex items-center gap-1.5 mt-3">
                   <div className="h-px flex-1 bg-primary/45" />
@@ -363,7 +363,7 @@ function HomePage() {
                 </div>
                 <div className="eyebrow text-[9px] text-primary/75 text-center">Collection</div>
                 <div className="font-script text-lg text-center mt-1.5 leading-snug text-foreground">
-                  Deux histoires partagées
+                  Deux histoires.
                 </div>
                 <div className="flex items-center gap-1.5 mt-3">
                   <div className="h-px flex-1 bg-primary/45" />

@@ -188,6 +188,23 @@ function ContactPage() {
               />
             </div>
 
+            {import.meta.env.VITE_CALENDLY_URL && (
+              <div className="bg-ivory shadow-soft p-6">
+                <div className="eyebrow text-[10px] mb-2">Réservez un appel découverte</div>
+                <p className="text-sm text-foreground/80 mb-4">
+                  Échangeons 20 minutes pour affiner votre vision et découvrir nos formules.
+                </p>
+                <a
+                  href={import.meta.env.VITE_CALENDLY_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 bg-primary text-ivory text-[11px] tracking-[0.18em] uppercase px-5 py-3 hover:bg-primary/90 transition-colors"
+                >
+                  Choisir un créneau
+                </a>
+              </div>
+            )}
+
             <div className="bg-ivory shadow-soft p-6">
               <div className="eyebrow text-[10px] mb-2">Wedding planners</div>
               <p className="text-sm text-foreground/80">
