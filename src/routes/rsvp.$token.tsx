@@ -50,10 +50,18 @@ function RsvpPage() {
         scalar: 1.1,
       });
       setTimeout(() => {
-        if (!cancelled) confetti({ particleCount: 60, spread: 55, origin: { y: 0.6 }, colors: ["#D8AE67", "#F7EFE3"] });
+        if (!cancelled)
+          confetti({
+            particleCount: 60,
+            spread: 55,
+            origin: { y: 0.6 },
+            colors: ["#D8AE67", "#F7EFE3"],
+          });
       }, 400);
     });
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [done, status]);
 
   async function handleSubmit(e: React.FormEvent) {

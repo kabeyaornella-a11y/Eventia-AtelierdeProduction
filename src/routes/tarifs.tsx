@@ -37,7 +37,13 @@ function TarifsPage() {
 
         {/* Trust pills */}
         <div className="flex flex-wrap justify-center gap-3 mt-6">
-          {["Paiement unique", "Sans abonnement", "3 ou 4× sans frais", "Modifications à vie", "Envoi illimité"].map((t) => (
+          {[
+            "Paiement unique",
+            "Sans abonnement",
+            "3 ou 4× sans frais",
+            "Modifications à vie",
+            "Envoi illimité",
+          ].map((t) => (
             <span
               key={t}
               className="px-4 py-1.5 bg-ivory border border-primary/20 text-[11px] tracking-[0.16em] uppercase text-foreground/70"
@@ -148,9 +154,7 @@ function TarifsPage() {
                   Recommandée
                 </div>
               )}
-              <div
-                className={`eyebrow text-[10px] ${o.recommended ? "!text-primary-soft" : ""}`}
-              >
+              <div className={`eyebrow text-[10px] ${o.recommended ? "!text-primary-soft" : ""}`}>
                 Expérience
               </div>
               <div className="font-display text-3xl mt-2">{o.name}</div>
@@ -227,9 +231,7 @@ function TarifsPage() {
             <div
               key={m.id}
               className={`flex items-center justify-between p-5 border ${
-                m.included
-                  ? "bg-ivory/60 border-primary/20"
-                  : "bg-background border-border"
+                m.included ? "bg-ivory/60 border-primary/20" : "bg-background border-border"
               }`}
             >
               <div className="flex items-center gap-3">
@@ -262,14 +264,18 @@ function TarifsPage() {
           <table className="w-full text-sm border-collapse">
             <thead>
               <tr className="border-b border-border">
-                <th className="text-left py-4 pr-8 font-normal text-muted-foreground w-1/2">Fonctionnalité</th>
+                <th className="text-left py-4 pr-8 font-normal text-muted-foreground w-1/2">
+                  Fonctionnalité
+                </th>
                 {offers.map((o) => (
                   <th
                     key={o.slug}
                     className={`py-4 px-4 text-center font-normal ${o.recommended ? "text-primary" : "text-foreground/80"}`}
                   >
                     <div className="font-display text-base">{o.name}</div>
-                    <div className={`text-xs mt-0.5 ${o.recommended ? "text-primary" : "text-muted-foreground"}`}>
+                    <div
+                      className={`text-xs mt-0.5 ${o.recommended ? "text-primary" : "text-muted-foreground"}`}
+                    >
                       {o.price} €
                     </div>
                   </th>
@@ -294,7 +300,10 @@ function TarifsPage() {
                 { label: "Support prioritaire dédié", values: [false, false, true] },
                 { label: "Coffre-fort souvenirs à vie", values: [false, false, true] },
               ].map((row) => (
-                <tr key={row.label} className="border-b border-border/50 hover:bg-ivory/40 transition-colors">
+                <tr
+                  key={row.label}
+                  className="border-b border-border/50 hover:bg-ivory/40 transition-colors"
+                >
                   <td className="py-3.5 pr-8 text-foreground/80">{row.label}</td>
                   {row.values.map((v, i) => (
                     <td key={i} className="py-3.5 px-4 text-center">
