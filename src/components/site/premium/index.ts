@@ -1,5 +1,6 @@
 export { Marquee } from "./Marquee";
 export { CollectionCardPremium } from "./CollectionCardPremium";
+export { CollectionCarousel3D } from "./CollectionCarousel3D";
 export { SaveTheDateCardPremium } from "./SaveTheDateCardPremium";
 export { SignatureDuMois } from "./SignatureDuMois";
 export { ThresholdShowcase } from "./ThresholdShowcase";

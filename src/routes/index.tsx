@@ -14,7 +14,7 @@ import { loadDraft } from "@/lib/configurateur-store";
 import { findModelByName } from "@/lib/cloudinary-models";
 import {
   Marquee,
-  CollectionCardPremium,
+  CollectionCarousel3D,
   SaveTheDateCardPremium,
   SignatureDuMois,
   ExperienceLightbox,
@@ -71,21 +71,6 @@ function HomePage() {
   const [lightbox, setLightbox] = useState<LightboxExperience | null>(null);
   const heroRef = useRef<HTMLDivElement>(null);
   const shimmerRef = useRef<HTMLDivElement>(null);
-  const carouselRef = useRef<HTMLDivElement>(null);
-  const [activeCard, setActiveCard] = useState(0);
-
-  const handleCarouselScroll = () => {
-    const el = carouselRef.current;
-    if (!el) return;
-    setActiveCard(Math.round((el.scrollLeft / el.scrollWidth) * collections.length));
-  };
-
-  const scrollToCard = (i: number) => {
-    const el = carouselRef.current;
-    if (!el) return;
-    el.scrollTo({ left: (el.scrollWidth / collections.length) * i, behavior: "smooth" });
-  };
-
   useEffect(() => {
     const id = setInterval(() => setWordIdx((i) => (i + 1) % ROTATING_WORDS.length), 2600);
     const d = loadDraft();
@@ -401,44 +386,7 @@ function HomePage() {
           title="Quatre univers pour révéler votre histoire."
           intro="Chaque univers est une direction artistique complète. atmosphère, lumière, typographies, musique."
         />
-        {/* Carrousel swipeable — 1 carte mobile, 2 tablette, 4 desktop */}
-        <div className="relative -mx-6 px-6 lg:mx-0 lg:px-0">
-          <div
-            ref={carouselRef}
-            className="flex gap-5 overflow-x-auto scroll-smooth snap-x snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-            onScroll={handleCarouselScroll}
-          >
-            {collections.map((c) => (
-              <div
-                key={c.slug}
-                className="snap-start shrink-0 w-[82vw] sm:w-[calc(50%-10px)] lg:w-[calc(25%-15px)]"
-              >
-                <CollectionCardPremium
-                  name={c.name}
-                  tagline={c.tagline}
-                  description={c.description}
-                  image={c.image}
-                  href={`/${c.slug}`}
-                />
-              </div>
-            ))}
-          </div>
-
-          {/* Dots de navigation — masqués sur desktop (4 cartes visibles) */}
-          <div className="flex justify-center gap-3 mt-6 lg:hidden">
-            {collections.map((_, i) => (
-              <button
-                key={i}
-                type="button"
-                aria-label={`Collection ${i + 1}`}
-                onClick={() => scrollToCard(i)}
-                className={`h-1.5 rounded-full transition-all duration-300 ${
-                  activeCard === i ? "w-6 bg-primary" : "w-1.5 bg-primary/30"
-                }`}
-              />
-            ))}
-          </div>
-        </div>
+        <CollectionCarousel3D collections={collections} />
       </Section>
 
       {/* SIGNATURE EVENTIA. visuel encadré, vraie animation Cloudinary */}
