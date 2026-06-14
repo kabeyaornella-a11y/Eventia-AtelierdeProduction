@@ -2,9 +2,26 @@
 // Variables d'environnement publiques : .env → VITE_SUPABASE_URL / VITE_SUPABASE_PUBLISHABLE_KEY
 import { createClient } from "@supabase/supabase-js";
 
-const SUPABASE_URL = (import.meta.env.VITE_SUPABASE_URL as string | undefined)?.replace(/\/$/, "");
-const SUPABASE_PUBLISHABLE_KEY = (import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ??
-  import.meta.env.VITE_SUPABASE_ANON_KEY) as string | undefined;
+// Clé anon publique (safe à exposer côté client — c'est sa fonction)
+// Utilisée en fallback si la variable d'env est absente ou dans un format non-JWT
+const _ANON_JWT =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im54cWJpaG90cmNmYmtueWR4cG55Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA5NTM2OTQsImV4cCI6MjA5NjUyOTY5NH0.9wE0rQNPGbzuK56dTtAqspvty-vL7puzzJJvXHv0VRA";
+
+const _PROJECT_URL = "https://nxqbihotrcfbknydxpny.supabase.co";
+
+const SUPABASE_URL = (
+  (import.meta.env.VITE_SUPABASE_URL as string | undefined)?.replace(/\/$/, "") ??
+  _PROJECT_URL
+);
+
+const _rawKey = (
+  import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ??
+  import.meta.env.VITE_SUPABASE_ANON_KEY
+) as string | undefined;
+
+// N'utilise la variable d'env que si c'est un JWT valide (commence par "eyJ")
+const SUPABASE_PUBLISHABLE_KEY: string =
+  _rawKey?.startsWith("eyJ") ? _rawKey : _ANON_JWT;
 
 // Important : ce module est importé par AuthProvider dans __root.tsx, donc évalué
 // pour CHAQUE page (y compris en SSR). Si les variables d'env ne sont pas définies
