@@ -353,7 +353,7 @@
 }
 .c3-photo {
   width: 100%;
-  height: clamp(200px, 38vw, 260px);
+  aspect-ratio: 4 / 3;
   object-fit: cover;
   display: block;
   background: var(--champagne);
@@ -413,9 +413,6 @@
   }
   .c3-item[data-state="next"] {
     transform: translate(6%, -50%) scale(0.56) translateZ(-120px) rotateY(-14deg);
-  }
-  .c3-photo {
-    height: 190px;
   }
 }
 @media (prefers-reduced-motion: reduce) {

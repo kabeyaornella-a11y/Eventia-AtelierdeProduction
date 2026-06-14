@@ -430,6 +430,7 @@ function HomePage() {
                   tagline={f.tagline}
                   price={f.price}
                   image={f.image}
+                  video={f.video}
                   href={`/save-the-date/${f.slug}`}
                   badge={
                     f.slug === "personnalise"

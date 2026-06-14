@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import type { Experience, Collection } from "@/lib/eventia-data";
 import { findModelByName } from "@/lib/cloudinary-models";
@@ -7,11 +8,6 @@ type Item = {
   universName?: string;
 };
 
-/**
- * Galerie éditoriale magazine.
- * Grille asymétrique avec ratios variables (3:4, 4:5, 16:9, 1:1),
- * sections intercalaires (citations, chiffres, intentions) tous les 6 items.
- */
 const RATIOS = [
   "aspect-[4/5]",
   "aspect-[3/4]",
@@ -46,6 +42,40 @@ const INTERLUDES = [
     note: "Une direction artistique qui se voit dans chaque image.",
   },
 ];
+
+function LazyVideo({ src, className }: { src: string; className: string }) {
+  const ref = useRef<HTMLVideoElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          obs.disconnect();
+        }
+      },
+      { rootMargin: "200px" },
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  return (
+    <video
+      ref={ref}
+      src={visible ? src : undefined}
+      muted
+      loop
+      playsInline
+      autoPlay={visible}
+      preload="none"
+      className={className}
+    />
+  );
+}
 
 export function MagazineGallery({
   items,
@@ -93,6 +123,7 @@ export function MagazineGallery({
         const ratio = RATIOS[expIdx % RATIOS.length];
         const span = SPANS[expIdx % SPANS.length];
         const { exp, universName } = tile.data;
+        const model = findModelByName(exp.name);
         return (
           <Link
             key={exp.slug}
@@ -101,14 +132,9 @@ export function MagazineGallery({
             className={`group block ${span}`}
           >
             <div className={`relative ${ratio} overflow-hidden bg-cacao/5`}>
-              {findModelByName(exp.name) ? (
-                <video
-                  src={findModelByName(exp.name)!.video}
-                  muted
-                  loop
-                  playsInline
-                  autoPlay
-                  preload="metadata"
+              {model ? (
+                <LazyVideo
+                  src={model.video}
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.04]"
                 />
               ) : (

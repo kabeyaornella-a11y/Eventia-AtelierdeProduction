@@ -1,10 +1,12 @@
 import { CalendarDays, MapPin, Palette } from "lucide-react";
+import { cloudinaryPoster } from "@/lib/cloudinary-models";
 
 type Props = {
   name: string;
   tagline?: string;
   price: number;
   image: string;
+  video?: string;
   href?: string;
   badge?: string;
   date?: string;
@@ -18,6 +20,7 @@ export function SaveTheDateCardPremium({
   tagline,
   price,
   image,
+  video,
   href = "#",
   badge,
   date,
@@ -60,19 +63,32 @@ export function SaveTheDateCardPremium({
         </div>
       )}
 
-      {/* Image portrait */}
+      {/* Visuel — vidéo Cloudinary ou image de secours */}
       <div className="relative aspect-[3/4] overflow-hidden shrink-0">
-        <img
-          src={image}
-          alt={name}
-          loading="lazy"
-          width={600}
-          height={800}
-          className="w-full h-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.06]"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-cacao/60 via-cacao/10 to-transparent" />
+        {video ? (
+          <video
+            src={video}
+            poster={cloudinaryPoster(video)}
+            muted
+            loop
+            playsInline
+            autoPlay
+            preload="metadata"
+            className="w-full h-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.04]"
+          />
+        ) : (
+          <img
+            src={image}
+            alt={name}
+            loading="lazy"
+            width={600}
+            height={800}
+            className="w-full h-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.06]"
+          />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-cacao/55 via-cacao/10 to-transparent" />
 
-        {/* Watermark doré en bas de l'image */}
+        {/* Nom en script sur le visuel */}
         <div className="absolute bottom-0 inset-x-0 p-4 text-center">
           <div className="font-script text-2xl text-ivory/90 leading-tight drop-shadow">{name}</div>
         </div>

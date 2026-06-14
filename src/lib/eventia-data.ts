@@ -409,6 +409,7 @@ export type SaveTheDateFormat = {
   price: number;
   delay: string;
   image: string;
+  video?: string;
 };
 
 export const saveTheDateFormats: SaveTheDateFormat[] = [
@@ -428,6 +429,8 @@ export const saveTheDateFormats: SaveTheDateFormat[] = [
     price: 29,
     delay: "Disponible immédiatement",
     image: stdVideoImg,
+    video:
+      "https://res.cloudinary.com/didid8vcu/video/upload/q_auto/f_auto/v1776265434/Petales-savethedate_jctfsd.mp4",
   },
   {
     slug: "personnalise",
@@ -445,6 +448,8 @@ export const saveTheDateFormats: SaveTheDateFormat[] = [
     price: 59,
     delay: "Livraison sous 7 jours",
     image: stdCineImg,
+    video:
+      "https://res.cloudinary.com/didid8vcu/video/upload/q_auto/f_auto/v1776265257/L_%C3%A9crin-savethedate_kznzhv.mp4",
   },
   {
     slug: "sur-mesure",
@@ -462,6 +467,8 @@ export const saveTheDateFormats: SaveTheDateFormat[] = [
     price: 89,
     delay: "Sur devis",
     image: stdSurImg,
+    video:
+      "https://res.cloudinary.com/didid8vcu/video/upload/q_auto/f_auto/v1776265437/Alliances-savethedate_wm2wzt.mp4",
   },
 ];
 
