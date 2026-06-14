@@ -24,7 +24,10 @@ function ModelVideoCard({ model }: { model: CloudinaryModel }) {
   }, []);
 
   return (
-    <figure ref={ref} className="group relative overflow-hidden bg-cacao/5 border border-primary/10 aspect-[3/4]">
+    <figure
+      ref={ref}
+      className="group relative overflow-hidden bg-cacao/5 border border-primary/10 aspect-[3/4]"
+    >
       {!loaded && <div className="absolute inset-0 animate-pulse bg-cacao/10" />}
       {inView && (
         <video
@@ -48,7 +51,15 @@ function ModelVideoCard({ model }: { model: CloudinaryModel }) {
   );
 }
 
-export function ModelGrid({ models, title, eyebrow }: { models: CloudinaryModel[]; title: string; eyebrow?: string }) {
+export function ModelGrid({
+  models,
+  title,
+  eyebrow,
+}: {
+  models: CloudinaryModel[];
+  title: string;
+  eyebrow?: string;
+}) {
   return (
     <section className="mx-auto max-w-7xl px-6 lg:px-10 py-20">
       <div className="text-center mb-12">
@@ -56,7 +67,9 @@ export function ModelGrid({ models, title, eyebrow }: { models: CloudinaryModel[
         <h2 className="font-display text-4xl md:text-5xl mt-2">{title}</h2>
       </div>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {models.map((m) => <ModelVideoCard key={m.slug} model={m} />)}
+        {models.map((m) => (
+          <ModelVideoCard key={m.slug} model={m} />
+        ))}
       </div>
     </section>
   );

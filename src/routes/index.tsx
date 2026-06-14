@@ -1,12 +1,33 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import {
-  CreditCard, Infinity as InfinityIcon, BellRing, RefreshCw, Wallet, ShieldCheck,
-  Eye, Heart, Sparkles, Gift, ArrowRight,
+  CreditCard,
+  Infinity as InfinityIcon,
+  BellRing,
+  RefreshCw,
+  Wallet,
+  ShieldCheck,
+  Eye,
+  Heart,
+  Sparkles,
+  Gift,
+  ArrowRight,
 } from "lucide-react";
-import { SiteLayout, Section, SectionHead, GoldButton, OutlineButton } from "@/components/site/SiteLayout";
+import {
+  SiteLayout,
+  Section,
+  SectionHead,
+  GoldButton,
+  OutlineButton,
+} from "@/components/site/SiteLayout";
 import heroImg from "@/assets/hero-couple-voiles-v2.jpg";
-import { collections, experiences, saveTheDateFormats, offers, reassurance } from "@/lib/eventia-data";
+import {
+  collections,
+  experiences,
+  saveTheDateFormats,
+  offers,
+  reassurance,
+} from "@/lib/eventia-data";
 import { loadDraft } from "@/lib/configurateur-store";
 import { findModelByName } from "@/lib/cloudinary-models";
 import {
@@ -27,9 +48,17 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "Eventia Signature — Maison d'expériences digitales" },
-      { name: "description", content: "Des expériences digitales élégantes pour annoncer, accueillir et marquer les esprits. Mariages, naissances, événements heureux." },
+      {
+        name: "description",
+        content:
+          "Des expériences digitales élégantes pour annoncer, accueillir et marquer les esprits. Mariages, naissances, événements heureux.",
+      },
       { property: "og:title", content: "Eventia Signature — Maison d'expériences digitales" },
-      { property: "og:description", content: "Des expériences digitales élégantes pour annoncer, accueillir et marquer les esprits." },
+      {
+        property: "og:description",
+        content:
+          "Des expériences digitales élégantes pour annoncer, accueillir et marquer les esprits.",
+      },
       { property: "og:type", content: "website" },
       { property: "og:image", content: heroImg },
     ],
@@ -47,7 +76,11 @@ const ROTATING_WORDS = ["se révèle", "s'ouvre", "se partage", "se vit", "se tr
 const STD_MOCK: Record<string, { date: string; lieu: string; theme: string }> = {
   diy: { date: "21 juin 2026", lieu: "Domaine de Chantilly", theme: "Pétales de Roses" },
   personnalise: { date: "12 septembre 2026", lieu: "Château de Vaux", theme: "L'Écrin" },
-  "sur-mesure": { date: "Date sur devis", lieu: "Lieu sur mesure", theme: "Direction artistique dédiée" },
+  "sur-mesure": {
+    date: "Date sur devis",
+    lieu: "Lieu sur mesure",
+    theme: "Direction artistique dédiée",
+  },
 };
 
 function HomePage() {
@@ -145,11 +178,17 @@ function HomePage() {
 
         <div className="relative mx-auto max-w-7xl px-6 lg:px-10 pt-16 pb-20 lg:pt-12 lg:pb-24 min-h-[88vh] lg:min-h-0 grid lg:grid-cols-[1.05fr_1fr] gap-10 items-center">
           <div className="space-y-7 animate-fade-up text-ivory lg:text-foreground">
-            <div className="eyebrow !text-primary-soft lg:!text-primary">Haute couture digitale</div>
+            <div className="eyebrow !text-primary-soft lg:!text-primary">
+              Haute couture digitale
+            </div>
             <h1 className="font-display text-5xl md:text-6xl lg:text-7xl leading-[1.05] tracking-tight">
-              Une annonce qui<br />
+              Une annonce qui
+              <br />
               <span className="relative inline-block min-h-[1.1em]">
-                <span key={wordIdx} className="italic text-primary-soft lg:text-primary animate-word-in inline-block">
+                <span
+                  key={wordIdx}
+                  className="italic text-primary-soft lg:text-primary animate-word-in inline-block"
+                >
                   {ROTATING_WORDS[wordIdx]}
                 </span>
               </span>
@@ -158,23 +197,33 @@ function HomePage() {
               Des expériences digitales élégantes pour annoncer, accueillir et marquer les esprits.
             </p>
             <div className="flex flex-wrap gap-4 pt-2">
-              <Link to="/experiences"><GoldButton>Découvrir les univers</GoldButton></Link>
+              <Link to="/experiences">
+                <GoldButton>Découvrir les univers</GoldButton>
+              </Link>
               <Link to="/configurateur">
                 <OutlineButton className="!border-ivory/60 !text-ivory hover:!border-primary-soft hover:!text-primary-soft lg:!border-foreground/40 lg:!text-foreground lg:hover:!border-primary lg:hover:!text-primary">
                   Composer la mienne
                 </OutlineButton>
               </Link>
-              <Link to="/comparer" className="text-xs tracking-[0.22em] uppercase self-center text-ivory/90 lg:text-foreground/70 hover:text-primary">
+              <Link
+                to="/comparer"
+                className="text-xs tracking-[0.22em] uppercase self-center text-ivory/90 lg:text-foreground/70 hover:text-primary"
+              >
                 Comparer
               </Link>
             </div>
 
             {draftStep !== null && (
-              <Link to="/configurateur" className="mt-4 inline-flex items-center gap-3 bg-ivory/95 lg:bg-ivory border border-primary/30 px-5 py-3 shadow-soft group">
+              <Link
+                to="/configurateur"
+                className="mt-4 inline-flex items-center gap-3 bg-ivory/95 lg:bg-ivory border border-primary/30 px-5 py-3 shadow-soft group"
+              >
                 <Sparkles className="size-4 text-primary" />
                 <div className="text-left">
                   <div className="eyebrow text-primary">Reprendre ma composition</div>
-                  <div className="text-xs text-muted-foreground">Étape {draftStep + 1} sur 8. sauvegardée sur cet appareil</div>
+                  <div className="text-xs text-muted-foreground">
+                    Étape {draftStep + 1} sur 8. sauvegardée sur cet appareil
+                  </div>
                 </div>
                 <ArrowRight className="size-4 text-primary group-hover:translate-x-1 transition-transform" />
               </Link>
@@ -184,14 +233,28 @@ function HomePage() {
             <div className="lg:hidden -mx-6 pt-2">
               <div className="flex gap-3 overflow-x-auto px-6 pb-2 snap-x snap-mandatory">
                 {[
-                  { to: "/save-the-date" as const, eyebrow: "Save The Date", text: "Un teaser sur mesure" },
+                  {
+                    to: "/save-the-date" as const,
+                    eyebrow: "Save The Date",
+                    text: "Un teaser sur mesure",
+                  },
                   { to: "/portes" as const, eyebrow: "Les Seuils", text: "Un passage qui s'ouvre" },
-                  { to: "/voiles" as const, eyebrow: "Les Voiles", text: "Une lumière qui apparaît" },
+                  {
+                    to: "/voiles" as const,
+                    eyebrow: "Les Voiles",
+                    text: "Une lumière qui apparaît",
+                  },
                   { to: "/union" as const, eyebrow: "L'Union", text: "Deux histoires partagées" },
                 ].map((c) => (
-                  <Link key={c.eyebrow} to={c.to} className="snap-center shrink-0 bg-ivory/95 shadow-soft px-4 py-3 w-44">
+                  <Link
+                    key={c.eyebrow}
+                    to={c.to}
+                    className="snap-center shrink-0 bg-ivory/95 shadow-soft px-4 py-3 w-44"
+                  >
                     <div className="eyebrow text-[10px]">{c.eyebrow}</div>
-                    <div className="font-serif-soft italic text-sm mt-1 text-foreground">{c.text}</div>
+                    <div className="font-serif-soft italic text-sm mt-1 text-foreground">
+                      {c.text}
+                    </div>
                   </Link>
                 ))}
               </div>
@@ -213,19 +276,31 @@ function HomePage() {
 
               <div className="absolute inset-0 bg-gradient-to-t from-cacao/30 to-transparent" />
             </div>
-            <div className="absolute -left-10 top-10 bg-ivory shadow-soft px-4 py-3 w-44 animate-float-slow" style={{ ['--rot' as never]: '-4deg' }}>
+            <div
+              className="absolute -left-10 top-10 bg-ivory shadow-soft px-4 py-3 w-44 animate-float-slow"
+              style={{ ["--rot" as never]: "-4deg" }}
+            >
               <div className="eyebrow text-[10px]">Save The Date</div>
               <div className="font-serif-soft italic text-sm mt-1">Un teaser sur mesure</div>
             </div>
-            <div className="absolute -right-6 top-32 bg-ivory shadow-soft px-4 py-3 w-44 animate-float-slow" style={{ ['--rot' as never]: '3deg', animationDelay: '-2s' }}>
+            <div
+              className="absolute -right-6 top-32 bg-ivory shadow-soft px-4 py-3 w-44 animate-float-slow"
+              style={{ ["--rot" as never]: "3deg", animationDelay: "-2s" }}
+            >
               <div className="eyebrow text-[10px]">Les Seuils</div>
               <div className="font-serif-soft italic text-sm mt-1">Un passage qui s'ouvre</div>
             </div>
-            <div className="absolute -left-4 bottom-20 bg-ivory shadow-soft px-4 py-3 w-44 animate-float-slow" style={{ ['--rot' as never]: '2deg', animationDelay: '-4s' }}>
+            <div
+              className="absolute -left-4 bottom-20 bg-ivory shadow-soft px-4 py-3 w-44 animate-float-slow"
+              style={{ ["--rot" as never]: "2deg", animationDelay: "-4s" }}
+            >
               <div className="eyebrow text-[10px]">Les Voiles</div>
               <div className="font-serif-soft italic text-sm mt-1">Une lumière qui apparaît</div>
             </div>
-            <div className="absolute -right-10 bottom-6 bg-ivory shadow-soft px-4 py-3 w-44 animate-float-slow" style={{ ['--rot' as never]: '-3deg', animationDelay: '-1s' }}>
+            <div
+              className="absolute -right-10 bottom-6 bg-ivory shadow-soft px-4 py-3 w-44 animate-float-slow"
+              style={{ ["--rot" as never]: "-3deg", animationDelay: "-1s" }}
+            >
               <div className="eyebrow text-[10px]">L'Union</div>
               <div className="font-serif-soft italic text-sm mt-1">Deux histoires partagées</div>
             </div>
@@ -317,7 +392,13 @@ function HomePage() {
                   price={f.price}
                   image={f.image}
                   href={`/save-the-date/${f.slug}`}
-                  badge={f.slug === "personnalise" ? "La plus choisie" : f.slug === "sur-mesure" ? "Signature" : undefined}
+                  badge={
+                    f.slug === "personnalise"
+                      ? "La plus choisie"
+                      : f.slug === "sur-mesure"
+                        ? "Signature"
+                        : undefined
+                  }
                   date={mock?.date}
                   lieu={mock?.lieu}
                   theme={mock?.theme}
@@ -326,11 +407,12 @@ function HomePage() {
             })}
           </div>
           <div className="text-center mt-12">
-            <Link to="/save-the-date"><OutlineButton>Découvrir l'édition</OutlineButton></Link>
+            <Link to="/save-the-date">
+              <OutlineButton>Découvrir l'édition</OutlineButton>
+            </Link>
           </div>
         </Section>
       </div>
-
 
       {/* EXPÉRIENCES */}
       <Section>
@@ -356,10 +438,17 @@ function HomePage() {
               className="group block text-left"
             >
               <div className="relative aspect-[4/5] overflow-hidden shadow-soft">
-                <img src={e.image} alt={e.name} loading="lazy" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                <img
+                  src={e.image}
+                  alt={e.name}
+                  loading="lazy"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
                 <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-cacao/85 via-cacao/30 to-transparent text-ivory">
                   <div className="font-display text-lg">{e.name}</div>
-                  <div className="text-[11px] eyebrow !text-primary-soft mt-1">{collections.find((c) => c.slug === e.univers)?.name}</div>
+                  <div className="text-[11px] eyebrow !text-primary-soft mt-1">
+                    {collections.find((c) => c.slug === e.univers)?.name}
+                  </div>
                   <div className="mt-3 inline-flex items-center gap-1.5 text-[10px] tracking-[0.22em] uppercase text-primary-soft opacity-0 group-hover:opacity-100 transition-opacity">
                     <Eye className="size-3" /> Voir l'expérience
                   </div>
@@ -369,20 +458,37 @@ function HomePage() {
           ))}
         </div>
         <div className="text-center mt-12">
-          <Link to="/experiences"><GoldButton>Toutes les expériences</GoldButton></Link>
+          <Link to="/experiences">
+            <GoldButton>Toutes les expériences</GoldButton>
+          </Link>
         </div>
       </Section>
 
       {/* PILIERS */}
       <div className="bg-ivory/60 border-y border-border/60">
         <Section className="!py-24">
-          <SectionHead eyebrow="Notre signature" title="Pourquoi Eventia Signature est différente." />
+          <SectionHead
+            eyebrow="Notre signature"
+            title="Pourquoi Eventia Signature est différente."
+          />
           <div className="grid md:grid-cols-4 gap-10">
             {[
               { num: "I", title: "Émotion", text: "Chaque détail raconte une émotion unique." },
-              { num: "II", title: "Design", text: "Une direction artistique élégante et raffinée." },
-              { num: "III", title: "Fluidité", text: "Une plateforme intuitive pour vos invités, sans stress." },
-              { num: "IV", title: "Accompagnement", text: "Notre équipe vous accompagne à chaque étape." },
+              {
+                num: "II",
+                title: "Design",
+                text: "Une direction artistique élégante et raffinée.",
+              },
+              {
+                num: "III",
+                title: "Fluidité",
+                text: "Une plateforme intuitive pour vos invités, sans stress.",
+              },
+              {
+                num: "IV",
+                title: "Accompagnement",
+                text: "Notre équipe vous accompagne à chaque étape.",
+              },
             ].map((p) => (
               <div key={p.num} className="space-y-3">
                 <div className="font-display text-5xl text-primary leading-none">{p.num}</div>
@@ -396,7 +502,10 @@ function HomePage() {
 
       {/* OFFRES */}
       <Section>
-        <SectionHead eyebrow="Nos offres" title="Choisissez le niveau d'expérience qui vous ressemble." />
+        <SectionHead
+          eyebrow="Nos offres"
+          title="Choisissez le niveau d'expérience qui vous ressemble."
+        />
         <div className="grid md:grid-cols-3 gap-6">
           {offers.map((o) => (
             <div
@@ -409,7 +518,9 @@ function HomePage() {
                 </div>
               )}
               <div className="font-display text-2xl">{o.name}</div>
-              <div className="font-serif-soft italic text-sm text-muted-foreground mt-1">{o.tagline}</div>
+              <div className="font-serif-soft italic text-sm text-muted-foreground mt-1">
+                {o.tagline}
+              </div>
               <div className="mt-6 font-display text-5xl text-primary">{o.price} €</div>
               <ul className="mt-7 space-y-3 text-sm text-foreground/85">
                 {o.features.map((f) => (
@@ -430,7 +541,11 @@ function HomePage() {
       {/* MOMENTS */}
       <div className="bg-ivory/60 border-t border-border/60">
         <Section className="!py-20">
-          <SectionHead eyebrow="Tous les moments" title="Pour tous les moments heureux de la vie." center />
+          <SectionHead
+            eyebrow="Tous les moments"
+            title="Pour tous les moments heureux de la vie."
+            center
+          />
           <div className="grid grid-cols-3 md:grid-cols-8 gap-y-8 gap-x-4 text-center">
             {[
               { icon: Heart, label: "Mariage" },

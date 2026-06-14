@@ -13,7 +13,10 @@ export const Route = createFileRoute("/_authenticated/mes-commandes")({
   head: () => ({
     meta: [
       { title: "Mes commandes — Eventia Signature" },
-      { name: "description", content: "Retrouvez vos compositions et commandes Eventia Signature." },
+      {
+        name: "description",
+        content: "Retrouvez vos compositions et commandes Eventia Signature.",
+      },
       { name: "robots", content: "noindex" },
     ],
   }),
@@ -56,7 +59,9 @@ function MesCommandes() {
           <div>
             <div className="eyebrow text-primary">Espace client</div>
             <h1 className="font-display text-4xl md:text-5xl mt-2">Mes commandes</h1>
-            {user?.email && <p className="font-serif-soft italic text-muted-foreground mt-2">{user.email}</p>}
+            {user?.email && (
+              <p className="font-serif-soft italic text-muted-foreground mt-2">{user.email}</p>
+            )}
           </div>
           <div className="flex items-center gap-5">
             <Link
@@ -67,7 +72,10 @@ function MesCommandes() {
               <Heart className="size-3.5" /> Mes invitations
             </Link>
             <button
-              onClick={async () => { await signOut(); navigate({ to: "/" }); }}
+              onClick={async () => {
+                await signOut();
+                navigate({ to: "/" });
+              }}
               className="inline-flex items-center gap-2 text-xs tracking-[0.22em] uppercase text-muted-foreground hover:text-primary"
             >
               <LogOut className="size-3.5" /> Se déconnecter
@@ -85,18 +93,27 @@ function MesCommandes() {
               Composez votre première expérience Eventia en 8 étapes.
             </p>
             <Link to="/configurateur" className="inline-block mt-6">
-              <GoldButton>Commencer une composition <ArrowRight className="size-4 ml-2" /></GoldButton>
+              <GoldButton>
+                Commencer une composition <ArrowRight className="size-4 ml-2" />
+              </GoldButton>
             </Link>
           </div>
         ) : (
           <ul className="divide-y divide-border/60 bg-ivory border border-primary/15 shadow-soft">
             {orders.map((o) => (
-              <li key={o.ref} className="p-6 md:p-8 flex items-center justify-between flex-wrap gap-6">
+              <li
+                key={o.ref}
+                className="p-6 md:p-8 flex items-center justify-between flex-wrap gap-6"
+              >
                 <div>
                   <div className="eyebrow text-primary text-[10px]">{o.ref}</div>
                   <div className="font-display text-2xl mt-1 capitalize">{o.formula}</div>
                   <div className="text-xs text-muted-foreground mt-1">
-                    {new Date(o.created_at).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })}
+                    {new Date(o.created_at).toLocaleDateString("fr-FR", {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    })}
                     {" · "}
                     <span className="capitalize">{o.status}</span>
                   </div>
@@ -108,12 +125,16 @@ function MesCommandes() {
                   </Link>
                   {o.status === "paid" && (
                     <Link to="/mes-invitations" search={{ new: true, order: (o as any).id }}>
-                      <GoldButton><Heart className="size-4 mr-2" /> Créer l'invitation</GoldButton>
+                      <GoldButton>
+                        <Heart className="size-4 mr-2" /> Créer l'invitation
+                      </GoldButton>
                     </Link>
                   )}
                   {o.gumroad_url && o.status !== "paid" && (
                     <a href={o.gumroad_url} target="_blank" rel="noopener noreferrer">
-                      <GoldButton>Payer <ExternalLink className="size-4 ml-2" /></GoldButton>
+                      <GoldButton>
+                        Payer <ExternalLink className="size-4 ml-2" />
+                      </GoldButton>
                     </a>
                   )}
                 </div>

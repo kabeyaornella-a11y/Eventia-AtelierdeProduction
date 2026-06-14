@@ -6,34 +6,65 @@ import { createFileRoute } from "@tanstack/react-router";
  * Passe les `email_logs` de "queued" -> "sent" / "failed" via Resend (connector gateway).
  */
 
-const TEMPLATES: Record<string, { subject: (p: Record<string, unknown>) => string; html: (p: Record<string, unknown>) => string }> = {
+const TEMPLATES: Record<
+  string,
+  { subject: (p: Record<string, unknown>) => string; html: (p: Record<string, unknown>) => string }
+> = {
   order_confirmation: {
     subject: (p) => `Eventia · votre commande ${(p.ref as string) ?? ""} est bien reçue`,
-    html: (p) => baseHtml("Votre commande est confirmée", `Merci ${escape((p.name as string) ?? "")}, nous avons bien reçu votre commande <strong>${escape((p.ref as string) ?? "")}</strong>. Vous recevrez le paiement et le suivi par email.`),
+    html: (p) =>
+      baseHtml(
+        "Votre commande est confirmée",
+        `Merci ${escape((p.name as string) ?? "")}, nous avons bien reçu votre commande <strong>${escape((p.ref as string) ?? "")}</strong>. Vous recevrez le paiement et le suivi par email.`,
+      ),
   },
   payment_received: {
     subject: () => "Eventia · paiement reçu, démarrage de la production",
-    html: (p) => baseHtml("Paiement bien reçu", `Votre paiement est confirmé. Notre Studio démarre la production de votre invitation <strong>${escape((p.ref as string) ?? "")}</strong>.`),
+    html: (p) =>
+      baseHtml(
+        "Paiement bien reçu",
+        `Votre paiement est confirmé. Notre Studio démarre la production de votre invitation <strong>${escape((p.ref as string) ?? "")}</strong>.`,
+      ),
   },
   validation: {
     subject: () => "Eventia · votre maquette est prête à valider",
-    html: (p) => baseHtml("Maquette prête", `Votre invitation est prête. <a href="${escape((p.url as string) ?? "#")}">Voir et valider la maquette</a>.`),
+    html: (p) =>
+      baseHtml(
+        "Maquette prête",
+        `Votre invitation est prête. <a href="${escape((p.url as string) ?? "#")}">Voir et valider la maquette</a>.`,
+      ),
   },
   delivery: {
     subject: () => "Eventia · votre coffret est en route",
-    html: (p) => baseHtml("Expédition", `Votre coffret a été expédié. Numéro de suivi : <strong>${escape((p.tracking as string) ?? "à venir")}</strong>.`),
+    html: (p) =>
+      baseHtml(
+        "Expédition",
+        `Votre coffret a été expédié. Numéro de suivi : <strong>${escape((p.tracking as string) ?? "à venir")}</strong>.`,
+      ),
   },
   activation: {
     subject: () => "Eventia · votre invitation est activée",
-    html: (p) => baseHtml("Invitation activée", `Votre invitation en ligne est active. <a href="${escape((p.url as string) ?? "#")}">L'ouvrir</a>.`),
+    html: (p) =>
+      baseHtml(
+        "Invitation activée",
+        `Votre invitation en ligne est active. <a href="${escape((p.url as string) ?? "#")}">L'ouvrir</a>.`,
+      ),
   },
   follow_up: {
     subject: () => "Eventia · un mot avant le grand jour",
-    html: (p) => baseHtml("Suivi", `${escape((p.message as string) ?? "Tout est prêt côté Studio. Une question ?")}`),
+    html: (p) =>
+      baseHtml(
+        "Suivi",
+        `${escape((p.message as string) ?? "Tout est prêt côté Studio. Une question ?")}`,
+      ),
   },
   reminder: {
     subject: () => "Eventia · merci de confirmer votre présence",
-    html: (p) => baseHtml("RSVP", `Vous êtes attendu·e au mariage de <strong>${escape((p.couple as string) ?? "")}</strong>. <a href="${escape((p.url as string) ?? "#")}">Confirmer votre présence</a>.`),
+    html: (p) =>
+      baseHtml(
+        "RSVP",
+        `Vous êtes attendu·e au mariage de <strong>${escape((p.couple as string) ?? "")}</strong>. <a href="${escape((p.url as string) ?? "#")}">Confirmer votre présence</a>.`,
+      ),
   },
   thank_you: {
     subject: () => "Eventia · merci",
@@ -41,29 +72,52 @@ const TEMPLATES: Record<string, { subject: (p: Record<string, unknown>) => strin
   },
   souvenirs: {
     subject: () => "Eventia · vos souvenirs sont prêts",
-    html: (p) => baseHtml("Souvenirs", `Vos souvenirs (photos, audios, RSVP) sont consultables : <a href="${escape((p.url as string) ?? "#")}">les ouvrir</a>.`),
+    html: (p) =>
+      baseHtml(
+        "Souvenirs",
+        `Vos souvenirs (photos, audios, RSVP) sont consultables : <a href="${escape((p.url as string) ?? "#")}">les ouvrir</a>.`,
+      ),
   },
   b2b_ack: {
-    subject: (p) => `Eventia · demande reçue pour ${escape((p.company as string) ?? "votre entreprise")}`,
-    html: (p) => baseHtml("Demande bien reçue", `Bonjour ${escape((p.contact_name as string) ?? "")}, merci pour votre intérêt. Notre équipe revient vers vous sous 24 h avec une première proposition.`),
+    subject: (p) =>
+      `Eventia · demande reçue pour ${escape((p.company as string) ?? "votre entreprise")}`,
+    html: (p) =>
+      baseHtml(
+        "Demande bien reçue",
+        `Bonjour ${escape((p.contact_name as string) ?? "")}, merci pour votre intérêt. Notre équipe revient vers vous sous 24 h avec une première proposition.`,
+      ),
   },
   wedding_j30: {
     subject: (p) => `Eventia · J-30 avant ${escape((p.couple as string) ?? "votre mariage")}`,
-    html: (p) => baseHtml("J-30. Tout se met en place.", `Plus qu'un mois avant le grand jour de <strong>${escape((p.couple as string) ?? "")}</strong>. C'est le moment d'affiner la papeterie, la signalétique et le calendrier du jour J. Notre Studio reste à vos côtés. <a href="${escape((p.url as string) ?? "#")}">Ouvrir votre espace</a>.`),
+    html: (p) =>
+      baseHtml(
+        "J-30. Tout se met en place.",
+        `Plus qu'un mois avant le grand jour de <strong>${escape((p.couple as string) ?? "")}</strong>. C'est le moment d'affiner la papeterie, la signalétique et le calendrier du jour J. Notre Studio reste à vos côtés. <a href="${escape((p.url as string) ?? "#")}">Ouvrir votre espace</a>.`,
+      ),
   },
   wedding_j7: {
     subject: (p) => `Eventia · J-7 avant ${escape((p.couple as string) ?? "votre mariage")}`,
-    html: (p) => baseHtml("J-7. Dernière ligne droite.", `Sept jours avant <strong>${escape((p.couple as string) ?? "")}</strong>. Vérifiez les derniers RSVP, la playlist et la galerie Live. Pensez à diffuser le lien Eventia Live à vos invités. <a href="${escape((p.url as string) ?? "#")}">Accéder au Live</a>.`),
+    html: (p) =>
+      baseHtml(
+        "J-7. Dernière ligne droite.",
+        `Sept jours avant <strong>${escape((p.couple as string) ?? "")}</strong>. Vérifiez les derniers RSVP, la playlist et la galerie Live. Pensez à diffuser le lien Eventia Live à vos invités. <a href="${escape((p.url as string) ?? "#")}">Accéder au Live</a>.`,
+      ),
   },
   wedding_j1: {
     subject: (p) => `Eventia · demain est votre jour`,
-    html: (p) => baseHtml("Demain.", `Demain, <strong>${escape((p.couple as string) ?? "vous")}</strong>. Tout est prêt. Profitez de chaque instant. Nous veillons sur l'expérience digitale, vous veillez sur l'essentiel. <a href="${escape((p.url as string) ?? "#")}">Votre espace Live</a>.`),
+    html: (p) =>
+      baseHtml(
+        "Demain.",
+        `Demain, <strong>${escape((p.couple as string) ?? "vous")}</strong>. Tout est prêt. Profitez de chaque instant. Nous veillons sur l'expérience digitale, vous veillez sur l'essentiel. <a href="${escape((p.url as string) ?? "#")}">Votre espace Live</a>.`,
+      ),
   },
 };
 
-
 function escape(s: string) {
-  return String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c] as string));
+  return String(s).replace(
+    /[&<>"']/g,
+    (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c] as string,
+  );
 }
 
 function baseHtml(title: string, body: string) {
@@ -104,7 +158,10 @@ export const Route = createFileRoute("/api/public/email-worker")({
         const SENDER = process.env.EMAIL_SENDER || "Eventia Signature <onboarding@resend.dev>";
 
         if (!RESEND_API_KEY) {
-          return Response.json({ error: "Email provider not configured (RESEND_API_KEY manquant)" }, { status: 503 });
+          return Response.json(
+            { error: "Email provider not configured (RESEND_API_KEY manquant)" },
+            { status: 503 },
+          );
         }
 
         const results: Array<{ id: string; ok: boolean; error?: string }> = [];
@@ -144,7 +201,11 @@ export const Route = createFileRoute("/api/public/email-worker")({
             }
           } catch (e) {
             await supabaseAdmin.from("email_logs").update({ status: "failed" }).eq("id", row.id);
-            results.push({ id: row.id, ok: false, error: e instanceof Error ? e.message : "unknown" });
+            results.push({
+              id: row.id,
+              ok: false,
+              error: e instanceof Error ? e.message : "unknown",
+            });
           }
         }
 

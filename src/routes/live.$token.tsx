@@ -12,10 +12,7 @@ import { Heart, Music, Camera, Clock, BedDouble, Bus, Lock, Send } from "lucide-
 
 export const Route = createFileRoute("/live/$token")({
   head: () => ({
-    meta: [
-      { title: "Live — Eventia" },
-      { name: "robots", content: "noindex" },
-    ],
+    meta: [{ title: "Live — Eventia" }, { name: "robots", content: "noindex" }],
   }),
   component: LivePage,
 });
@@ -73,13 +70,22 @@ function LivePage() {
     let alive = true;
     reload();
     const i = setInterval(() => alive && reload(), 30000);
-    return () => { alive = false; clearInterval(i); };
+    return () => {
+      alive = false;
+      clearInterval(i);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
 
   const cd = useCountdown(bundle?.invitation?.event_date ?? null);
-  const galleryUrl = typeof window !== "undefined" ? `${window.location.origin}/galerie/${bundle?.invitation?.rsvp_token ?? token}` : "";
-  const rsvpUrl = typeof window !== "undefined" ? `${window.location.origin}/rsvp/${bundle?.invitation?.rsvp_token ?? token}` : "";
+  const galleryUrl =
+    typeof window !== "undefined"
+      ? `${window.location.origin}/galerie/${bundle?.invitation?.rsvp_token ?? token}`
+      : "";
+  const rsvpUrl =
+    typeof window !== "undefined"
+      ? `${window.location.origin}/rsvp/${bundle?.invitation?.rsvp_token ?? token}`
+      : "";
 
   const [capsuleForm, setCapsuleForm] = useState({ author_name: "", message: "", unlock_at: "" });
   const capsuleMut = useMutation({
@@ -112,20 +118,38 @@ function LivePage() {
     <main className="min-h-screen bg-background text-foreground">
       <section className="relative h-[60vh] flex items-center justify-center overflow-hidden">
         {bundle?.invitation?.hero_url && (
-          <img src={bundle.invitation.hero_url} alt="" className="absolute inset-0 w-full h-full object-cover opacity-40" />
+          <img
+            src={bundle.invitation.hero_url}
+            alt=""
+            className="absolute inset-0 w-full h-full object-cover opacity-40"
+          />
         )}
         <div className="relative text-center px-6">
           <Heart className="w-8 h-8 mx-auto mb-2 text-primary" />
-          <h1 className="text-5xl md:text-7xl font-serif">{bundle?.invitation?.couple_names ?? "Live"}</h1>
+          <h1 className="text-5xl md:text-7xl font-serif">
+            {bundle?.invitation?.couple_names ?? "Live"}
+          </h1>
           {cd && !cd.live && (
             <div className="mt-6 flex justify-center gap-4 text-2xl tabular-nums">
-              <span><strong>{cd.d}</strong>j</span>
-              <span><strong>{cd.h}</strong>h</span>
-              <span><strong>{cd.m}</strong>m</span>
-              <span><strong>{cd.s}</strong>s</span>
+              <span>
+                <strong>{cd.d}</strong>j
+              </span>
+              <span>
+                <strong>{cd.h}</strong>h
+              </span>
+              <span>
+                <strong>{cd.m}</strong>m
+              </span>
+              <span>
+                <strong>{cd.s}</strong>s
+              </span>
             </div>
           )}
-          {cd?.live && <p className="mt-6 text-2xl text-primary inline-flex items-center gap-2"><Clock className="w-5 h-5" /> C'est maintenant</p>}
+          {cd?.live && (
+            <p className="mt-6 text-2xl text-primary inline-flex items-center gap-2">
+              <Clock className="w-5 h-5" /> C'est maintenant
+            </p>
+          )}
         </div>
       </section>
 
@@ -136,7 +160,9 @@ function LivePage() {
               key={id}
               onClick={() => setTab(id)}
               className={`flex items-center gap-2 px-4 py-3 text-sm uppercase tracking-[0.18em] border-b-2 whitespace-nowrap transition-colors ${
-                tab === id ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground"
+                tab === id
+                  ? "border-primary text-primary"
+                  : "border-transparent text-muted-foreground hover:text-foreground"
               }`}
             >
               <Icon className="w-4 h-4" /> {label}
@@ -151,19 +177,31 @@ function LivePage() {
             <div className="bg-card border rounded-2xl p-6 text-center">
               <Camera className="w-8 h-8 mx-auto mb-3 text-primary" />
               <h2 className="font-serif text-xl mb-2">Galerie souvenirs</h2>
-              <img src={buildQrUrl(galleryUrl, 240)} alt="QR Galerie" className="mx-auto rounded-lg bg-white p-2" />
+              <img
+                src={buildQrUrl(galleryUrl, 240)}
+                alt="QR Galerie"
+                className="mx-auto rounded-lg bg-white p-2"
+              />
               <p className="text-sm text-muted-foreground mt-3">Scannez pour partager vos photos</p>
             </div>
             <div className="bg-card border rounded-2xl p-6 text-center">
               <Music className="w-8 h-8 mx-auto mb-3 text-primary" />
               <h2 className="font-serif text-xl mb-2">Playlist</h2>
-              <img src={buildQrUrl(rsvpUrl, 240)} alt="QR Playlist" className="mx-auto rounded-lg bg-white p-2" />
+              <img
+                src={buildQrUrl(rsvpUrl, 240)}
+                alt="QR Playlist"
+                className="mx-auto rounded-lg bg-white p-2"
+              />
               <p className="text-sm text-muted-foreground mt-3">Proposez votre morceau</p>
             </div>
             <div className="bg-card border rounded-2xl p-6 text-center">
               <Heart className="w-8 h-8 mx-auto mb-3 text-primary" />
               <h2 className="font-serif text-xl mb-2">RSVP</h2>
-              <img src={buildQrUrl(rsvpUrl, 240)} alt="QR RSVP" className="mx-auto rounded-lg bg-white p-2" />
+              <img
+                src={buildQrUrl(rsvpUrl, 240)}
+                alt="QR RSVP"
+                className="mx-auto rounded-lg bg-white p-2"
+              />
               <p className="text-sm text-muted-foreground mt-3">Confirmez votre présence</p>
             </div>
           </section>
@@ -173,21 +211,36 @@ function LivePage() {
           <section className="space-y-4">
             <h2 className="font-serif text-3xl text-center mb-6">Où dormir</h2>
             {(live?.accommodations ?? []).length === 0 ? (
-              <p className="text-center text-muted-foreground">Les mariés n'ont pas encore renseigné d'hébergement.</p>
+              <p className="text-center text-muted-foreground">
+                Les mariés n'ont pas encore renseigné d'hébergement.
+              </p>
             ) : (
               <ul className="grid md:grid-cols-2 gap-4">
                 {live.accommodations.map((a: any) => (
                   <li key={a.id} className="bg-card border rounded-2xl p-6">
                     <div className="flex items-baseline justify-between">
                       <h3 className="font-serif text-xl">{a.name}</h3>
-                      {a.price_per_night && <span className="text-primary text-sm">{a.price_per_night} € / nuit</span>}
+                      {a.price_per_night && (
+                        <span className="text-primary text-sm">{a.price_per_night} € / nuit</span>
+                      )}
                     </div>
-                    {a.type && <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground mt-1">{a.type}</p>}
+                    {a.type && (
+                      <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground mt-1">
+                        {a.type}
+                      </p>
+                    )}
                     {a.address && <p className="text-sm mt-2">{a.address}</p>}
-                    {a.notes && <p className="text-sm italic text-muted-foreground mt-2">{a.notes}</p>}
+                    {a.notes && (
+                      <p className="text-sm italic text-muted-foreground mt-2">{a.notes}</p>
+                    )}
                     {a.contact_phone && <p className="text-xs mt-2">Tél. {a.contact_phone}</p>}
                     {a.booking_url && (
-                      <a href={a.booking_url} target="_blank" rel="noreferrer" className="inline-block mt-3 text-sm text-primary underline">
+                      <a
+                        href={a.booking_url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-block mt-3 text-sm text-primary underline"
+                      >
                         Réserver →
                       </a>
                     )}
@@ -202,19 +255,29 @@ function LivePage() {
           <section className="space-y-4">
             <h2 className="font-serif text-3xl text-center mb-6">Navettes & trajets</h2>
             {(live?.transports ?? []).length === 0 ? (
-              <p className="text-center text-muted-foreground">Aucun transport renseigné pour le moment.</p>
+              <p className="text-center text-muted-foreground">
+                Aucun transport renseigné pour le moment.
+              </p>
             ) : (
               <ul className="divide-y border rounded-2xl bg-card">
                 {live.transports.map((t: any) => (
                   <li key={t.id} className="p-5">
                     <div className="flex items-center justify-between">
                       <span className="font-serif text-lg">{t.type}</span>
-                      {t.scheduled_at && <span className="text-sm text-muted-foreground">{new Date(t.scheduled_at).toLocaleString("fr-FR")}</span>}
+                      {t.scheduled_at && (
+                        <span className="text-sm text-muted-foreground">
+                          {new Date(t.scheduled_at).toLocaleString("fr-FR")}
+                        </span>
+                      )}
                     </div>
                     {(t.departure || t.arrival) && (
-                      <p className="text-sm mt-2">{t.departure} {t.arrival && `→ ${t.arrival}`}</p>
+                      <p className="text-sm mt-2">
+                        {t.departure} {t.arrival && `→ ${t.arrival}`}
+                      </p>
                     )}
-                    {t.info && <p className="text-sm italic text-muted-foreground mt-1">{t.info}</p>}
+                    {t.info && (
+                      <p className="text-sm italic text-muted-foreground mt-1">{t.info}</p>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -229,7 +292,10 @@ function LivePage() {
               Déposez un mot pour les mariés. Il leur sera révélé à la date qu'ils ont choisie.
             </p>
             <form
-              onSubmit={(e) => { e.preventDefault(); capsuleMut.mutate(); }}
+              onSubmit={(e) => {
+                e.preventDefault();
+                capsuleMut.mutate();
+              }}
               className="bg-card border rounded-2xl p-6 space-y-3"
             >
               <input
@@ -259,17 +325,26 @@ function LivePage() {
             </form>
 
             <div className="mt-10 space-y-3">
-              <h3 className="text-xs uppercase tracking-[0.22em] text-muted-foreground text-center">Messages déjà déposés</h3>
+              <h3 className="text-xs uppercase tracking-[0.22em] text-muted-foreground text-center">
+                Messages déjà déposés
+              </h3>
               {(live?.timeCapsule ?? []).length === 0 ? (
-                <p className="text-center text-muted-foreground text-sm">Soyez le premier à laisser un mot.</p>
+                <p className="text-center text-muted-foreground text-sm">
+                  Soyez le premier à laisser un mot.
+                </p>
               ) : (
                 <ul className="space-y-2">
                   {live.timeCapsule.map((m: any) => (
-                    <li key={m.id} className="bg-card border rounded-xl p-4 flex items-center justify-between">
+                    <li
+                      key={m.id}
+                      className="bg-card border rounded-xl p-4 flex items-center justify-between"
+                    >
                       <span className="font-serif">{m.author_name}</span>
                       <span className="text-xs text-muted-foreground inline-flex items-center gap-1">
                         <Lock className="w-3 h-3" />
-                        {m.locked && m.unlock_at ? `S'ouvre le ${new Date(m.unlock_at).toLocaleDateString("fr-FR")}` : "Déposé"}
+                        {m.locked && m.unlock_at
+                          ? `S'ouvre le ${new Date(m.unlock_at).toLocaleDateString("fr-FR")}`
+                          : "Déposé"}
                       </span>
                     </li>
                   ))}
@@ -283,11 +358,19 @@ function LivePage() {
           <section>
             <h2 className="font-serif text-3xl mb-6 text-center">Mur photos en direct</h2>
             {photos.length === 0 ? (
-              <p className="text-center text-muted-foreground">Les premières photos arrivent bientôt.</p>
+              <p className="text-center text-muted-foreground">
+                Les premières photos arrivent bientôt.
+              </p>
             ) : (
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 {photos.slice(0, 48).map((p) => (
-                  <img key={p.id} src={p.image_url} alt="" className="w-full h-44 object-cover rounded-lg" loading="lazy" />
+                  <img
+                    key={p.id}
+                    src={p.image_url}
+                    alt=""
+                    className="w-full h-44 object-cover rounded-lg"
+                    loading="lazy"
+                  />
                 ))}
               </div>
             )}
@@ -297,8 +380,12 @@ function LivePage() {
                 <ul className="divide-y border rounded-2xl bg-card max-w-3xl mx-auto">
                   {tracks.slice(0, 40).map((t) => (
                     <li key={t.id} className="px-4 py-3 flex justify-between text-sm">
-                      <span><strong>{t.title}</strong> — {t.artist}</span>
-                      {t.suggested_by && <span className="text-muted-foreground">par {t.suggested_by}</span>}
+                      <span>
+                        <strong>{t.title}</strong> — {t.artist}
+                      </span>
+                      {t.suggested_by && (
+                        <span className="text-muted-foreground">par {t.suggested_by}</span>
+                      )}
                     </li>
                   ))}
                 </ul>

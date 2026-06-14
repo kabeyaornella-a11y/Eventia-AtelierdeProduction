@@ -5,7 +5,10 @@ export const Route = createFileRoute("/voiles")({
   head: () => ({
     meta: [
       { title: "Les Voiles — Eventia Signature" },
-      { name: "description", content: "Univers poétique, aérien, lumineux. La signature d'Eventia." },
+      {
+        name: "description",
+        content: "Univers poétique, aérien, lumineux. La signature d'Eventia.",
+      },
       { property: "og:title", content: "Les Voiles — Eventia Signature" },
       { property: "og:description", content: "Univers poétique et lumineux." },
       { property: "og:image", content: img },

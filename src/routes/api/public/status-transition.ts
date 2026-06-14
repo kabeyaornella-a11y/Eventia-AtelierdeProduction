@@ -26,10 +26,17 @@ export const Route = createFileRoute("/api/public/status-transition")({
         }
 
         let payload: {
-          type: string; order_id?: string; invitation_id?: string;
-          recipient: string; payload?: Record<string, unknown>;
+          type: string;
+          order_id?: string;
+          invitation_id?: string;
+          recipient: string;
+          payload?: Record<string, unknown>;
         };
-        try { payload = JSON.parse(body); } catch { return new Response("Bad JSON", { status: 400 }); }
+        try {
+          payload = JSON.parse(body);
+        } catch {
+          return new Response("Bad JSON", { status: 400 });
+        }
 
         const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
@@ -38,10 +45,16 @@ export const Route = createFileRoute("/api/public/status-transition")({
           await supabaseAdmin.from("orders").update({ status: "paid" }).eq("id", payload.order_id);
         }
         if (payload.type === "validation" && payload.invitation_id) {
-          await supabaseAdmin.from("invitations").update({ production_status: "review" }).eq("id", payload.invitation_id);
+          await supabaseAdmin
+            .from("invitations")
+            .update({ production_status: "review" })
+            .eq("id", payload.invitation_id);
         }
         if (payload.type === "activation" && payload.invitation_id) {
-          await supabaseAdmin.from("invitations").update({ production_status: "ready", progress: 100 }).eq("id", payload.invitation_id);
+          await supabaseAdmin
+            .from("invitations")
+            .update({ production_status: "ready", progress: 100 })
+            .eq("id", payload.invitation_id);
         }
 
         // Mise en file de l'email

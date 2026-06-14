@@ -1,14 +1,24 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Check, Plus, X, ArrowRight } from "lucide-react";
-import { SiteLayout, Section, SectionHead, GoldButton, OutlineButton } from "@/components/site/SiteLayout";
+import {
+  SiteLayout,
+  Section,
+  SectionHead,
+  GoldButton,
+  OutlineButton,
+} from "@/components/site/SiteLayout";
 import { experiences, collections } from "@/lib/eventia-data";
 
 export const Route = createFileRoute("/comparer")({
   head: () => ({
     meta: [
       { title: "Comparer les expériences — Eventia Signature" },
-      { name: "description", content: "Mettez côte à côte jusqu'à trois expériences Eventia : palette, ambiance, immersion, prix. Trouvez celle qui vous ressemble." },
+      {
+        name: "description",
+        content:
+          "Mettez côte à côte jusqu'à trois expériences Eventia : palette, ambiance, immersion, prix. Trouvez celle qui vous ressemble.",
+      },
       { property: "og:title", content: "Comparer les expériences — Eventia Signature" },
       { property: "og:description", content: "Comparez palette, ambiance et immersion." },
     ],
@@ -56,7 +66,9 @@ function ComparerPage() {
                   <div className="font-display text-sm truncate">{e.name}</div>
                   <div className="text-[10px] text-muted-foreground">{e.ambiance}</div>
                 </div>
-                <div className={`absolute top-2 right-2 size-6 grid place-items-center rounded-full ${active ? "bg-primary text-ivory" : "bg-ivory/80 text-foreground"}`}>
+                <div
+                  className={`absolute top-2 right-2 size-6 grid place-items-center rounded-full ${active ? "bg-primary text-ivory" : "bg-ivory/80 text-foreground"}`}
+                >
                   {active ? <Check className="size-3.5" /> : <Plus className="size-3.5" />}
                 </div>
               </button>
@@ -70,14 +82,22 @@ function ComparerPage() {
             Choisissez vos premières expériences pour commencer la comparaison.
           </div>
         ) : (
-          <div className={`grid gap-6 ${selected.length === 1 ? "md:grid-cols-1 max-w-md mx-auto" : selected.length === 2 ? "md:grid-cols-2" : "md:grid-cols-3"}`}>
+          <div
+            className={`grid gap-6 ${selected.length === 1 ? "md:grid-cols-1 max-w-md mx-auto" : selected.length === 2 ? "md:grid-cols-2" : "md:grid-cols-3"}`}
+          >
             {selected.map((e) => {
               const col = collections.find((c) => c.slug === e.univers);
               return (
-                <article key={e.slug} className="bg-ivory border border-primary/15 shadow-soft overflow-hidden flex flex-col">
+                <article
+                  key={e.slug}
+                  className="bg-ivory border border-primary/15 shadow-soft overflow-hidden flex flex-col"
+                >
                   <div className="relative">
                     <img src={e.image} alt={e.name} className="w-full h-56 object-cover" />
-                    <button onClick={() => toggle(e.slug)} className="absolute top-3 right-3 size-7 grid place-items-center bg-ivory/90 text-foreground hover:text-primary">
+                    <button
+                      onClick={() => toggle(e.slug)}
+                      className="absolute top-3 right-3 size-7 grid place-items-center bg-ivory/90 text-foreground hover:text-primary"
+                    >
                       <X className="size-4" />
                     </button>
                   </div>
@@ -85,7 +105,9 @@ function ComparerPage() {
                     <div>
                       <div className="eyebrow text-primary">{col?.name}</div>
                       <h3 className="font-display text-2xl mt-1">{e.name}</h3>
-                      <p className="font-serif-soft italic text-sm text-muted-foreground mt-2">{e.story}</p>
+                      <p className="font-serif-soft italic text-sm text-muted-foreground mt-2">
+                        {e.story}
+                      </p>
                     </div>
 
                     <Field label="Ambiance" value={e.ambiance} />
@@ -97,7 +119,12 @@ function ComparerPage() {
                       <div className="eyebrow mb-2">Palette</div>
                       <div className="flex gap-1.5">
                         {e.palette.map((h: string) => (
-                          <span key={h} className="block size-7 border border-border" style={{ backgroundColor: h }} aria-label={h} />
+                          <span
+                            key={h}
+                            className="block size-7 border border-border"
+                            style={{ backgroundColor: h }}
+                            aria-label={h}
+                          />
                         ))}
                       </div>
                     </div>
@@ -108,7 +135,11 @@ function ComparerPage() {
                           <div className="eyebrow">À partir de</div>
                           <div className="font-display text-3xl text-primary">{e.priceFrom} €</div>
                         </div>
-                        <Link to="/experiences/$slug" params={{ slug: e.slug }} className="text-xs text-primary hover:underline inline-flex items-center gap-1">
+                        <Link
+                          to="/experiences/$slug"
+                          params={{ slug: e.slug }}
+                          className="text-xs text-primary hover:underline inline-flex items-center gap-1"
+                        >
                           Découvrir <ArrowRight className="size-3" />
                         </Link>
                       </div>
@@ -122,7 +153,9 @@ function ComparerPage() {
 
         {selected.length > 0 && (
           <div className="text-center mt-12">
-            <Link to="/configurateur"><GoldButton>Composer mon expérience</GoldButton></Link>
+            <Link to="/configurateur">
+              <GoldButton>Composer mon expérience</GoldButton>
+            </Link>
           </div>
         )}
       </Section>

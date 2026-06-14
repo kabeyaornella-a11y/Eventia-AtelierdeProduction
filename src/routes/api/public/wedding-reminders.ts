@@ -27,7 +27,8 @@ export const Route = createFileRoute("/api/public/wedding-reminders")({
         ];
 
         const results: Record<string, number> = {};
-        const origin = process.env.PUBLIC_SITE_URL || "https://eventia-signature-atelier.lovable.app";
+        const origin =
+          process.env.PUBLIC_SITE_URL || "https://eventia-signature-atelier.lovable.app";
 
         for (const t of targets) {
           // Fenêtre [J-D, J-D+1) en jours civils
@@ -49,7 +50,9 @@ export const Route = createFileRoute("/api/public/wedding-reminders")({
           }
 
           // Récupère les emails des propriétaires
-          const userIds = Array.from(new Set(invs.map((i) => i.user_id).filter(Boolean))) as string[];
+          const userIds = Array.from(
+            new Set(invs.map((i) => i.user_id).filter(Boolean)),
+          ) as string[];
           const emailsByUser = new Map<string, string>();
           for (const uid of userIds) {
             const { data: u } = await supabaseAdmin.auth.admin.getUserById(uid);

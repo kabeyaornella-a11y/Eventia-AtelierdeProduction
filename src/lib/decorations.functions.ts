@@ -18,7 +18,9 @@ export const recommendDecorations = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     const { data: rows, error } = await supabase
       .from("decorations")
-      .select("id, name, category, themes, description, image_url, price_eur, supplier, supplier_url")
+      .select(
+        "id, name, category, themes, description, image_url, price_eur, supplier, supplier_url",
+      )
       .contains("themes", [data.theme]);
     if (error) throw new Error(error.message);
     return { decorations: rows ?? [] };

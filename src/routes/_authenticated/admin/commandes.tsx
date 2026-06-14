@@ -14,7 +14,10 @@ function AdminCommandes() {
   const fetchOrders = useServerFn(adminListOrders);
   const updateStatus = useServerFn(adminUpdateOrderStatus);
   const qc = useQueryClient();
-  const { data, isLoading } = useQuery({ queryKey: ["admin-orders"], queryFn: () => fetchOrders() });
+  const { data, isLoading } = useQuery({
+    queryKey: ["admin-orders"],
+    queryFn: () => fetchOrders(),
+  });
 
   async function handleChange(id: string, status: string) {
     try {
@@ -56,7 +59,11 @@ function AdminCommandes() {
                   onChange={(e) => handleChange(o.id, e.target.value)}
                   className="border border-border/60 bg-background px-2 py-1 text-xs"
                 >
-                  {STATUSES.map((s) => <option key={s} value={s}>{s}</option>)}
+                  {STATUSES.map((s) => (
+                    <option key={s} value={s}>
+                      {s}
+                    </option>
+                  ))}
                 </select>
               </td>
               <td className="p-4 text-xs text-muted-foreground">
@@ -65,7 +72,11 @@ function AdminCommandes() {
             </tr>
           ))}
           {orders.length === 0 && (
-            <tr><td colSpan={6} className="p-12 text-center text-muted-foreground">Aucune commande</td></tr>
+            <tr>
+              <td colSpan={6} className="p-12 text-center text-muted-foreground">
+                Aucune commande
+              </td>
+            </tr>
           )}
         </tbody>
       </table>

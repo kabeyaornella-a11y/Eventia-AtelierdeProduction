@@ -2,7 +2,11 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
-const tokenSchema = z.string().min(6).max(64).regex(/^[a-zA-Z0-9_-]+$/);
+const tokenSchema = z
+  .string()
+  .min(6)
+  .max(64)
+  .regex(/^[a-zA-Z0-9_-]+$/);
 const uuid = z.string().uuid();
 
 async function resolveInvitationByToken(token: string) {
@@ -34,8 +38,16 @@ export const getLiveData = createServerFn({ method: "GET" })
     if (!inv) return { invitation: null, accommodations: [], transports: [], timeCapsule: [] };
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const [{ data: accs }, { data: trs }, { data: tc }] = await Promise.all([
-      supabaseAdmin.from("accommodations").select("*").eq("invitation_id", inv.id).order("created_at"),
-      supabaseAdmin.from("transports").select("*").eq("invitation_id", inv.id).order("scheduled_at", { nullsFirst: false }),
+      supabaseAdmin
+        .from("accommodations")
+        .select("*")
+        .eq("invitation_id", inv.id)
+        .order("created_at"),
+      supabaseAdmin
+        .from("transports")
+        .select("*")
+        .eq("invitation_id", inv.id)
+        .order("scheduled_at", { nullsFirst: false }),
       supabaseAdmin
         .from("time_capsule_messages")
         .select("id, author_name, message, unlock_at, media_url, created_at")
@@ -104,10 +116,26 @@ export const getOwnerLiveData = createServerFn({ method: "GET" })
     await assertOwnership(context.userId, data.invitation_id);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const [accs, trs, ch, tc] = await Promise.all([
-      supabaseAdmin.from("accommodations").select("*").eq("invitation_id", data.invitation_id).order("created_at"),
-      supabaseAdmin.from("transports").select("*").eq("invitation_id", data.invitation_id).order("scheduled_at"),
-      supabaseAdmin.from("checkins").select("*").eq("invitation_id", data.invitation_id).order("checked_in_at", { ascending: false }),
-      supabaseAdmin.from("time_capsule_messages").select("*").eq("invitation_id", data.invitation_id).order("created_at", { ascending: false }),
+      supabaseAdmin
+        .from("accommodations")
+        .select("*")
+        .eq("invitation_id", data.invitation_id)
+        .order("created_at"),
+      supabaseAdmin
+        .from("transports")
+        .select("*")
+        .eq("invitation_id", data.invitation_id)
+        .order("scheduled_at"),
+      supabaseAdmin
+        .from("checkins")
+        .select("*")
+        .eq("invitation_id", data.invitation_id)
+        .order("checked_in_at", { ascending: false }),
+      supabaseAdmin
+        .from("time_capsule_messages")
+        .select("*")
+        .eq("invitation_id", data.invitation_id)
+        .order("created_at", { ascending: false }),
     ]);
     return {
       accommodations: accs.data ?? [],
@@ -148,7 +176,10 @@ export const upsertAccommodation = createServerFn({ method: "POST" })
       contact_phone: data.contact_phone || null,
     };
     if (data.id) {
-      const { error } = await supabaseAdmin.from("accommodations").update(payload).eq("id", data.id);
+      const { error } = await supabaseAdmin
+        .from("accommodations")
+        .update(payload)
+        .eq("id", data.id);
       if (error) throw new Error(error.message);
     } else {
       const { error } = await supabaseAdmin.from("accommodations").insert(payload);

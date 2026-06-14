@@ -7,7 +7,11 @@ export const Route = createFileRoute("/partenaires")({
   head: () => ({
     meta: [
       { title: "Partenaires — Eventia Signature" },
-      { name: "description", content: "Développons ensemble des expériences mémorables. Programme partenaire pour wedding planners, photographes, lieux." },
+      {
+        name: "description",
+        content:
+          "Développons ensemble des expériences mémorables. Programme partenaire pour wedding planners, photographes, lieux.",
+      },
       { property: "og:title", content: "Partenaires — Eventia Signature" },
       { property: "og:description", content: "Programme partenaire haut de gamme." },
       { property: "og:image", content: img },
@@ -20,9 +24,12 @@ export const Route = createFileRoute("/partenaires")({
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-6">
             <div className="eyebrow">Programme partenaires</div>
-            <h1 className="font-display text-5xl md:text-6xl leading-tight">Développons ensemble des expériences mémorables.</h1>
+            <h1 className="font-display text-5xl md:text-6xl leading-tight">
+              Développons ensemble des expériences mémorables.
+            </h1>
             <p className="text-base text-muted-foreground leading-relaxed">
-              Rejoignez notre réseau de partenaires et offrez le meilleur à vos clients. Visibilité, recommandations, commissions, ressources marketing.
+              Rejoignez notre réseau de partenaires et offrez le meilleur à vos clients. Visibilité,
+              recommandations, commissions, ressources marketing.
             </p>
             <div className="grid sm:grid-cols-3 gap-5 pt-4">
               {[
@@ -36,7 +43,9 @@ export const Route = createFileRoute("/partenaires")({
                 </div>
               ))}
             </div>
-            <Link to="/contact"><GoldButton>Proposer un partenariat</GoldButton></Link>
+            <Link to="/contact">
+              <GoldButton>Proposer un partenariat</GoldButton>
+            </Link>
           </div>
           <div className="overflow-hidden shadow-soft">
             <img src={img} alt="Partenaires" className="w-full h-[520px] object-cover" />

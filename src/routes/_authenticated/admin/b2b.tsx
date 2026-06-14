@@ -11,9 +11,17 @@ export const Route = createFileRoute("/_authenticated/admin/b2b")({
 });
 
 type Lead = {
-  id: string; company: string; contact_name: string; email: string; phone: string | null;
-  event_type: string | null; guests_count: number | null; budget: string | null;
-  message: string | null; status: string; created_at: string;
+  id: string;
+  company: string;
+  contact_name: string;
+  email: string;
+  phone: string | null;
+  event_type: string | null;
+  guests_count: number | null;
+  budget: string | null;
+  message: string | null;
+  status: string;
+  created_at: string;
 };
 
 function AdminB2BPage() {
@@ -23,15 +31,27 @@ function AdminB2BPage() {
   const [loading, setLoading] = useState(true);
 
   const load = async () => {
-    try { const r = await fetchAll({ data: {} }); setLeads(r.leads as Lead[]); }
-    catch (e) { toast.error(e instanceof Error ? e.message : "Erreur"); }
-    finally { setLoading(false); }
+    try {
+      const r = await fetchAll({ data: {} });
+      setLeads(r.leads as Lead[]);
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Erreur");
+    } finally {
+      setLoading(false);
+    }
   };
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    load();
+  }, []);
 
   const setStatus = async (id: string, status: "new" | "contacted" | "won" | "lost") => {
-    try { await updateStatus({ data: { id, status } }); toast.success("Mis à jour"); load(); }
-    catch (e) { toast.error(e instanceof Error ? e.message : "Erreur"); }
+    try {
+      await updateStatus({ data: { id, status } });
+      toast.success("Mis à jour");
+      load();
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Erreur");
+    }
   };
 
   return (
@@ -41,7 +61,9 @@ function AdminB2BPage() {
           <Building2 className="w-8 h-8 text-primary" />
           <h1 className="text-3xl font-serif">Demandes B2B</h1>
         </header>
-        {loading ? <p>Chargement…</p> : leads.length === 0 ? (
+        {loading ? (
+          <p>Chargement…</p>
+        ) : leads.length === 0 ? (
           <p className="text-muted-foreground">Aucune demande pour l'instant.</p>
         ) : (
           <div className="space-y-3">
@@ -50,21 +72,40 @@ function AdminB2BPage() {
                 <header className="flex justify-between items-start mb-2">
                   <div>
                     <h2 className="font-serif text-xl">{l.company}</h2>
-                    <p className="text-sm text-muted-foreground">{l.contact_name} · {l.email} {l.phone && `· ${l.phone}`}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {l.contact_name} · {l.email} {l.phone && `· ${l.phone}`}
+                    </p>
                   </div>
-                  <span className="text-xs uppercase tracking-wider px-2 py-1 rounded bg-muted">{l.status}</span>
+                  <span className="text-xs uppercase tracking-wider px-2 py-1 rounded bg-muted">
+                    {l.status}
+                  </span>
                 </header>
                 <p className="text-sm grid grid-cols-3 gap-2 mb-2">
-                  {l.event_type && <span><strong>Type:</strong> {l.event_type}</span>}
-                  {l.guests_count && <span><strong>Invités:</strong> {l.guests_count}</span>}
-                  {l.budget && <span><strong>Budget:</strong> {l.budget}</span>}
+                  {l.event_type && (
+                    <span>
+                      <strong>Type:</strong> {l.event_type}
+                    </span>
+                  )}
+                  {l.guests_count && (
+                    <span>
+                      <strong>Invités:</strong> {l.guests_count}
+                    </span>
+                  )}
+                  {l.budget && (
+                    <span>
+                      <strong>Budget:</strong> {l.budget}
+                    </span>
+                  )}
                 </p>
                 {l.message && <p className="text-sm bg-muted/50 p-3 rounded mt-2">{l.message}</p>}
                 <div className="flex gap-2 mt-3">
                   {(["new", "contacted", "won", "lost"] as const).map((s) => (
-                    <button key={s} onClick={() => setStatus(l.id, s)}
+                    <button
+                      key={s}
+                      onClick={() => setStatus(l.id, s)}
                       disabled={l.status === s}
-                      className="text-xs px-3 py-1 rounded border hover:bg-primary hover:text-primary-foreground disabled:opacity-40 disabled:cursor-not-allowed">
+                      className="text-xs px-3 py-1 rounded border hover:bg-primary hover:text-primary-foreground disabled:opacity-40 disabled:cursor-not-allowed"
+                    >
                       {s}
                     </button>
                   ))}

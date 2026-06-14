@@ -12,7 +12,10 @@ export const Route = createFileRoute("/ma-commande/$ref")({
   head: ({ params }) => ({
     meta: [
       { title: `Commande ${params.ref} — Eventia Signature` },
-      { name: "description", content: "Récapitulatif premium de votre commande Eventia Signature." },
+      {
+        name: "description",
+        content: "Récapitulatif premium de votre commande Eventia Signature.",
+      },
       { property: "og:title", content: `Commande ${params.ref} — Eventia Signature` },
       { property: "og:description", content: "Votre composition Eventia, prête à partager." },
       { name: "robots", content: "noindex" },
@@ -60,7 +63,9 @@ function MaCommandePage() {
         if (!cancelled) setLoading(false);
       }
     })();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [ref, fetchOrder]);
 
   if (loading) {
@@ -83,7 +88,9 @@ function MaCommandePage() {
           <p className="font-serif-soft italic text-muted-foreground mt-3 max-w-md mx-auto">
             Cette référence n'est plus disponible. Vérifiez le lien ou recomposez votre expérience.
           </p>
-          <Link to="/configurateur" className="inline-block mt-8"><GoldButton>Composer une expérience</GoldButton></Link>
+          <Link to="/configurateur" className="inline-block mt-8">
+            <GoldButton>Composer une expérience</GoldButton>
+          </Link>
         </Section>
       </SiteLayout>
     );
@@ -118,7 +125,11 @@ function MaCommandePage() {
 
     doc.setFontSize(11);
     doc.setTextColor(75, 58, 42);
-    doc.text(`${col?.name ?? "—"}  ·  ${off?.name ?? "—"}  ·  ${order.eventType || "Événement"}`, 40, y);
+    doc.text(
+      `${col?.name ?? "—"}  ·  ${off?.name ?? "—"}  ·  ${order.eventType || "Événement"}`,
+      40,
+      y,
+    );
     y += 36;
 
     const rows: [string, string][] = [
@@ -177,7 +188,10 @@ function MaCommandePage() {
     <SiteLayout>
       <Section>
         <div className="flex items-center justify-between mb-8">
-          <Link to="/configurateur" className="text-sm text-muted-foreground hover:text-primary inline-flex items-center gap-2">
+          <Link
+            to="/configurateur"
+            className="text-sm text-muted-foreground hover:text-primary inline-flex items-center gap-2"
+          >
             <ArrowLeft className="size-4" /> Modifier ma composition
           </Link>
           <div className="eyebrow text-primary">Référence {order.ref}</div>
@@ -197,13 +211,16 @@ function MaCommandePage() {
               </div>
             )}
             <div className="flex items-center gap-2 text-primary mb-3">
-              <Sparkles className="size-4" /><div className="eyebrow">Modules sélectionnés</div>
+              <Sparkles className="size-4" />
+              <div className="eyebrow">Modules sélectionnés</div>
             </div>
             <ul className="divide-y divide-border/60 text-sm">
               {mods.map((m) => (
                 <li key={m.id} className="flex justify-between py-3">
                   <span>{m.name}</span>
-                  <span className="text-muted-foreground">{m.included ? "Inclus" : `+${m.price} €`}</span>
+                  <span className="text-muted-foreground">
+                    {m.included ? "Inclus" : `+${m.price} €`}
+                  </span>
                 </li>
               ))}
             </ul>

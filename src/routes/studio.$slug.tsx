@@ -17,7 +17,9 @@ export const Route = createFileRoute("/studio/$slug")({
     <SiteLayout>
       <Section className="text-center">
         <h1 className="font-display text-4xl">Projet introuvable</h1>
-        <Link to="/studio" className="text-primary mt-4 inline-block">Retour au portfolio</Link>
+        <Link to="/studio" className="text-primary mt-4 inline-block">
+          Retour au portfolio
+        </Link>
       </Section>
     </SiteLayout>
   ),
@@ -26,7 +28,10 @@ export const Route = createFileRoute("/studio/$slug")({
 function StudioDetail() {
   const { slug } = Route.useParams();
   const fetch = useServerFn(getPortfolioBySlug);
-  const { data, isLoading } = useQuery({ queryKey: ["portfolio", slug], queryFn: () => fetch({ data: { slug } }) });
+  const { data, isLoading } = useQuery({
+    queryKey: ["portfolio", slug],
+    queryFn: () => fetch({ data: { slug } }),
+  });
   const item = data?.item;
 
   if (isLoading) {
@@ -44,16 +49,33 @@ function StudioDetail() {
   return (
     <SiteLayout>
       <section className="relative h-[70vh] min-h-[480px] overflow-hidden">
-        {item.hero_url && <img src={item.hero_url} alt={item.title} className="absolute inset-0 w-full h-full object-cover" />}
+        {item.hero_url && (
+          <img
+            src={item.hero_url}
+            alt={item.title}
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+        )}
         <div className="absolute inset-0 bg-gradient-to-t from-cacao/90 via-cacao/40 to-cacao/30" />
         <div className="absolute inset-0 flex items-end">
           <div className="mx-auto max-w-7xl w-full px-6 lg:px-10 pb-14 text-ivory">
-            <Link to="/studio" className="inline-flex items-center gap-2 text-sm eyebrow !text-primary-soft mb-4">
+            <Link
+              to="/studio"
+              className="inline-flex items-center gap-2 text-sm eyebrow !text-primary-soft mb-4"
+            >
               <ArrowLeft className="w-4 h-4" /> Studio
             </Link>
-            {item.category && <div className="eyebrow !text-primary-soft mb-3">{item.category}</div>}
-            <h1 className="font-display text-5xl md:text-7xl leading-[1.05] max-w-3xl">{item.title}</h1>
-            {item.year && <div className="text-[11px] tracking-[0.22em] uppercase text-ivory/70 mt-4">{item.year}</div>}
+            {item.category && (
+              <div className="eyebrow !text-primary-soft mb-3">{item.category}</div>
+            )}
+            <h1 className="font-display text-5xl md:text-7xl leading-[1.05] max-w-3xl">
+              {item.title}
+            </h1>
+            {item.year && (
+              <div className="text-[11px] tracking-[0.22em] uppercase text-ivory/70 mt-4">
+                {item.year}
+              </div>
+            )}
           </div>
         </div>
       </section>

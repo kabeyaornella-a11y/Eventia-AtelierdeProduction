@@ -5,7 +5,10 @@ export const Route = createFileRoute("/ecrins")({
   head: () => ({
     meta: [
       { title: "Les Écrins — Eventia Signature" },
-      { name: "description", content: "Univers précieux, intime, délicat. Cachets de cire, papeterie, calligraphie." },
+      {
+        name: "description",
+        content: "Univers précieux, intime, délicat. Cachets de cire, papeterie, calligraphie.",
+      },
       { property: "og:title", content: "Les Écrins — Eventia Signature" },
       { property: "og:description", content: "Univers précieux, intime, délicat." },
       { property: "og:image", content: ecrinsImg },

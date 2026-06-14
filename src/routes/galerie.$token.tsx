@@ -17,7 +17,13 @@ export const Route = createFileRoute("/galerie/$token")({
   component: GalleryPage,
 });
 
-type Photo = { id: string; guest_name: string | null; caption: string | null; image_url: string; created_at: string };
+type Photo = {
+  id: string;
+  guest_name: string | null;
+  caption: string | null;
+  image_url: string;
+  created_at: string;
+};
 
 function GalleryPage() {
   const { token } = Route.useParams();
@@ -30,7 +36,9 @@ function GalleryPage() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    fetchList({ data: { token } }).then((r) => setPhotos(r.photos as Photo[])).catch(() => {});
+    fetchList({ data: { token } })
+      .then((r) => setPhotos(r.photos as Photo[]))
+      .catch(() => {});
   }, [token, fetchList]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -41,7 +49,11 @@ function GalleryPage() {
     try {
       const ext = (file.name.split(".").pop() || "jpg").toLowerCase();
       const { path, url } = await createUpload({ data: { token, ext } });
-      const upRes = await fetch(url, { method: "PUT", body: file, headers: { "Content-Type": file.type } });
+      const upRes = await fetch(url, {
+        method: "PUT",
+        body: file,
+        headers: { "Content-Type": file.type },
+      });
       if (!upRes.ok) throw new Error("Upload échoué");
       const publicRef = `storage://${path}`;
       await submit({ data: { token, ...form, image_url: publicRef } });
@@ -64,19 +76,48 @@ function GalleryPage() {
           <p className="text-muted-foreground">Partage tes plus beaux clichés de la soirée.</p>
         </header>
 
-        <form onSubmit={handleSubmit} className="bg-card border rounded-2xl p-6 mb-10 grid gap-3 max-w-xl mx-auto">
-          <input className="input border rounded-md px-3 py-2 bg-background" placeholder="Ton prénom (optionnel)"
-            value={form.guest_name} onChange={(e) => setForm({ ...form, guest_name: e.target.value })} maxLength={80} />
+        <form
+          onSubmit={handleSubmit}
+          className="bg-card border rounded-2xl p-6 mb-10 grid gap-3 max-w-xl mx-auto"
+        >
+          <input
+            className="input border rounded-md px-3 py-2 bg-background"
+            placeholder="Ton prénom (optionnel)"
+            value={form.guest_name}
+            onChange={(e) => setForm({ ...form, guest_name: e.target.value })}
+            maxLength={80}
+          />
           <label className="border-2 border-dashed rounded-md p-6 text-center cursor-pointer hover:bg-muted/50">
             <Upload className="w-6 h-6 mx-auto mb-2 text-primary" />
             <span className="text-sm">{file ? file.name : "Cliquer pour choisir une photo"}</span>
-            <input type="file" accept="image/*" className="hidden" required
-              onChange={(e) => setFile(e.target.files?.[0] ?? null)} />
+            <input
+              type="file"
+              accept="image/*"
+              className="hidden"
+              required
+              onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+            />
           </label>
-          <textarea className="input border rounded-md px-3 py-2 bg-background" placeholder="Une légende ? (optionnel)"
-            value={form.caption} onChange={(e) => setForm({ ...form, caption: e.target.value })} maxLength={280} rows={2} />
-          <button type="submit" disabled={loading} className="inline-flex items-center justify-center gap-2 bg-primary text-primary-foreground rounded-md px-4 py-2 disabled:opacity-60">
-            {loading ? "Envoi…" : (<><Send className="w-4 h-4" /> Envoyer</>)}
+          <textarea
+            className="input border rounded-md px-3 py-2 bg-background"
+            placeholder="Une légende ? (optionnel)"
+            value={form.caption}
+            onChange={(e) => setForm({ ...form, caption: e.target.value })}
+            maxLength={280}
+            rows={2}
+          />
+          <button
+            type="submit"
+            disabled={loading}
+            className="inline-flex items-center justify-center gap-2 bg-primary text-primary-foreground rounded-md px-4 py-2 disabled:opacity-60"
+          >
+            {loading ? (
+              "Envoi…"
+            ) : (
+              <>
+                <Send className="w-4 h-4" /> Envoyer
+              </>
+            )}
           </button>
         </form>
 
@@ -86,7 +127,12 @@ function GalleryPage() {
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
             {photos.map((p) => (
               <figure key={p.id} className="rounded-xl overflow-hidden bg-muted">
-                <img src={p.image_url} alt={p.caption ?? "Souvenir"} loading="lazy" className="w-full h-56 object-cover" />
+                <img
+                  src={p.image_url}
+                  alt={p.caption ?? "Souvenir"}
+                  loading="lazy"
+                  className="w-full h-56 object-cover"
+                />
                 {(p.caption || p.guest_name) && (
                   <figcaption className="text-xs p-2">
                     {p.guest_name && <strong>{p.guest_name} · </strong>}

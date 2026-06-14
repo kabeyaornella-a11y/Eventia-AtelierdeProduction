@@ -8,7 +8,11 @@ export const Route = createFileRoute("/offres")({
   head: () => ({
     meta: [
       { title: "Offres — Eventia Signature" },
-      { name: "description", content: "Trois offres signature : L'Essentielle, La Signature, L'Exception. Sans abonnement, paiement unique." },
+      {
+        name: "description",
+        content:
+          "Trois offres signature : L'Essentielle, La Signature, L'Exception. Sans abonnement, paiement unique.",
+      },
       { property: "og:title", content: "Offres — Eventia Signature" },
       { property: "og:description", content: "Trois offres signature, sans abonnement." },
     ],
@@ -42,23 +46,33 @@ function OffresPage() {
                   Recommandée
                 </div>
               )}
-              <div className={`eyebrow text-[10px] ${o.recommended ? "!text-primary-soft" : ""}`}>Offre</div>
+              <div className={`eyebrow text-[10px] ${o.recommended ? "!text-primary-soft" : ""}`}>
+                Offre
+              </div>
               <div className="font-display text-3xl mt-2">{o.name}</div>
-              <div className={`font-serif-soft italic text-base mt-1 ${o.recommended ? "text-ivory/80" : "text-muted-foreground"}`}>
+              <div
+                className={`font-serif-soft italic text-base mt-1 ${o.recommended ? "text-ivory/80" : "text-muted-foreground"}`}
+              >
                 {o.tagline}
               </div>
 
               <div className="mt-8 flex items-baseline gap-2">
-                <span className={`font-display text-6xl ${o.recommended ? "text-primary-soft" : "text-primary"}`}>
+                <span
+                  className={`font-display text-6xl ${o.recommended ? "text-primary-soft" : "text-primary"}`}
+                >
                   {o.price}
                 </span>
                 <span className="text-2xl">€</span>
               </div>
-              <div className={`text-xs mt-1 ${o.recommended ? "text-ivory/70" : "text-muted-foreground"}`}>
+              <div
+                className={`text-xs mt-1 ${o.recommended ? "text-ivory/70" : "text-muted-foreground"}`}
+              >
                 Paiement unique · 3 ou 4× sans frais
               </div>
 
-              <p className={`mt-6 text-sm leading-relaxed ${o.recommended ? "text-ivory/85" : "text-foreground/80"}`}>
+              <p
+                className={`mt-6 text-sm leading-relaxed ${o.recommended ? "text-ivory/85" : "text-foreground/80"}`}
+              >
                 {o.description}
               </p>
 
@@ -67,7 +81,9 @@ function OffresPage() {
               <ul className="space-y-3.5 text-sm">
                 {o.features.map((f) => (
                   <li key={f} className="flex gap-3">
-                    <Check className={`size-4 mt-0.5 shrink-0 ${o.recommended ? "text-primary-soft" : "text-primary"}`} />
+                    <Check
+                      className={`size-4 mt-0.5 shrink-0 ${o.recommended ? "text-primary-soft" : "text-primary"}`}
+                    />
                     <span>{f}</span>
                   </li>
                 ))}
@@ -75,7 +91,9 @@ function OffresPage() {
 
               <div className="mt-10 space-y-2">
                 <Link to="/configurateur" className="block">
-                  <GoldButton className={`w-full ${o.recommended ? "!bg-primary-soft !text-cacao hover:!bg-ivory" : ""}`}>
+                  <GoldButton
+                    className={`w-full ${o.recommended ? "!bg-primary-soft !text-cacao hover:!bg-ivory" : ""}`}
+                  >
                     Composer {o.name}
                   </GoldButton>
                 </Link>

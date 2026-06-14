@@ -33,7 +33,8 @@ export const Route = createFileRoute("/_authenticated/mes-invitations")({
 
 function MesInvitations() {
   const search = Route.useSearch();
-  if (search.edit || search.new) return <InvitationEditor invitationId={search.edit} orderId={search.order} />;
+  if (search.edit || search.new)
+    return <InvitationEditor invitationId={search.edit} orderId={search.order} />;
   return <InvitationList />;
 }
 
@@ -89,32 +90,56 @@ function InvitationList() {
               Créez votre première invitation digitale en quelques minutes.
             </p>
             <Link to="/mes-invitations" search={{ new: true }} className="inline-block mt-6">
-              <GoldButton><Plus className="size-4 mr-2" /> Créer une invitation</GoldButton>
+              <GoldButton>
+                <Plus className="size-4 mr-2" /> Créer une invitation
+              </GoldButton>
             </Link>
           </div>
         ) : (
           <ul className="divide-y divide-border/60 bg-ivory border border-primary/15 shadow-soft">
             {invitations.map((inv: any) => (
-              <li key={inv.id} className="p-6 md:p-8 flex items-center justify-between flex-wrap gap-4">
+              <li
+                key={inv.id}
+                className="p-6 md:p-8 flex items-center justify-between flex-wrap gap-4"
+              >
                 <div className="min-w-0 flex-1">
                   <div className="eyebrow text-primary text-[10px] flex items-center gap-2">
-                    <Heart className="size-3" /> {new Date(inv.event_date).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })}
+                    <Heart className="size-3" />{" "}
+                    {new Date(inv.event_date).toLocaleDateString("fr-FR", {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    })}
                   </div>
                   <div className="font-display text-2xl mt-1 truncate">{inv.couple_names}</div>
-                  {inv.venue && <div className="text-xs text-muted-foreground mt-1 truncate">{inv.venue}</div>}
-                  <div className="font-mono text-[10px] text-muted-foreground mt-2 truncate">/{inv.token}</div>
+                  {inv.venue && (
+                    <div className="text-xs text-muted-foreground mt-1 truncate">{inv.venue}</div>
+                  )}
+                  <div className="font-mono text-[10px] text-muted-foreground mt-2 truncate">
+                    /{inv.token}
+                  </div>
                 </div>
                 <div className="flex gap-2 flex-wrap">
-                  <button onClick={() => copyLink(inv.token)} title="Copier le lien" className="inline-flex items-center gap-1 px-3 py-2 text-xs uppercase tracking-[0.18em] border border-primary/30 text-primary hover:bg-primary/5">
+                  <button
+                    onClick={() => copyLink(inv.token)}
+                    title="Copier le lien"
+                    className="inline-flex items-center gap-1 px-3 py-2 text-xs uppercase tracking-[0.18em] border border-primary/30 text-primary hover:bg-primary/5"
+                  >
                     <Copy className="size-3.5" /> Lien
                   </button>
                   <Link to="/invitation/$token" params={{ token: inv.token }} target="_blank">
-                    <OutlineButton><ExternalLink className="size-3.5 mr-1" /> Voir</OutlineButton>
+                    <OutlineButton>
+                      <ExternalLink className="size-3.5 mr-1" /> Voir
+                    </OutlineButton>
                   </Link>
                   <Link to="/mes-invitations" search={{ edit: inv.id }}>
                     <GoldButton>Modifier</GoldButton>
                   </Link>
-                  <button onClick={() => handleDelete(inv.id)} title="Supprimer" className="p-2 text-muted-foreground hover:text-destructive">
+                  <button
+                    onClick={() => handleDelete(inv.id)}
+                    title="Supprimer"
+                    className="p-2 text-muted-foreground hover:text-destructive"
+                  >
                     <Trash2 className="size-4" />
                   </button>
                 </div>
@@ -151,7 +176,9 @@ function InvitationEditor({ invitationId, orderId }: { invitationId?: string; or
       .then(({ invitation }) => {
         setForm({
           couple_names: invitation.couple_names ?? "",
-          event_date: invitation.event_date ? new Date(invitation.event_date).toISOString().slice(0, 16) : "",
+          event_date: invitation.event_date
+            ? new Date(invitation.event_date).toISOString().slice(0, 16)
+            : "",
           venue: invitation.venue ?? "",
           hero_url: invitation.hero_url ?? "",
           message: invitation.message ?? "",
@@ -186,12 +213,23 @@ function InvitationEditor({ invitationId, orderId }: { invitationId?: string; or
     }
   }
 
-  if (loading) return <SiteLayout><Section><div className="text-center text-muted-foreground py-20">Chargement…</div></Section></SiteLayout>;
+  if (loading)
+    return (
+      <SiteLayout>
+        <Section>
+          <div className="text-center text-muted-foreground py-20">Chargement…</div>
+        </Section>
+      </SiteLayout>
+    );
 
   return (
     <SiteLayout>
       <Section>
-        <Link to="/mes-invitations" search={{}} className="inline-flex items-center gap-2 text-xs tracking-[0.22em] uppercase text-muted-foreground hover:text-primary mb-6">
+        <Link
+          to="/mes-invitations"
+          search={{}}
+          className="inline-flex items-center gap-2 text-xs tracking-[0.22em] uppercase text-muted-foreground hover:text-primary mb-6"
+        >
           <ArrowLeft className="size-3.5" /> Retour
         </Link>
         <div className="mb-8">
@@ -201,7 +239,10 @@ function InvitationEditor({ invitationId, orderId }: { invitationId?: string; or
           </h1>
         </div>
 
-        <form onSubmit={handleSave} className="bg-ivory border border-primary/15 shadow-soft p-6 md:p-10 space-y-6 max-w-3xl">
+        <form
+          onSubmit={handleSave}
+          className="bg-ivory border border-primary/15 shadow-soft p-6 md:p-10 space-y-6 max-w-3xl"
+        >
           <Field label="Noms du couple *">
             <input
               required
@@ -242,7 +283,9 @@ function InvitationEditor({ invitationId, orderId }: { invitationId?: string; or
               placeholder="https://…"
               className="w-full px-4 py-3 border border-primary/20 bg-background focus:outline-none focus:border-primary"
             />
-            <p className="text-xs text-muted-foreground mt-1 italic">Collez l'URL d'une photo. L'upload direct arrive avec le Batch 4 (galerie).</p>
+            <p className="text-xs text-muted-foreground mt-1 italic">
+              Collez l'URL d'une photo. L'upload direct arrive avec le Batch 4 (galerie).
+            </p>
           </Field>
 
           <Field label="Message aux invités">
@@ -257,8 +300,16 @@ function InvitationEditor({ invitationId, orderId }: { invitationId?: string; or
           </Field>
 
           <div className="grid sm:grid-cols-2 gap-4 pt-2">
-            <Toggle label="Playlist participative" checked={form.allow_playlist} onChange={(v) => setForm({ ...form, allow_playlist: v })} />
-            <Toggle label="Galerie photos invités" checked={form.allow_gallery} onChange={(v) => setForm({ ...form, allow_gallery: v })} />
+            <Toggle
+              label="Playlist participative"
+              checked={form.allow_playlist}
+              onChange={(v) => setForm({ ...form, allow_playlist: v })}
+            />
+            <Toggle
+              label="Galerie photos invités"
+              checked={form.allow_gallery}
+              onChange={(v) => setForm({ ...form, allow_gallery: v })}
+            />
           </div>
 
           <div className="flex gap-3 pt-4 border-t border-border/40">
@@ -284,10 +335,23 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
   );
 }
 
-function Toggle({ label, checked, onChange }: { label: string; checked: boolean; onChange: (v: boolean) => void }) {
+function Toggle({
+  label,
+  checked,
+  onChange,
+}: {
+  label: string;
+  checked: boolean;
+  onChange: (v: boolean) => void;
+}) {
   return (
     <label className="flex items-center gap-3 cursor-pointer p-4 border border-primary/15 hover:border-primary/40">
-      <input type="checkbox" checked={checked} onChange={(e) => onChange(e.target.checked)} className="size-4 accent-primary" />
+      <input
+        type="checkbox"
+        checked={checked}
+        onChange={(e) => onChange(e.target.checked)}
+        className="size-4 accent-primary"
+      />
       <span className="text-sm">{label}</span>
     </label>
   );

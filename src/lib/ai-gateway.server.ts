@@ -26,7 +26,8 @@ export async function callLovableAI(opts: {
   if (!res.ok) {
     const txt = await res.text();
     if (res.status === 429) throw new Error("Trop de requêtes IA, réessayez dans un instant.");
-    if (res.status === 402) throw new Error("Crédits IA épuisés. Rechargez votre espace Lovable Cloud.");
+    if (res.status === 402)
+      throw new Error("Crédits IA épuisés. Rechargez votre espace Lovable Cloud.");
     throw new Error(`AI gateway error ${res.status}: ${txt.slice(0, 200)}`);
   }
   const json = (await res.json()) as { choices?: Array<{ message?: { content?: string } }> };

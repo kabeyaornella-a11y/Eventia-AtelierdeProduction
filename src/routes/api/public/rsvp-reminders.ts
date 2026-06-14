@@ -25,7 +25,9 @@ export const Route = createFileRoute("/api/public/rsvp-reminders")({
           .eq("production_status", "ready");
 
         for (const inv of invitations ?? []) {
-          const days = Math.ceil((new Date(inv.event_date as string).getTime() - now.getTime()) / 86400000);
+          const days = Math.ceil(
+            (new Date(inv.event_date as string).getTime() - now.getTime()) / 86400000,
+          );
           if (!windows.includes(days)) continue;
 
           const { data: rsvps } = await supabaseAdmin

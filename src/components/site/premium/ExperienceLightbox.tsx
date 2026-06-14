@@ -85,7 +85,9 @@ export function ExperienceLightbox({ experience, onClose }: Props) {
 
         <div className="px-6 md:px-12 py-8 md:py-10 text-center">
           <div className="eyebrow !text-primary-soft">Ouverture immersive</div>
-          <h2 className="font-display text-3xl md:text-5xl mt-3 leading-tight">{experience.name}</h2>
+          <h2 className="font-display text-3xl md:text-5xl mt-3 leading-tight">
+            {experience.name}
+          </h2>
           <p className="font-serif-soft italic text-base md:text-lg text-ivory/85 mt-4 max-w-2xl mx-auto leading-relaxed">
             {experience.story}
           </p>

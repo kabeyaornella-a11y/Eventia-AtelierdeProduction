@@ -5,7 +5,13 @@ import { Check, ChevronLeft, ChevronRight, Sparkles, RotateCcw } from "lucide-re
 import { SiteLayout, Section, GoldButton, OutlineButton } from "@/components/site/SiteLayout";
 import { toast } from "sonner";
 import { collections, offers } from "@/lib/eventia-data";
-import { loadDraft, saveDraft, clearDraft, saveOrder, generateRef } from "@/lib/configurateur-store";
+import {
+  loadDraft,
+  saveDraft,
+  clearDraft,
+  saveOrder,
+  generateRef,
+} from "@/lib/configurateur-store";
 import { createMyOrder } from "@/lib/orders.functions";
 import { useAuth } from "@/hooks/use-auth";
 import { buildGumroadCheckout } from "@/lib/gumroad-links";
@@ -14,7 +20,11 @@ export const Route = createFileRoute("/configurateur")({
   head: () => ({
     meta: [
       { title: "Configurateur — Eventia Signature" },
-      { name: "description", content: "Composez votre expérience Eventia en 6 étapes : collection, formule, besoins, langues, informations, paiement." },
+      {
+        name: "description",
+        content:
+          "Composez votre expérience Eventia en 6 étapes : collection, formule, besoins, langues, informations, paiement.",
+      },
       { property: "og:title", content: "Configurateur — Eventia Signature" },
       { property: "og:description", content: "Composez votre expérience en 6 étapes." },
     ],
@@ -200,12 +210,20 @@ function Configurateur() {
               <div
                 key={label}
                 className={`flex items-center gap-2 shrink-0 ${
-                  i === step ? "text-primary" : i < step ? "text-foreground/70" : "text-muted-foreground/60"
+                  i === step
+                    ? "text-primary"
+                    : i < step
+                      ? "text-foreground/70"
+                      : "text-muted-foreground/60"
                 }`}
               >
                 <div
                   className={`size-7 grid place-items-center rounded-full text-xs ${
-                    i === step ? "bg-primary text-ivory" : i < step ? "bg-primary/20 text-primary" : "bg-muted text-muted-foreground"
+                    i === step
+                      ? "bg-primary text-ivory"
+                      : i < step
+                        ? "bg-primary/20 text-primary"
+                        : "bg-muted text-muted-foreground"
                   }`}
                 >
                   {i + 1}
@@ -215,7 +233,10 @@ function Configurateur() {
             ))}
           </div>
           <div className="h-px bg-border relative">
-            <div className="h-px bg-primary transition-all" style={{ width: `${((step + 1) / STEPS.length) * 100}%` }} />
+            <div
+              className="h-px bg-primary transition-all"
+              style={{ width: `${((step + 1) / STEPS.length) * 100}%` }}
+            />
           </div>
         </div>
 
@@ -231,13 +252,17 @@ function Configurateur() {
                     key={c.slug}
                     onClick={() => setUnivers(c.slug)}
                     className={`overflow-hidden text-left border ${
-                      univers === c.slug ? "border-primary shadow-gold" : "border-border hover:border-primary/50"
+                      univers === c.slug
+                        ? "border-primary shadow-gold"
+                        : "border-border hover:border-primary/50"
                     }`}
                   >
                     <img src={c.image} alt={c.name} className="w-full h-40 object-cover" />
                     <div className="p-3">
                       <div className="font-display text-lg">{c.name}</div>
-                      <div className="font-serif-soft italic text-xs text-muted-foreground">{c.tagline}</div>
+                      <div className="font-serif-soft italic text-xs text-muted-foreground">
+                        {c.tagline}
+                      </div>
                     </div>
                   </button>
                 ))}
@@ -256,13 +281,17 @@ function Configurateur() {
                     key={o.slug}
                     onClick={() => setFormula(o.slug)}
                     className={`p-6 border text-left ${
-                      formula === o.slug ? "border-primary shadow-gold bg-background" : "border-border bg-background"
+                      formula === o.slug
+                        ? "border-primary shadow-gold bg-background"
+                        : "border-border bg-background"
                     }`}
                   >
                     {o.recommended && <div className="eyebrow text-[10px] mb-2">Recommandée</div>}
                     <div className="font-display text-2xl">{o.name}</div>
                     <div className="font-display text-3xl text-primary mt-2">{o.price} €</div>
-                    <div className="font-serif-soft italic text-xs text-muted-foreground mt-2">{o.tagline}</div>
+                    <div className="font-serif-soft italic text-xs text-muted-foreground mt-2">
+                      {o.tagline}
+                    </div>
                   </button>
                 ))}
               </div>
@@ -270,10 +299,7 @@ function Configurateur() {
           )}
 
           {step === 2 && (
-            <Step
-              title="Vos besoins"
-              intro="Sélectionnez ce qui compte pour votre événement."
-            >
+            <Step title="Vos besoins" intro="Sélectionnez ce qui compte pour votre événement.">
               <div className="grid sm:grid-cols-2 gap-3">
                 {BENEFITS.map((b) => {
                   const active = benefits.includes(b.id);
@@ -282,7 +308,9 @@ function Configurateur() {
                       key={b.id}
                       onClick={() => toggleBenefit(b.id)}
                       className={`flex items-center justify-between p-4 border text-left ${
-                        active ? "border-primary bg-primary/5" : "border-border bg-background hover:border-primary/40"
+                        active
+                          ? "border-primary bg-primary/5"
+                          : "border-border bg-background hover:border-primary/40"
                       }`}
                     >
                       <span className="text-sm">{b.label}</span>
@@ -310,7 +338,9 @@ function Configurateur() {
                       key={l.code}
                       onClick={() => toggleLanguage(l.code)}
                       className={`px-4 py-5 border text-sm ${
-                        active ? "border-primary bg-primary/5 text-primary" : "border-border bg-background hover:border-primary/40"
+                        active
+                          ? "border-primary bg-primary/5 text-primary"
+                          : "border-border bg-background hover:border-primary/40"
                       }`}
                     >
                       <div className="font-display text-lg">{l.code.toUpperCase()}</div>
@@ -363,16 +393,22 @@ function Configurateur() {
           )}
 
           {step === 5 && (
-            <Step
-              title="Paiement"
-              intro="Récapitulatif et validation de votre commande."
-            >
+            <Step title="Paiement" intro="Récapitulatif et validation de votre commande.">
               <div className="grid md:grid-cols-2 gap-8">
                 <div className="space-y-3 text-sm">
-                  <Row label="Collection" value={collections.find((c) => c.slug === univers)?.name || "—"} />
+                  <Row
+                    label="Collection"
+                    value={collections.find((c) => c.slug === univers)?.name || "—"}
+                  />
                   <Row label="Formule" value={selectedFormula?.name || "—"} />
-                  <Row label="Besoins" value={`${benefits.length} sélectionné${benefits.length > 1 ? "s" : ""}`} />
-                  <Row label="Langues" value={languages.map((c) => c.toUpperCase()).join(", ") || "—"} />
+                  <Row
+                    label="Besoins"
+                    value={`${benefits.length} sélectionné${benefits.length > 1 ? "s" : ""}`}
+                  />
+                  <Row
+                    label="Langues"
+                    value={languages.map((c) => c.toUpperCase()).join(", ") || "—"}
+                  />
                   <Row label="Prénoms" value={`${infos.prenom1} & ${infos.prenom2}`} />
                   <Row label="Date" value={infos.date || "—"} />
                   <Row label="Email" value={infos.email || "—"} />
@@ -384,7 +420,8 @@ function Configurateur() {
                   </div>
                   <div className="font-display text-5xl text-primary">{total} €</div>
                   <div className="text-xs text-muted-foreground">
-                    Paiement unique, possible en 3 ou 4 fois sans frais. Votre commande est revue par notre atelier sous 24 heures avant production.
+                    Paiement unique, possible en 3 ou 4 fois sans frais. Votre commande est revue
+                    par notre atelier sous 24 heures avant production.
                   </div>
                   <GoldButton onClick={confirmOrder} className="w-full">
                     Confirmer ma commande
@@ -410,7 +447,15 @@ function Configurateur() {
   );
 }
 
-function Step({ title, intro, children }: { title: string; intro?: string; children: React.ReactNode }) {
+function Step({
+  title,
+  intro,
+  children,
+}: {
+  title: string;
+  intro?: string;
+  children: React.ReactNode;
+}) {
   return (
     <div className="space-y-8">
       <div>

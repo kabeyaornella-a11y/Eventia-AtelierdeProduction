@@ -9,19 +9,14 @@ const _ANON_JWT =
 
 const _PROJECT_URL = "https://nxqbihotrcfbknydxpny.supabase.co";
 
-const SUPABASE_URL = (
-  (import.meta.env.VITE_SUPABASE_URL as string | undefined)?.replace(/\/$/, "") ??
-  _PROJECT_URL
-);
+const SUPABASE_URL =
+  (import.meta.env.VITE_SUPABASE_URL as string | undefined)?.replace(/\/$/, "") ?? _PROJECT_URL;
 
-const _rawKey = (
-  import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ??
-  import.meta.env.VITE_SUPABASE_ANON_KEY
-) as string | undefined;
+const _rawKey = (import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ??
+  import.meta.env.VITE_SUPABASE_ANON_KEY) as string | undefined;
 
 // N'utilise la variable d'env que si c'est un JWT valide (commence par "eyJ")
-const SUPABASE_PUBLISHABLE_KEY: string =
-  _rawKey?.startsWith("eyJ") ? _rawKey : _ANON_JWT;
+const SUPABASE_PUBLISHABLE_KEY: string = _rawKey?.startsWith("eyJ") ? _rawKey : _ANON_JWT;
 
 // Important : ce module est importé par AuthProvider dans __root.tsx, donc évalué
 // pour CHAQUE page (y compris en SSR). Si les variables d'env ne sont pas définies
@@ -34,7 +29,7 @@ if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
   console.warn(
     "[supabase] VITE_SUPABASE_URL / VITE_SUPABASE_PUBLISHABLE_KEY manquantes — " +
       "le client Supabase utilise des valeurs placeholder. " +
-      "Configurez ces variables dans Netlify puis redéployez (cache vidé)."
+      "Configurez ces variables dans Netlify puis redéployez (cache vidé).",
   );
 }
 
@@ -60,5 +55,5 @@ export const supabase = createClient(
       autoRefreshToken: true,
     },
     realtime: realtimeOptions,
-  }
+  },
 );

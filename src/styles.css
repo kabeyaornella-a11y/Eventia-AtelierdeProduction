@@ -47,14 +47,14 @@
   /* Eventia palette */
   --background: oklch(0.952 0.022 78);
   --ivory: oklch(0.975 0.012 80);
-  --champagne: oklch(0.880 0.052 80);
+  --champagne: oklch(0.88 0.052 80);
   --primary-soft: oklch(0.775 0.082 70);
   --gold: oklch(0.775 0.082 70);
   --primary: oklch(0.625 0.105 60);
   --gold-deep: oklch(0.625 0.105 60);
-  --cacao: oklch(0.355 0.040 50);
-  --foreground: oklch(0.225 0.030 45);
-  --ink: oklch(0.180 0 0);
+  --cacao: oklch(0.355 0.04 50);
+  --foreground: oklch(0.225 0.03 45);
+  --ink: oklch(0.18 0 0);
 
   --card: oklch(0.975 0.012 80);
   --card-foreground: var(--foreground);
@@ -62,35 +62,35 @@
   --popover-foreground: var(--foreground);
 
   --primary-foreground: oklch(0.975 0.012 80);
-  --secondary: oklch(0.910 0.030 80);
+  --secondary: oklch(0.91 0.03 80);
   --secondary-foreground: var(--foreground);
-  --muted: oklch(0.920 0.020 80);
-  --muted-foreground: oklch(0.435 0.030 50);
-  --accent: oklch(0.880 0.052 80);
+  --muted: oklch(0.92 0.02 80);
+  --muted-foreground: oklch(0.435 0.03 50);
+  --accent: oklch(0.88 0.052 80);
   --accent-foreground: var(--foreground);
 
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.984 0.003 247.858);
 
-  --border: oklch(0.870 0.030 75);
-  --input: oklch(0.870 0.030 75);
+  --border: oklch(0.87 0.03 75);
+  --input: oklch(0.87 0.03 75);
   --ring: oklch(0.625 0.105 60);
 }
 
 .dark {
-  --background: oklch(0.225 0.030 45);
+  --background: oklch(0.225 0.03 45);
   --foreground: oklch(0.952 0.022 78);
-  --card: oklch(0.290 0.025 45);
+  --card: oklch(0.29 0.025 45);
   --card-foreground: oklch(0.952 0.022 78);
-  --popover: oklch(0.290 0.025 45);
+  --popover: oklch(0.29 0.025 45);
   --popover-foreground: oklch(0.952 0.022 78);
   --primary: oklch(0.775 0.082 70);
-  --primary-foreground: oklch(0.225 0.030 45);
-  --secondary: oklch(0.340 0.025 45);
+  --primary-foreground: oklch(0.225 0.03 45);
+  --secondary: oklch(0.34 0.025 45);
   --secondary-foreground: oklch(0.952 0.022 78);
-  --muted: oklch(0.340 0.025 45);
-  --muted-foreground: oklch(0.760 0.025 70);
-  --accent: oklch(0.355 0.040 50);
+  --muted: oklch(0.34 0.025 45);
+  --muted-foreground: oklch(0.76 0.025 70);
+  --accent: oklch(0.355 0.04 50);
   --accent-foreground: oklch(0.952 0.022 78);
   --border: oklch(1 0 0 / 12%);
   --input: oklch(1 0 0 / 15%);
@@ -111,7 +111,10 @@
     font-family: var(--font-sans);
     font-feature-settings: "ss01", "cv11";
   }
-  h1, h2, h3, h4 {
+  h1,
+  h2,
+  h3,
+  h4 {
     font-family: var(--font-display);
     font-weight: 400;
     letter-spacing: -0.01em;
@@ -146,52 +149,110 @@
   background: var(--color-primary);
   vertical-align: middle;
 }
-@utility surface-ivory { background: var(--color-ivory); }
+@utility surface-ivory {
+  background: var(--color-ivory);
+}
 @utility surface-champagne {
   background: linear-gradient(180deg, var(--color-ivory) 0%, var(--color-accent) 100%);
 }
 @utility shadow-soft {
-  box-shadow: 0 1px 2px rgb(75 58 42 / 0.04), 0 18px 48px -22px rgb(75 58 42 / 0.18);
+  box-shadow:
+    0 1px 2px rgb(75 58 42 / 0.04),
+    0 18px 48px -22px rgb(75 58 42 / 0.18);
 }
 @utility shadow-gold {
-  box-shadow: 0 2px 4px rgb(184 138 58 / 0.08), 0 24px 56px -28px rgb(184 138 58 / 0.35);
+  box-shadow:
+    0 2px 4px rgb(184 138 58 / 0.08),
+    0 24px 56px -28px rgb(184 138 58 / 0.35);
 }
 
 @keyframes fade-up {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 @keyframes float-slow {
-  0%, 100% { transform: translateY(0) rotate(var(--rot, 0deg)); }
-  50% { transform: translateY(-10px) rotate(var(--rot, 0deg)); }
+  0%,
+  100% {
+    transform: translateY(0) rotate(var(--rot, 0deg));
+  }
+  50% {
+    transform: translateY(-10px) rotate(var(--rot, 0deg));
+  }
 }
 @keyframes particle-fall {
-  0% { transform: translateY(-10vh) translateX(0); opacity: 0; }
-  10% { opacity: 0.8; }
-  100% { transform: translateY(110vh) translateX(40px); opacity: 0; }
+  0% {
+    transform: translateY(-10vh) translateX(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(110vh) translateX(40px);
+    opacity: 0;
+  }
 }
 @keyframes word-in {
-  0% { opacity: 0; transform: translateY(8px); filter: blur(4px); }
-  100% { opacity: 1; transform: translateY(0); filter: blur(0); }
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+    filter: blur(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
 }
 @keyframes marquee-x {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
 }
 @keyframes shimmer-gold {
-  0%, 100% { opacity: 0.35; }
-  50% { opacity: 0.7; }
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.7;
+  }
 }
 @keyframes zoom-soft {
-  0% { transform: scale(1.08); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
-.animate-fade-up { animation: fade-up 0.8s ease-out both; }
-.animate-float-slow { animation: float-slow 6s ease-in-out infinite; }
-.animate-word-in { animation: word-in 0.7s cubic-bezier(.2,.7,.2,1) both; }
-.animate-marquee-x { animation: marquee-x linear infinite; }
-.animate-shimmer-gold { animation: shimmer-gold 4s ease-in-out infinite; }
-.animate-zoom-soft { animation: zoom-soft 1.4s cubic-bezier(.2,.7,.2,1) both; }
+.animate-fade-up {
+  animation: fade-up 0.8s ease-out both;
+}
+.animate-float-slow {
+  animation: float-slow 6s ease-in-out infinite;
+}
+.animate-word-in {
+  animation: word-in 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+.animate-marquee-x {
+  animation: marquee-x linear infinite;
+}
+.animate-shimmer-gold {
+  animation: shimmer-gold 4s ease-in-out infinite;
+}
+.animate-zoom-soft {
+  animation: zoom-soft 1.4s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
 
 @media (prefers-reduced-motion: reduce) {
   .animate-fade-up,

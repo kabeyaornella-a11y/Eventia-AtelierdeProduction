@@ -40,10 +40,7 @@ export const Route = createFileRoute("/api/public/gumroad")({
 
         // Gumroad envoie ref via url_params[ref] OU via ?ref= sur l'URL de checkout
         const ref =
-          payload["url_params[ref]"] ||
-          payload.ref ||
-          payload["custom_fields[ref]"] ||
-          null;
+          payload["url_params[ref]"] || payload.ref || payload["custom_fields[ref]"] || null;
         const saleId = payload.sale_id || payload.id || null;
         const email = payload.email || null;
 

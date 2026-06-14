@@ -104,8 +104,14 @@ export function ThresholdShowcase({
             <div className="absolute inset-0 bg-gradient-to-t from-cacao/40 via-transparent to-transparent" />
           </div>
           {/* repères dorés, style cartel de musée */}
-          <span aria-hidden className="absolute -top-3 -left-3 size-8 border-t border-l border-primary-soft/60" />
-          <span aria-hidden className="absolute -bottom-3 -right-3 size-8 border-b border-r border-primary-soft/60" />
+          <span
+            aria-hidden
+            className="absolute -top-3 -left-3 size-8 border-t border-l border-primary-soft/60"
+          />
+          <span
+            aria-hidden
+            className="absolute -bottom-3 -right-3 size-8 border-b border-r border-primary-soft/60"
+          />
           {videoLabel && (
             <div className="absolute bottom-4 right-4 md:right-auto md:left-1/2 md:-translate-x-1/2 px-3 py-1.5 bg-ivory/95 text-cacao text-[10px] tracking-[0.22em] uppercase">
               {videoLabel}

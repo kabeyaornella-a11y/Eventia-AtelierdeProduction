@@ -10,7 +10,14 @@ interface Props {
   className?: string;
 }
 
-export function GumroadButton({ productKey, email, ref, children = "Acheter", variant = "gold", className = "" }: Props) {
+export function GumroadButton({
+  productKey,
+  email,
+  ref,
+  children = "Acheter",
+  variant = "gold",
+  className = "",
+}: Props) {
   const href = buildGumroadCheckout(productKey, { email, ref });
   const base =
     variant === "gold"

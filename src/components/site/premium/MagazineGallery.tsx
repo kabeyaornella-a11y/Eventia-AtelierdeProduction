@@ -12,13 +12,39 @@ type Item = {
  * Grille asymétrique avec ratios variables (3:4, 4:5, 16:9, 1:1),
  * sections intercalaires (citations, chiffres, intentions) tous les 6 items.
  */
-const RATIOS = ["aspect-[4/5]", "aspect-[3/4]", "aspect-[16/10]", "aspect-square", "aspect-[3/4]", "aspect-[4/5]"];
-const SPANS = ["md:col-span-7", "md:col-span-5", "md:col-span-12", "md:col-span-6", "md:col-span-6", "md:col-span-7"];
+const RATIOS = [
+  "aspect-[4/5]",
+  "aspect-[3/4]",
+  "aspect-[16/10]",
+  "aspect-square",
+  "aspect-[3/4]",
+  "aspect-[4/5]",
+];
+const SPANS = [
+  "md:col-span-7",
+  "md:col-span-5",
+  "md:col-span-12",
+  "md:col-span-6",
+  "md:col-span-6",
+  "md:col-span-7",
+];
 
 const INTERLUDES = [
-  { eyebrow: "Intention", title: "Chaque expérience est composée à la main par notre studio.", note: "De la première esquisse au dernier cachet de cire." },
-  { eyebrow: "Détail", title: "Aucun modèle n'est dupliqué entre deux couples.", note: "Votre récit reste unique, vos invités le savent." },
-  { eyebrow: "Signature", title: "La lumière, la matière, le silence — tout est choisi.", note: "Une direction artistique qui se voit dans chaque image." },
+  {
+    eyebrow: "Intention",
+    title: "Chaque expérience est composée à la main par notre studio.",
+    note: "De la première esquisse au dernier cachet de cire.",
+  },
+  {
+    eyebrow: "Détail",
+    title: "Aucun modèle n'est dupliqué entre deux couples.",
+    note: "Votre récit reste unique, vos invités le savent.",
+  },
+  {
+    eyebrow: "Signature",
+    title: "La lumière, la matière, le silence — tout est choisi.",
+    note: "Une direction artistique qui se voit dans chaque image.",
+  },
 ];
 
 export function MagazineGallery({
@@ -30,7 +56,9 @@ export function MagazineGallery({
   collections?: Collection[];
   showCollection?: boolean;
 }) {
-  const tiles: Array<{ kind: "exp"; data: Item } | { kind: "interlude"; data: typeof INTERLUDES[number] }> = [];
+  const tiles: Array<
+    { kind: "exp"; data: Item } | { kind: "interlude"; data: (typeof INTERLUDES)[number] }
+  > = [];
   items.forEach((exp, i) => {
     tiles.push({
       kind: "exp",
@@ -55,7 +83,9 @@ export function MagazineGallery({
                 "{tile.data.title}"
               </h3>
               <div className="gold-rule mx-auto mt-6" />
-              <p className="font-serif-soft italic text-sm text-muted-foreground mt-4">{tile.data.note}</p>
+              <p className="font-serif-soft italic text-sm text-muted-foreground mt-4">
+                {tile.data.note}
+              </p>
             </div>
           );
         }

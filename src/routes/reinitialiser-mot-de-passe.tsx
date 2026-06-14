@@ -27,12 +27,10 @@ function ResetPasswordPage() {
     const type = hashParams.get("type");
 
     if (tokenHash && type === "recovery") {
-      supabase.auth
-        .verifyOtp({ token_hash: tokenHash, type: "recovery" })
-        .then(({ error }) => {
-          if (!error) setReady(true);
-          else toast.error("Lien invalide ou expiré. Demandez un nouveau lien.");
-        });
+      supabase.auth.verifyOtp({ token_hash: tokenHash, type: "recovery" }).then(({ error }) => {
+        if (!error) setReady(true);
+        else toast.error("Lien invalide ou expiré. Demandez un nouveau lien.");
+      });
       return;
     }
 
@@ -57,7 +55,9 @@ function ResetPasswordPage() {
       toast.success("Mot de passe mis à jour. Vous êtes connecté·e.");
       navigate({ to: "/mes-commandes" });
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Erreur lors de la mise à jour du mot de passe.");
+      toast.error(
+        err instanceof Error ? err.message : "Erreur lors de la mise à jour du mot de passe.",
+      );
     } finally {
       setBusy(false);
     }
@@ -75,7 +75,10 @@ function ResetPasswordPage() {
         </div>
 
         {ready ? (
-          <form onSubmit={submit} className="mt-10 bg-ivory border border-primary/15 p-8 shadow-soft space-y-4">
+          <form
+            onSubmit={submit}
+            className="mt-10 bg-ivory border border-primary/15 p-8 shadow-soft space-y-4"
+          >
             <div>
               <label className="eyebrow text-xs">Nouveau mot de passe</label>
               <input
@@ -96,7 +99,10 @@ function ResetPasswordPage() {
         ) : (
           <div className="mt-10 text-center font-serif-soft italic text-muted-foreground space-y-4">
             <p>Lien invalide ou expiré. Demandez un nouveau lien depuis la page de connexion.</p>
-            <Link to="/auth" className="inline-block text-sm not-italic text-primary underline underline-offset-4">
+            <Link
+              to="/auth"
+              className="inline-block text-sm not-italic text-primary underline underline-offset-4"
+            >
               Retour à la connexion
             </Link>
           </div>

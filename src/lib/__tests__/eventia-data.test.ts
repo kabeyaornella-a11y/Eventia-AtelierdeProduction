@@ -14,7 +14,9 @@ vi.mock("@/assets/exp-jardin-suspendu.jpg", () => ({ default: "/assets/exp-jardi
 vi.mock("@/assets/exp-sultan-noir.jpg", () => ({ default: "/assets/exp-sultan-noir.jpg" }));
 vi.mock("@/assets/exp-opera-blanc.jpg", () => ({ default: "/assets/exp-opera-blanc.jpg" }));
 vi.mock("@/assets/exp-etoile-orient.jpg", () => ({ default: "/assets/exp-etoile-orient.jpg" }));
-vi.mock("@/assets/exp-velours-imperial.jpg", () => ({ default: "/assets/exp-velours-imperial.jpg" }));
+vi.mock("@/assets/exp-velours-imperial.jpg", () => ({
+  default: "/assets/exp-velours-imperial.jpg",
+}));
 vi.mock("@/assets/exp-palais-minuit.jpg", () => ({ default: "/assets/exp-palais-minuit.jpg" }));
 vi.mock("@/assets/exp-reve-ivoire.jpg", () => ({ default: "/assets/exp-reve-ivoire.jpg" }));
 vi.mock("@/assets/std-video.jpg", () => ({ default: "/assets/std-video.jpg" }));

@@ -14,15 +14,17 @@ export const sendPasswordResetEmail = createServerFn({ method: "POST" })
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
     // 1. Générer le lien de recovery (token_hash côté admin)
-    const { data: linkData, error: linkErr } = await (supabaseAdmin.auth.admin as any).generateLink({
-      type: "recovery",
-      email: data.email,
-    });
+    const { data: linkData, error: linkErr } = await (supabaseAdmin.auth.admin as any).generateLink(
+      {
+        type: "recovery",
+        email: data.email,
+      },
+    );
     if (linkErr) return { success: false, error: linkErr.message };
 
-    const hashedToken =
-      linkData?.properties?.hashed_token ?? linkData?.properties?.token;
-    if (!hashedToken) return { success: false, error: "Impossible de générer le lien de réinitialisation." };
+    const hashedToken = linkData?.properties?.hashed_token ?? linkData?.properties?.token;
+    if (!hashedToken)
+      return { success: false, error: "Impossible de générer le lien de réinitialisation." };
 
     // 2. Construire l'URL sur notre domaine
     const SITE = "https://www.eventiasignature.com";

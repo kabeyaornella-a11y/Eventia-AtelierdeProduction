@@ -16,7 +16,10 @@ function AdminAteliers() {
   const updateStatus = useServerFn(adminUpdateAtelierStatus);
   const qc = useQueryClient();
   const [openId, setOpenId] = useState<string | null>(null);
-  const { data, isLoading } = useQuery({ queryKey: ["admin-ateliers"], queryFn: () => fetchAteliers() });
+  const { data, isLoading } = useQuery({
+    queryKey: ["admin-ateliers"],
+    queryFn: () => fetchAteliers(),
+  });
 
   async function handleChange(id: string, status: string) {
     try {
@@ -62,7 +65,11 @@ function AdminAteliers() {
               onChange={(e) => handleChange(a.id, e.target.value)}
               className="border border-border/60 bg-background px-2 py-1 text-xs"
             >
-              {STATUSES.map((s) => <option key={s} value={s}>{s}</option>)}
+              {STATUSES.map((s) => (
+                <option key={s} value={s}>
+                  {s}
+                </option>
+              ))}
             </select>
           </div>
         </div>

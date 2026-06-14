@@ -1,12 +1,14 @@
 # Déploiement Eventia Signature
 
 ## Netlify
+
 Build command : `npm run build`
 Publish directory : `dist/client`
 
 Le projet contient aussi `netlify.toml` avec les réglages de base.
 
 ## Variables nécessaires
+
 Pour activer Supabase et les formulaires :
 
 - `SUPABASE_URL`

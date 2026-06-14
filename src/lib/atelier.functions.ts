@@ -8,7 +8,11 @@ const atelierSchema = z.object({
   request_type: z.enum(["papeterie", "gravure", "objets", "autre"]),
   details: z.string().trim().min(10).max(2000),
   budget: z.string().trim().max(60).optional().or(z.literal("")),
-  event_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional().or(z.literal("")),
+  event_date: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/)
+    .optional()
+    .or(z.literal("")),
 });
 
 const TYPE_LABEL: Record<string, string> = {

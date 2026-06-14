@@ -66,7 +66,9 @@ export const adminListOrders = createServerFn({ method: "GET" })
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data, error } = await supabaseAdmin
       .from("orders")
-      .select("id, ref, email, formula, experience_slug, total_eur, status, gumroad_url, created_at")
+      .select(
+        "id, ref, email, formula, experience_slug, total_eur, status, gumroad_url, created_at",
+      )
       .order("created_at", { ascending: false })
       .limit(200);
     if (error) throw new Error(error.message);
@@ -77,10 +79,12 @@ export const adminListOrders = createServerFn({ method: "GET" })
 export const adminUpdateOrderStatus = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((i) =>
-    z.object({
-      id: z.string().uuid(),
-      status: z.enum(["draft", "pending", "paid", "cancelled", "delivered"]),
-    }).parse(i),
+    z
+      .object({
+        id: z.string().uuid(),
+        status: z.enum(["draft", "pending", "paid", "cancelled", "delivered"]),
+      })
+      .parse(i),
   )
   .handler(async ({ data, context }) => {
     await assertAdmin(context);
@@ -112,10 +116,12 @@ export const adminListAteliers = createServerFn({ method: "GET" })
 export const adminUpdateAtelierStatus = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((i) =>
-    z.object({
-      id: z.string().uuid(),
-      status: z.enum(["new", "contacted", "scheduled", "won", "lost"]),
-    }).parse(i),
+    z
+      .object({
+        id: z.string().uuid(),
+        status: z.enum(["new", "contacted", "scheduled", "won", "lost"]),
+      })
+      .parse(i),
   )
   .handler(async ({ data, context }) => {
     await assertAdmin(context);

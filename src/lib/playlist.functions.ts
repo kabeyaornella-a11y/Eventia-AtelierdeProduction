@@ -31,7 +31,9 @@ export const submitTrack = createServerFn({ method: "POST" })
   });
 
 export const listTracks = createServerFn({ method: "GET" })
-  .inputValidator((d: { token: string }) => z.object({ token: z.string().min(8).max(128) }).parse(d))
+  .inputValidator((d: { token: string }) =>
+    z.object({ token: z.string().min(8).max(128) }).parse(d),
+  )
   .handler(async ({ data }) => {
     const { data: inv } = await supabase
       .from("invitations")

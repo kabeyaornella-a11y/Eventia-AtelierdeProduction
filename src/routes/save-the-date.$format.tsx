@@ -19,7 +19,12 @@ export const Route = createFileRoute("/save-the-date/$format")({
         { property: "og:description", content: desc },
         ...(f ? [{ property: "og:image" as const, content: f.image }] : []),
       ],
-      links: [{ rel: "canonical", href: `https://www.eventiasignature.com/save-the-date/${params.format}` }],
+      links: [
+        {
+          rel: "canonical",
+          href: `https://www.eventiasignature.com/save-the-date/${params.format}`,
+        },
+      ],
     };
   },
   loader: ({ params }) => {
@@ -33,7 +38,9 @@ export const Route = createFileRoute("/save-the-date/$format")({
       <Section>
         <div className="text-center">
           <h1 className="font-display text-4xl">Format introuvable</h1>
-          <Link to="/save-the-date" className="mt-6 inline-block text-primary">← Tous les formats</Link>
+          <Link to="/save-the-date" className="mt-6 inline-block text-primary">
+            ← Tous les formats
+          </Link>
         </div>
       </Section>
     </SiteLayout>
@@ -54,8 +61,12 @@ function SaveTheDateDetail() {
         <div className="absolute inset-0 flex items-end">
           <div className="mx-auto max-w-7xl w-full px-6 lg:px-10 pb-16 text-ivory">
             <div className="eyebrow !text-primary-soft mb-3">Save The Date</div>
-            <h1 className="font-display text-5xl md:text-7xl leading-[1.05]">{f.name.replace("Save The Date ", "")}</h1>
-            <p className="font-serif-soft italic text-xl text-ivory/90 mt-3 max-w-2xl">{f.tagline}</p>
+            <h1 className="font-display text-5xl md:text-7xl leading-[1.05]">
+              {f.name.replace("Save The Date ", "")}
+            </h1>
+            <p className="font-serif-soft italic text-xl text-ivory/90 mt-3 max-w-2xl">
+              {f.tagline}
+            </p>
           </div>
         </div>
       </section>
@@ -65,7 +76,9 @@ function SaveTheDateDetail() {
         <div className="grid lg:grid-cols-[1.2fr_1fr] gap-14">
           <div>
             <div className="eyebrow mb-3">Histoire du format</div>
-            <p className="font-serif-soft italic text-2xl text-foreground/90 leading-relaxed">{f.story}</p>
+            <p className="font-serif-soft italic text-2xl text-foreground/90 leading-relaxed">
+              {f.story}
+            </p>
             <div className="mt-10 flex items-center gap-6">
               <div>
                 <div className="eyebrow text-[10px]">À partir de</div>
@@ -79,7 +92,9 @@ function SaveTheDateDetail() {
             </div>
             <div className="flex flex-wrap gap-4 mt-10">
               <GumroadButton productKey={`std-${f.slug}`}>Acheter. {f.price} €</GumroadButton>
-              <Link to="/configurateur"><OutlineButton>Composer sur mesure</OutlineButton></Link>
+              <Link to="/configurateur">
+                <OutlineButton>Composer sur mesure</OutlineButton>
+              </Link>
             </div>
           </div>
           <div className="bg-ivory shadow-soft p-8">
@@ -114,13 +129,25 @@ function SaveTheDateDetail() {
           </div>
           <div className="grid sm:grid-cols-3 gap-6">
             {others.map((o) => (
-              <Link key={o.slug} to="/save-the-date/$format" params={{ format: o.slug }} className="group block bg-background shadow-soft overflow-hidden">
+              <Link
+                key={o.slug}
+                to="/save-the-date/$format"
+                params={{ format: o.slug }}
+                className="group block bg-background shadow-soft overflow-hidden"
+              >
                 <div className="aspect-[4/3] overflow-hidden">
-                  <img src={o.image} alt={o.name} loading="lazy" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                  <img
+                    src={o.image}
+                    alt={o.name}
+                    loading="lazy"
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
                 </div>
                 <div className="p-5">
                   <div className="font-display text-xl">{o.name.replace("Save The Date ", "")}</div>
-                  <div className="font-serif-soft italic text-sm text-muted-foreground mt-1">À partir de {o.price} €</div>
+                  <div className="font-serif-soft italic text-sm text-muted-foreground mt-1">
+                    À partir de {o.price} €
+                  </div>
                 </div>
               </Link>
             ))}

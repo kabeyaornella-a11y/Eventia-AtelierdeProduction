@@ -8,8 +8,7 @@ import { createClient } from "@supabase/supabase-js";
 import WS from "ws";
 
 function getPublicConfig() {
-  const url =
-    process.env.SUPABASE_URL ?? (import.meta.env.VITE_SUPABASE_URL as string | undefined);
+  const url = process.env.SUPABASE_URL ?? (import.meta.env.VITE_SUPABASE_URL as string | undefined);
   const anonKey =
     process.env.SUPABASE_PUBLISHABLE_KEY ??
     process.env.SUPABASE_ANON_KEY ??
@@ -17,7 +16,7 @@ function getPublicConfig() {
     (import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined);
   if (!url || !anonKey) {
     throw new Error(
-      "Supabase non configuré : définissez VITE_SUPABASE_URL et VITE_SUPABASE_PUBLISHABLE_KEY."
+      "Supabase non configuré : définissez VITE_SUPABASE_URL et VITE_SUPABASE_PUBLISHABLE_KEY.",
     );
   }
   return { url, anonKey };
@@ -54,5 +53,5 @@ export const requireSupabaseAuth = createMiddleware({ type: "function" }).server
         userEmail: data.user.email ?? null,
       },
     });
-  }
+  },
 );

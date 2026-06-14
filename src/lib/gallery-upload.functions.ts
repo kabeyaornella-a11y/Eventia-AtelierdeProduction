@@ -7,10 +7,12 @@ import { z } from "zod";
  */
 export const createGalleryUploadUrl = createServerFn({ method: "POST" })
   .inputValidator((d: { token: string; ext: string }) =>
-    z.object({
-      token: z.string().min(8).max(128),
-      ext: z.string().regex(/^(jpg|jpeg|png|webp|heic)$/i),
-    }).parse(d)
+    z
+      .object({
+        token: z.string().min(8).max(128),
+        ext: z.string().regex(/^(jpg|jpeg|png|webp|heic)$/i),
+      })
+      .parse(d),
   )
   .handler(async ({ data }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");

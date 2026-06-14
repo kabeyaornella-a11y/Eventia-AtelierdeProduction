@@ -1,7 +1,11 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
-const tokenSchema = z.string().min(6).max(64).regex(/^[a-zA-Z0-9_-]+$/);
+const tokenSchema = z
+  .string()
+  .min(6)
+  .max(64)
+  .regex(/^[a-zA-Z0-9_-]+$/);
 
 /** Lecture publique d'une invitation par token, incluant RSVP + playlist. */
 export const getInvitationBundle = createServerFn({ method: "GET" })
@@ -10,7 +14,9 @@ export const getInvitationBundle = createServerFn({ method: "GET" })
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data: inv } = await supabaseAdmin
       .from("invitations")
-      .select("id, token, rsvp_token, couple_names, event_date, venue, hero_url, message, allow_playlist, allow_gallery")
+      .select(
+        "id, token, rsvp_token, couple_names, event_date, venue, hero_url, message, allow_playlist, allow_gallery",
+      )
       .eq("token", data.token)
       .maybeSingle();
     if (!inv) return { invitation: null, rsvps: [], playlist: [] };

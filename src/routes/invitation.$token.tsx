@@ -14,9 +14,16 @@ export const Route = createFileRoute("/invitation/$token")({
   head: ({ params }) => ({
     meta: [
       { title: `Vous êtes invité·e — Eventia` },
-      { name: "description", content: `Invitation Eventia ${params.token}. RSVP, playlist et galerie.` },
+      {
+        name: "description",
+        content: `Invitation Eventia ${params.token}. RSVP, playlist et galerie.`,
+      },
       { property: "og:title", content: "Vous êtes invité·e à un moment Eventia" },
-      { property: "og:description", content: "Confirmez votre présence, ajoutez votre morceau, partagez vos plus belles photos." },
+      {
+        property: "og:description",
+        content:
+          "Confirmez votre présence, ajoutez votre morceau, partagez vos plus belles photos.",
+      },
       { property: "og:image", content: heroImg },
       { name: "robots", content: "noindex" },
     ],
@@ -25,9 +32,15 @@ export const Route = createFileRoute("/invitation/$token")({
 });
 
 type Invitation = {
-  id: string; token: string; couple_names: string; event_date: string;
-  venue: string | null; hero_url: string | null; message: string | null;
-  allow_playlist: boolean; allow_gallery: boolean;
+  id: string;
+  token: string;
+  couple_names: string;
+  event_date: string;
+  venue: string | null;
+  hero_url: string | null;
+  message: string | null;
+  allow_playlist: boolean;
+  allow_gallery: boolean;
 };
 type Track = { id: string; title: string; artist: string | null; suggested_by: string | null };
 
@@ -62,7 +75,9 @@ function InvitationPage() {
     }
   };
 
-  useEffect(() => { refresh(); /* eslint-disable-next-line */ }, [token]);
+  useEffect(() => {
+    refresh(); /* eslint-disable-next-line */
+  }, [token]);
 
   // Données affichées (réelles ou fallback démo)
   const couple = invitation?.couple_names ?? "Camille & Adrien";
@@ -84,7 +99,16 @@ function InvitationPage() {
     setSubmitting(true);
     try {
       if (invitation) {
-        await sendRsvp({ data: { token, guest_name: name.trim(), guest_email: email.trim(), status: rsvp, guests_count: guestCount, message: message.trim() } });
+        await sendRsvp({
+          data: {
+            token,
+            guest_name: name.trim(),
+            guest_email: email.trim(),
+            status: rsvp,
+            guests_count: guestCount,
+            message: message.trim(),
+          },
+        });
       }
       setDone(true);
       toast.success("Réponse envoyée");
@@ -97,10 +121,17 @@ function InvitationPage() {
 
   const addSong = async () => {
     if (!song.trim()) return;
-    const optimistic: Track = { id: `tmp-${Date.now()}`, title: song.trim(), artist: artist.trim() || null, suggested_by: name.trim() || null };
+    const optimistic: Track = {
+      id: `tmp-${Date.now()}`,
+      title: song.trim(),
+      artist: artist.trim() || null,
+      suggested_by: name.trim() || null,
+    };
     setPlaylist((s) => [optimistic, ...s].slice(0, 30));
-    const t = song.trim(); const a = artist.trim();
-    setSong(""); setArtist("");
+    const t = song.trim();
+    const a = artist.trim();
+    setSong("");
+    setArtist("");
     if (!invitation) return;
     try {
       await sendTrack({ data: { token, title: t, artist: a, suggested_by: name.trim() } });
@@ -111,7 +142,11 @@ function InvitationPage() {
   };
 
   if (!loaded) {
-    return <div className="min-h-screen flex items-center justify-center text-muted-foreground">Chargement…</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center text-muted-foreground">
+        Chargement…
+      </div>
+    );
   }
 
   return (
@@ -120,10 +155,14 @@ function InvitationPage() {
         <img src={heroSrc} alt="" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-b from-cacao/40 via-cacao/20 to-background" />
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6 text-ivory">
-          <div className="text-[10px] tracking-[0.3em] uppercase text-ivory/80 mb-4">Vous êtes invité·e</div>
+          <div className="text-[10px] tracking-[0.3em] uppercase text-ivory/80 mb-4">
+            Vous êtes invité·e
+          </div>
           <h1 className="font-display text-5xl md:text-7xl leading-tight">{couple}</h1>
           {invitation?.message && (
-            <p className="font-serif-soft italic text-lg md:text-2xl mt-4 max-w-lg">"{invitation.message}"</p>
+            <p className="font-serif-soft italic text-lg md:text-2xl mt-4 max-w-lg">
+              "{invitation.message}"
+            </p>
           )}
           <div className="mt-8 flex gap-6 md:gap-10 text-ivory">
             {[
@@ -148,7 +187,8 @@ function InvitationPage() {
           <div className="eyebrow text-primary">RSVP</div>
           <h2 className="font-display text-4xl mt-2">Confirmez votre présence</h2>
           <p className="font-serif-soft italic text-muted-foreground mt-3">
-            Réponse souhaitée avant le {new Date(eventDate.getTime() - 14 * 86400000).toLocaleDateString("fr-FR")}.
+            Réponse souhaitée avant le{" "}
+            {new Date(eventDate.getTime() - 14 * 86400000).toLocaleDateString("fr-FR")}.
           </p>
 
           {done ? (
@@ -162,11 +202,13 @@ function InvitationPage() {
           ) : (
             <div className="mt-10 bg-ivory border border-primary/15 p-8 md:p-10 shadow-soft text-left space-y-6">
               <div className="grid grid-cols-3 gap-2">
-                {([
-                  { v: "yes", l: "Avec joie" },
-                  { v: "maybe", l: "Peut-être" },
-                  { v: "no", l: "Avec regret" },
-                ] as const).map((o) => (
+                {(
+                  [
+                    { v: "yes", l: "Avec joie" },
+                    { v: "maybe", l: "Peut-être" },
+                    { v: "no", l: "Avec regret" },
+                  ] as const
+                ).map((o) => (
                   <button
                     key={o.v}
                     onClick={() => setRsvp(o.v)}
@@ -178,12 +220,31 @@ function InvitationPage() {
               </div>
 
               <div className="grid sm:grid-cols-2 gap-4">
-                <input placeholder="Prénom & Nom" value={name} onChange={(e) => setName(e.target.value)} className="w-full px-4 py-3 bg-background border border-border text-sm" />
-                <input placeholder="Email (optionnel)" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full px-4 py-3 bg-background border border-border text-sm" />
+                <input
+                  placeholder="Prénom & Nom"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="w-full px-4 py-3 bg-background border border-border text-sm"
+                />
+                <input
+                  placeholder="Email (optionnel)"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full px-4 py-3 bg-background border border-border text-sm"
+                />
               </div>
               <div className="flex items-center gap-3">
-                <label className="text-xs uppercase tracking-[0.18em] text-muted-foreground">Convives</label>
-                <input type="number" min={1} max={10} value={guestCount} onChange={(e) => setGuestCount(parseInt(e.target.value) || 1)} className="w-24 px-3 py-3 bg-background border border-border text-sm" />
+                <label className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+                  Convives
+                </label>
+                <input
+                  type="number"
+                  min={1}
+                  max={10}
+                  value={guestCount}
+                  onChange={(e) => setGuestCount(parseInt(e.target.value) || 1)}
+                  className="w-24 px-3 py-3 bg-background border border-border text-sm"
+                />
               </div>
 
               <textarea
@@ -213,9 +274,24 @@ function InvitationPage() {
               <h2 className="font-display text-4xl mt-2">Quel morceau aimeriez-vous danser ?</h2>
             </div>
             <div className="grid sm:grid-cols-[1fr_1fr_auto] gap-2 mb-4">
-              <input value={song} onChange={(e) => setSong(e.target.value)} placeholder="Titre" className="px-4 py-3 bg-ivory border border-border text-sm" />
-              <input value={artist} onChange={(e) => setArtist(e.target.value)} placeholder="Artiste (optionnel)" className="px-4 py-3 bg-ivory border border-border text-sm" />
-              <button onClick={addSong} className="px-5 py-3 text-xs tracking-[0.18em] uppercase text-ivory bg-primary hover:bg-cacao">Ajouter</button>
+              <input
+                value={song}
+                onChange={(e) => setSong(e.target.value)}
+                placeholder="Titre"
+                className="px-4 py-3 bg-ivory border border-border text-sm"
+              />
+              <input
+                value={artist}
+                onChange={(e) => setArtist(e.target.value)}
+                placeholder="Artiste (optionnel)"
+                className="px-4 py-3 bg-ivory border border-border text-sm"
+              />
+              <button
+                onClick={addSong}
+                className="px-5 py-3 text-xs tracking-[0.18em] uppercase text-ivory bg-primary hover:bg-cacao"
+              >
+                Ajouter
+              </button>
             </div>
             <ul className="bg-ivory border border-primary/10 divide-y divide-border/60">
               {playlist.length === 0 && (
@@ -227,7 +303,11 @@ function InvitationPage() {
                 <li key={t.id} className="flex items-center justify-between px-4 py-3 text-sm">
                   <span className="font-serif-soft italic">
                     {t.artist ? `${t.artist} — ${t.title}` : t.title}
-                    {t.suggested_by && <span className="text-muted-foreground text-xs ml-2">par {t.suggested_by}</span>}
+                    {t.suggested_by && (
+                      <span className="text-muted-foreground text-xs ml-2">
+                        par {t.suggested_by}
+                      </span>
+                    )}
                   </span>
                   <Music className="size-3.5 text-primary/60" />
                 </li>

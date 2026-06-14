@@ -42,9 +42,7 @@ export function SectionHead({
   return (
     <div className={`${center ? "text-center mx-auto" : ""} max-w-3xl mb-14`}>
       {eyebrow && <div className="eyebrow mb-4">{eyebrow}</div>}
-      <h2 className="font-display text-3xl md:text-5xl text-foreground leading-tight">
-        {title}
-      </h2>
+      <h2 className="font-display text-3xl md:text-5xl text-foreground leading-tight">{title}</h2>
       {intro && (
         <p className="mt-5 text-base md:text-lg text-muted-foreground leading-relaxed font-serif-soft">
           {intro}

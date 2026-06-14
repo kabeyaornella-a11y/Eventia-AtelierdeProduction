@@ -15,5 +15,5 @@ export const attachSupabaseAuth = createMiddleware({ type: "function" }).client(
       // pas de session disponible : la server function décidera si l'auth est requise
     }
     return next({ headers });
-  }
+  },
 );

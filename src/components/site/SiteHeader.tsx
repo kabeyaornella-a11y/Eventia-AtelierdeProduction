@@ -9,9 +9,9 @@ const navLinks = [
   { to: "/save-the-date", label: "Save The Date" },
   { to: "/comparer", label: "Comparer" },
   { to: "/offres", label: "Offres" },
- { to: "/atelier", label: "Atelier" },
- { to: "/entreprises", label: "Entreprises" },
- { to: "/contact", label: "Contact" },
+  { to: "/atelier", label: "Atelier" },
+  { to: "/entreprises", label: "Entreprises" },
+  { to: "/contact", label: "Contact" },
 ] as const;
 
 export function SiteHeader() {
@@ -131,7 +131,6 @@ export function SiteHeader() {
             >
               Commencer
             </Link>
-
           </nav>
         </div>
       )}

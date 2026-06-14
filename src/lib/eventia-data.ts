@@ -43,8 +43,7 @@ export const collections: Collection[] = [
     name: "Les Seuils",
     tagline: "Un passage.",
     description: "Une ouverture. Le moment où une histoire commence.",
-    manifesto:
-      "Un passage. Une ouverture. Le moment où une histoire commence.",
+    manifesto: "Un passage. Une ouverture. Le moment où une histoire commence.",
     image: portesImg,
   },
   {
@@ -61,8 +60,7 @@ export const collections: Collection[] = [
     name: "L'Union",
     tagline: "Deux histoires.",
     description: "Deux chemins. Une célébration partagée avec ceux qui comptent.",
-    manifesto:
-      "Deux histoires. Deux chemins. Une célébration partagée avec ceux qui comptent.",
+    manifesto: "Deux histoires. Deux chemins. Une célébration partagée avec ceux qui comptent.",
     image: unionImg,
   },
 ];
@@ -150,7 +148,8 @@ export const experiences: Experience[] = [
     ambiance: "Minimal royal",
     story:
       "Une scène plus épurée, sculptée par le blanc, l'ivoire et l'or. La majesté vient du silence et de la précision.",
-    inspiration: "Architecture blanche, dorure fine, luxe minimal, composition parfaitement centrée",
+    inspiration:
+      "Architecture blanche, dorure fine, luxe minimal, composition parfaitement centrée",
     palette: ["#FFFFFF", "#FBF8F4", "#E9D5B5", "#D4B07A"],
     music: "Piano clair, cordes tenues",
     image: reveImg,
@@ -487,7 +486,8 @@ export const offers = [
     name: "La Signature",
     price: 269,
     tagline: "L'expérience complète Eventia.",
-    description: "L'offre la plus choisie. Le récit complet, du Save The Date au coffre-fort souvenirs.",
+    description:
+      "L'offre la plus choisie. Le récit complet, du Save The Date au coffre-fort souvenirs.",
     recommended: true,
     features: [
       "Tout de L'Essentielle",
@@ -551,19 +551,84 @@ export const modules = [
 ];
 
 export const atelierProducts = [
-  { name: "Papeterie", description: "Faire-parts, cartons et livrets imprimés.", priceFrom: 4.5, category: "Papier" },
-  { name: "Menus", description: "Menus imprimés sur papier signature.", priceFrom: 3.5, category: "Papier" },
-  { name: "Marque-places", description: "Calligraphie, dorure à chaud, papier coton.", priceFrom: 3.5, category: "Papier" },
-  { name: "Plans de table", description: "Plans imprimés et panneaux d'affichage.", priceFrom: 39, category: "Signalétique" },
-  { name: "QR codes imprimés", description: "QR codes ciselés sur papier, acrylique ou bois.", priceFrom: 13, category: "Signalétique" },
-  { name: "Welcome boards", description: "Panneaux d'accueil personnalisés.", priceFrom: 49, category: "Signalétique" },
-  { name: "Panneaux", description: "Panneaux directionnels et d'honneur.", priceFrom: 39, category: "Signalétique" },
-  { name: "Signalétique", description: "Ensemble signalétique cohérent pour votre lieu.", priceFrom: 89, category: "Signalétique" },
-  { name: "Gravure", description: "Gravure laser sur bois, acrylique, métal.", priceFrom: 35, category: "Objets" },
-  { name: "Vinyle", description: "Découpes vinyle pour vitres, miroirs, panneaux.", priceFrom: 25, category: "Objets" },
-  { name: "Cadeaux personnalisés", description: "Cadeaux invités composés à votre image.", priceFrom: 8.5, category: "Cadeaux" },
-  { name: "Coffrets témoins", description: "Coffrets pour vos témoins et proches.", priceFrom: 49, category: "Cadeaux" },
-  { name: "Coffrets invités", description: "Coffrets d'accueil pour vos invités.", priceFrom: 28, category: "Cadeaux" },
+  {
+    name: "Papeterie",
+    description: "Faire-parts, cartons et livrets imprimés.",
+    priceFrom: 4.5,
+    category: "Papier",
+  },
+  {
+    name: "Menus",
+    description: "Menus imprimés sur papier signature.",
+    priceFrom: 3.5,
+    category: "Papier",
+  },
+  {
+    name: "Marque-places",
+    description: "Calligraphie, dorure à chaud, papier coton.",
+    priceFrom: 3.5,
+    category: "Papier",
+  },
+  {
+    name: "Plans de table",
+    description: "Plans imprimés et panneaux d'affichage.",
+    priceFrom: 39,
+    category: "Signalétique",
+  },
+  {
+    name: "QR codes imprimés",
+    description: "QR codes ciselés sur papier, acrylique ou bois.",
+    priceFrom: 13,
+    category: "Signalétique",
+  },
+  {
+    name: "Welcome boards",
+    description: "Panneaux d'accueil personnalisés.",
+    priceFrom: 49,
+    category: "Signalétique",
+  },
+  {
+    name: "Panneaux",
+    description: "Panneaux directionnels et d'honneur.",
+    priceFrom: 39,
+    category: "Signalétique",
+  },
+  {
+    name: "Signalétique",
+    description: "Ensemble signalétique cohérent pour votre lieu.",
+    priceFrom: 89,
+    category: "Signalétique",
+  },
+  {
+    name: "Gravure",
+    description: "Gravure laser sur bois, acrylique, métal.",
+    priceFrom: 35,
+    category: "Objets",
+  },
+  {
+    name: "Vinyle",
+    description: "Découpes vinyle pour vitres, miroirs, panneaux.",
+    priceFrom: 25,
+    category: "Objets",
+  },
+  {
+    name: "Cadeaux personnalisés",
+    description: "Cadeaux invités composés à votre image.",
+    priceFrom: 8.5,
+    category: "Cadeaux",
+  },
+  {
+    name: "Coffrets témoins",
+    description: "Coffrets pour vos témoins et proches.",
+    priceFrom: 49,
+    category: "Cadeaux",
+  },
+  {
+    name: "Coffrets invités",
+    description: "Coffrets d'accueil pour vos invités.",
+    priceFrom: 28,
+    category: "Cadeaux",
+  },
 ];
 
 export const partnerCategories = [
@@ -578,28 +643,94 @@ export const partnerCategories = [
 ];
 
 export const faq = [
-  { q: "Faut-il télécharger une application ?", a: "Aucune. Tout fonctionne dans le navigateur, pour vous et vos invités. Un simple lien suffit." },
-  { q: "Puis-je envoyer l'invitation à tous mes invités ?", a: "Oui, l'envoi est illimité et sans surcoût. Lien personnalisé, email ou QR Code." },
-  { q: "Peut-on modifier les informations après l'envoi ?", a: "Oui, toutes les modifications sont possibles à tout moment, en temps réel, sans limite." },
-  { q: "Le paiement est-il unique ?", a: "Oui. Paiement unique, sans abonnement. Possibilité en 3 ou 4 fois sans frais." },
-  { q: "Les RSVP sont-ils suivis en temps réel ?", a: "Oui, chaque réponse vous est notifiée instantanément dans votre espace client." },
-  { q: "Peut-on créer une expérience sur mesure ?", a: "Bien sûr. Notre direction artistique conçoit une expérience écrite à partir de votre histoire, sans modèle préexistant." },
-  { q: "Proposez-vous aussi des objets physiques ?", a: "Oui, via Eventia Atelier : papeterie, signalétique, coffrets, gravure et bien plus." },
-  { q: "Combien de temps avant l'événement faut-il commander ?", a: "Idéalement 2 à 3 mois avant. Mais nous savons aussi travailler en délais courts." },
-  { q: "Peut-on personnaliser entièrement les textes ?", a: "Oui, chaque ligne est personnalisable. Nous proposons aussi un accompagnement rédactionnel." },
-  { q: "Les invités peuvent-ils répondre depuis leur mobile ?", a: "Oui, l'expérience est pensée mobile-first. Aucun téléchargement nécessaire." },
-  { q: "Peut-on inviter dans plusieurs langues ?", a: "Oui, avec l'offre L'Exception ou en module additionnel. Jusqu'à 6 langues simultanées." },
-  { q: "Comment fonctionne la Galerie Live ?", a: "Vos invités envoient leurs photos via un lien dédié. Tout s'affiche en temps réel sur l'expérience." },
-  { q: "Et la Playlist collaborative ?", a: "Chaque invité peut proposer des titres avant l'événement. Vous validez. Le DJ a tout en main." },
-  { q: "Peut-on imprimer des QR Codes pour la salle ?", a: "Oui, nous livrons des QR Codes prêts à imprimer ou en version acrylique via l'Atelier." },
-  { q: "Mes données sont-elles sécurisées ?", a: "Hébergement européen, chiffrement SSL, conformité RGPD complète. Vos invités ne sont jamais sollicités." },
-  { q: "Que se passe-t-il après l'événement ?", a: "L'expérience reste accessible. Avec L'Exception, vous bénéficiez d'un coffre-fort souvenirs à vie." },
-  { q: "Puis-je tester avant d'acheter ?", a: "Oui, nous proposons une démo personnalisée gratuite. Contactez-nous." },
-  { q: "Comment se passe l'accompagnement ?", a: "Un référent unique vous accompagne du brief à l'événement. Échanges illimités." },
-  { q: "Peut-on commander uniquement l'Atelier ?", a: "Oui, l'Atelier est accessible indépendamment des expériences digitales." },
-  { q: "Travaillez-vous avec des wedding planners ?", a: "Oui, nous avons un programme partenaires dédié. Conditions spécifiques sur demande." },
-  { q: "Y a-t-il des frais cachés ?", a: "Aucun. Le tarif annoncé est le tarif final. Tout est inclus." },
-  { q: "Puis-je changer d'offre en cours de route ?", a: "Oui, vous pouvez évoluer vers une offre supérieure à tout moment. Vous ne payez que la différence." },
+  {
+    q: "Faut-il télécharger une application ?",
+    a: "Aucune. Tout fonctionne dans le navigateur, pour vous et vos invités. Un simple lien suffit.",
+  },
+  {
+    q: "Puis-je envoyer l'invitation à tous mes invités ?",
+    a: "Oui, l'envoi est illimité et sans surcoût. Lien personnalisé, email ou QR Code.",
+  },
+  {
+    q: "Peut-on modifier les informations après l'envoi ?",
+    a: "Oui, toutes les modifications sont possibles à tout moment, en temps réel, sans limite.",
+  },
+  {
+    q: "Le paiement est-il unique ?",
+    a: "Oui. Paiement unique, sans abonnement. Possibilité en 3 ou 4 fois sans frais.",
+  },
+  {
+    q: "Les RSVP sont-ils suivis en temps réel ?",
+    a: "Oui, chaque réponse vous est notifiée instantanément dans votre espace client.",
+  },
+  {
+    q: "Peut-on créer une expérience sur mesure ?",
+    a: "Bien sûr. Notre direction artistique conçoit une expérience écrite à partir de votre histoire, sans modèle préexistant.",
+  },
+  {
+    q: "Proposez-vous aussi des objets physiques ?",
+    a: "Oui, via Eventia Atelier : papeterie, signalétique, coffrets, gravure et bien plus.",
+  },
+  {
+    q: "Combien de temps avant l'événement faut-il commander ?",
+    a: "Idéalement 2 à 3 mois avant. Mais nous savons aussi travailler en délais courts.",
+  },
+  {
+    q: "Peut-on personnaliser entièrement les textes ?",
+    a: "Oui, chaque ligne est personnalisable. Nous proposons aussi un accompagnement rédactionnel.",
+  },
+  {
+    q: "Les invités peuvent-ils répondre depuis leur mobile ?",
+    a: "Oui, l'expérience est pensée mobile-first. Aucun téléchargement nécessaire.",
+  },
+  {
+    q: "Peut-on inviter dans plusieurs langues ?",
+    a: "Oui, avec l'offre L'Exception ou en module additionnel. Jusqu'à 6 langues simultanées.",
+  },
+  {
+    q: "Comment fonctionne la Galerie Live ?",
+    a: "Vos invités envoient leurs photos via un lien dédié. Tout s'affiche en temps réel sur l'expérience.",
+  },
+  {
+    q: "Et la Playlist collaborative ?",
+    a: "Chaque invité peut proposer des titres avant l'événement. Vous validez. Le DJ a tout en main.",
+  },
+  {
+    q: "Peut-on imprimer des QR Codes pour la salle ?",
+    a: "Oui, nous livrons des QR Codes prêts à imprimer ou en version acrylique via l'Atelier.",
+  },
+  {
+    q: "Mes données sont-elles sécurisées ?",
+    a: "Hébergement européen, chiffrement SSL, conformité RGPD complète. Vos invités ne sont jamais sollicités.",
+  },
+  {
+    q: "Que se passe-t-il après l'événement ?",
+    a: "L'expérience reste accessible. Avec L'Exception, vous bénéficiez d'un coffre-fort souvenirs à vie.",
+  },
+  {
+    q: "Puis-je tester avant d'acheter ?",
+    a: "Oui, nous proposons une démo personnalisée gratuite. Contactez-nous.",
+  },
+  {
+    q: "Comment se passe l'accompagnement ?",
+    a: "Un référent unique vous accompagne du brief à l'événement. Échanges illimités.",
+  },
+  {
+    q: "Peut-on commander uniquement l'Atelier ?",
+    a: "Oui, l'Atelier est accessible indépendamment des expériences digitales.",
+  },
+  {
+    q: "Travaillez-vous avec des wedding planners ?",
+    a: "Oui, nous avons un programme partenaires dédié. Conditions spécifiques sur demande.",
+  },
+  {
+    q: "Y a-t-il des frais cachés ?",
+    a: "Aucun. Le tarif annoncé est le tarif final. Tout est inclus.",
+  },
+  {
+    q: "Puis-je changer d'offre en cours de route ?",
+    a: "Oui, vous pouvez évoluer vers une offre supérieure à tout moment. Vous ne payez que la différence.",
+  },
 ];
 
 // Les vidéos Cloudinary officielles sont centralisées dans src/lib/cloudinary-models.ts (source unique).

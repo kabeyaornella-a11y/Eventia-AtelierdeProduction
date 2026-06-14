@@ -92,9 +92,21 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:card", content: "summary_large_image" },
       { property: "og:title", content: "Eventia Signature — Maison d'expériences digitales" },
       { name: "twitter:title", content: "Eventia Signature — Maison d'expériences digitales" },
-      { name: "keywords", content: "invitation digitale mariage premium, save the date animé, wedding website luxe, RSVP mariage, album photo live, Eventia Signature" },
-      { property: "og:description", content: "Des expériences digitales élégantes pour annoncer, accueillir et marquer les esprits." },
-      { name: "twitter:description", content: "Des expériences digitales élégantes pour annoncer, accueillir et marquer les esprits." },
+      {
+        name: "keywords",
+        content:
+          "invitation digitale mariage premium, save the date animé, wedding website luxe, RSVP mariage, album photo live, Eventia Signature",
+      },
+      {
+        property: "og:description",
+        content:
+          "Des expériences digitales élégantes pour annoncer, accueillir et marquer les esprits.",
+      },
+      {
+        name: "twitter:description",
+        content:
+          "Des expériences digitales élégantes pour annoncer, accueillir et marquer les esprits.",
+      },
       { property: "og:image", content: heroOgImg },
       { name: "twitter:image", content: heroOgImg },
     ],
@@ -113,7 +125,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   notFoundComponent: NotFoundComponent,
   errorComponent: ErrorComponent,
 });
-
 
 function RootShell({ children }: { children: ReactNode }) {
   const orgSchema = JSON.stringify({

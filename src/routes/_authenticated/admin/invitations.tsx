@@ -9,7 +9,10 @@ export const Route = createFileRoute("/_authenticated/admin/invitations")({
 
 function AdminInvitations() {
   const fetchInvs = useServerFn(adminListInvitations);
-  const { data, isLoading } = useQuery({ queryKey: ["admin-invitations"], queryFn: () => fetchInvs() });
+  const { data, isLoading } = useQuery({
+    queryKey: ["admin-invitations"],
+    queryFn: () => fetchInvs(),
+  });
 
   if (isLoading) return <div className="text-center text-muted-foreground py-20">Chargement…</div>;
   const invs = data?.invitations ?? [];
@@ -34,14 +37,22 @@ function AdminInvitations() {
               <td className="p-4 text-xs">{i.venue ?? "—"}</td>
               <td className="p-4 font-mono text-xs">{i.token}</td>
               <td className="p-4">
-                <Link to="/invitation/$token" params={{ token: i.token }} className="text-primary underline text-xs">
+                <Link
+                  to="/invitation/$token"
+                  params={{ token: i.token }}
+                  className="text-primary underline text-xs"
+                >
                   Ouvrir
                 </Link>
               </td>
             </tr>
           ))}
           {invs.length === 0 && (
-            <tr><td colSpan={5} className="p-12 text-center text-muted-foreground">Aucune invitation</td></tr>
+            <tr>
+              <td colSpan={5} className="p-12 text-center text-muted-foreground">
+                Aucune invitation
+              </td>
+            </tr>
           )}
         </tbody>
       </table>

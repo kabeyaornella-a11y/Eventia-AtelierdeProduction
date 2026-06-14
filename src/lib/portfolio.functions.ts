@@ -13,7 +13,17 @@ export const listPortfolio = createServerFn({ method: "GET" }).handler(async () 
 });
 
 export const getPortfolioBySlug = createServerFn({ method: "GET" })
-  .inputValidator((i) => z.object({ slug: z.string().min(1).max(120).regex(/^[a-z0-9-]+$/) }).parse(i))
+  .inputValidator((i) =>
+    z
+      .object({
+        slug: z
+          .string()
+          .min(1)
+          .max(120)
+          .regex(/^[a-z0-9-]+$/),
+      })
+      .parse(i),
+  )
   .handler(async ({ data }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data: item } = await supabaseAdmin

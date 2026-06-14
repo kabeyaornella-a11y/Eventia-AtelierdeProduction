@@ -5,7 +5,10 @@ export const Route = createFileRoute("/union")({
   head: () => ({
     meta: [
       { title: "L'Union — Eventia Signature" },
-      { name: "description", content: "Deux histoires deviennent une. La collection de la rencontre." },
+      {
+        name: "description",
+        content: "Deux histoires deviennent une. La collection de la rencontre.",
+      },
       { property: "og:title", content: "L'Union — Eventia Signature" },
       { property: "og:description", content: "La collection de la rencontre." },
       { property: "og:image", content: img },

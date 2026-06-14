@@ -8,7 +8,11 @@ export const Route = createFileRoute("/experiences")({
   head: () => ({
     meta: [
       { title: "Expériences — Eventia Signature" },
-      { name: "description", content: "Toutes nos expériences signature. Filtrez par univers, ambiance et niveau d'immersion." },
+      {
+        name: "description",
+        content:
+          "Toutes nos expériences signature. Filtrez par univers, ambiance et niveau d'immersion.",
+      },
       { property: "og:title", content: "Expériences — Eventia Signature" },
       { property: "og:description", content: "Trouvez l'expérience qui vous ressemble." },
     ],
@@ -23,7 +27,9 @@ function ExperiencesIndex() {
   const filtered = useMemo(
     () =>
       experiences.filter(
-        (e) => (univers === "all" || e.univers === univers) && (immersion === "all" || e.immersion === immersion),
+        (e) =>
+          (univers === "all" || e.univers === univers) &&
+          (immersion === "all" || e.immersion === immersion),
       ),
     [univers, immersion],
   );
@@ -32,13 +38,10 @@ function ExperiencesIndex() {
     <SiteLayout>
       {/* Hero éditorial */}
       <Section className="text-center max-w-4xl">
-        <SectionHead
-          eyebrow="Catalogue éditorial"
-          title="Les expériences signées Eventia."
-        />
+        <SectionHead eyebrow="Catalogue éditorial" title="Les expériences signées Eventia." />
         <p className="font-serif-soft italic text-lg md:text-xl text-muted-foreground mt-4 leading-relaxed">
-          Quatre univers, une vingtaine d'expériences. Chaque composition est pensée
-          comme une scène de cinéma : un décor, une lumière, un récit qui se déploie.
+          Quatre univers, une vingtaine d'expériences. Chaque composition est pensée comme une scène
+          de cinéma : un décor, une lumière, un récit qui se déploie.
         </p>
         <div className="gold-rule mx-auto mt-10" />
       </Section>
@@ -52,7 +55,9 @@ function ExperiencesIndex() {
           >
             <option value="all">Tous les univers</option>
             {collections.map((c) => (
-              <option key={c.slug} value={c.slug}>{c.name}</option>
+              <option key={c.slug} value={c.slug}>
+                {c.name}
+              </option>
             ))}
           </select>
           <select
@@ -66,7 +71,10 @@ function ExperiencesIndex() {
             <option value="Spectaculaire">Spectaculaire</option>
           </select>
           <button
-            onClick={() => { setUnivers("all"); setImmersion("all"); }}
+            onClick={() => {
+              setUnivers("all");
+              setImmersion("all");
+            }}
             className="text-xs eyebrow text-primary"
           >
             Réinitialiser
@@ -78,4 +86,3 @@ function ExperiencesIndex() {
     </SiteLayout>
   );
 }
-

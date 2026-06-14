@@ -48,7 +48,9 @@ export const listMyEmails = createServerFn({ method: "GET" })
   .handler(async ({ context }) => {
     const { data, error } = await context.supabase
       .from("email_logs")
-      .select("id, template, recipient, subject, status, sent_at, created_at, invitation_id, order_id")
+      .select(
+        "id, template, recipient, subject, status, sent_at, created_at, invitation_id, order_id",
+      )
       .eq("user_id", context.userId)
       .order("created_at", { ascending: false })
       .limit(50);

@@ -33,17 +33,32 @@ function AdminDashboard() {
       <div className="mb-6">
         <div className="eyebrow text-primary">Administration</div>
         <h1 className="font-display text-3xl md:text-4xl mt-1">Vue d'ensemble</h1>
-        <p className="font-serif-soft italic text-muted-foreground mt-2">Pilotage en temps réel de l'atelier Eventia Signature.</p>
+        <p className="font-serif-soft italic text-muted-foreground mt-2">
+          Pilotage en temps réel de l'atelier Eventia Signature.
+        </p>
       </div>
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        <StatCard icon={ShoppingBag} label="Commandes" value={data.ordersCount} hint={`${data.pendingOrders} en attente`} />
+        <StatCard
+          icon={ShoppingBag}
+          label="Commandes"
+          value={data.ordersCount}
+          hint={`${data.pendingOrders} en attente`}
+        />
         <StatCard icon={Euro} label="Chiffre d'affaires payé" value={`${data.totalRevenue} €`} />
-        <StatCard icon={Mail} label="Demandes atelier" value={data.ateliersCount} hint={`${data.pendingAteliers} nouvelles`} />
+        <StatCard
+          icon={Mail}
+          label="Demandes atelier"
+          value={data.ateliersCount}
+          hint={`${data.pendingAteliers} nouvelles`}
+        />
         <StatCard icon={Heart} label="Invitations" value={data.invitationsCount} />
         <StatCard icon={Users} label="Réponses RSVP" value={data.rsvpsCount} />
-        <StatCard icon={Clock} label="Dernière mise à jour" value={new Date().toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })} />
+        <StatCard
+          icon={Clock}
+          label="Dernière mise à jour"
+          value={new Date().toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}
+        />
       </div>
     </div>
   );
 }
-

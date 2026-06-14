@@ -8,7 +8,11 @@ export const Route = createFileRoute("/studio")({
   head: () => ({
     meta: [
       { title: "Studio — Eventia Signature" },
-      { name: "description", content: "Le portfolio éditorial du Studio Eventia. Mariages, événements et créations signées par notre direction artistique." },
+      {
+        name: "description",
+        content:
+          "Le portfolio éditorial du Studio Eventia. Mariages, événements et créations signées par notre direction artistique.",
+      },
       { property: "og:title", content: "Studio — Eventia Signature" },
       { property: "og:description", content: "Les réalisations du Studio Eventia." },
     ],
@@ -30,8 +34,8 @@ function StudioPage() {
       <Section className="text-center max-w-4xl">
         <SectionHead eyebrow="Studio Eventia" title="Le portfolio." />
         <p className="font-serif-soft italic text-lg md:text-xl text-muted-foreground mt-4 leading-relaxed">
-          Les réalisations passées du Studio. Chaque projet est composé sur mesure
-          par notre direction artistique, écrit à partir d'une histoire singulière.
+          Les réalisations passées du Studio. Chaque projet est composé sur mesure par notre
+          direction artistique, écrit à partir d'une histoire singulière.
         </p>
         <div className="gold-rule mx-auto mt-10" />
       </Section>
@@ -41,8 +45,8 @@ function StudioPage() {
           <p className="text-center text-muted-foreground">Chargement…</p>
         ) : items.length === 0 ? (
           <p className="text-center text-muted-foreground italic max-w-xl mx-auto">
-            Le portfolio sera publié prochainement. En attendant, parcourez nos
-            expériences signature.
+            Le portfolio sera publié prochainement. En attendant, parcourez nos expériences
+            signature.
           </p>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-10">
@@ -64,9 +68,19 @@ function StudioPage() {
                   )}
                   <div className="absolute inset-0 bg-gradient-to-t from-cacao/85 via-cacao/10 to-transparent" />
                   <div className="absolute inset-0 p-6 md:p-8 flex flex-col justify-end text-ivory">
-                    {item.category && <div className="eyebrow !text-primary-soft text-[10px] mb-2">{item.category}</div>}
-                    <h3 className="font-display text-2xl md:text-3xl leading-tight">{item.title}</h3>
-                    {item.year && <div className="text-[11px] tracking-[0.22em] uppercase text-ivory/70 mt-3">{item.year}</div>}
+                    {item.category && (
+                      <div className="eyebrow !text-primary-soft text-[10px] mb-2">
+                        {item.category}
+                      </div>
+                    )}
+                    <h3 className="font-display text-2xl md:text-3xl leading-tight">
+                      {item.title}
+                    </h3>
+                    {item.year && (
+                      <div className="text-[11px] tracking-[0.22em] uppercase text-ivory/70 mt-3">
+                        {item.year}
+                      </div>
+                    )}
                   </div>
                 </div>
               </Link>

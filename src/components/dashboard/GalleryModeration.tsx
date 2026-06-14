@@ -24,11 +24,14 @@ export function GalleryModeration({ invitationId }: { invitationId: string }) {
       q.refetch();
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Erreur");
-    } finally { setBusy(null); }
+    } finally {
+      setBusy(null);
+    }
   };
 
   if (q.isLoading) return <p className="text-sm text-muted-foreground">Chargement…</p>;
-  if (photos.length === 0) return <p className="text-sm text-muted-foreground">Aucune photo à modérer.</p>;
+  if (photos.length === 0)
+    return <p className="text-sm text-muted-foreground">Aucune photo à modérer.</p>;
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -39,12 +42,18 @@ export function GalleryModeration({ invitationId }: { invitationId: string }) {
             {p.guest_name && <p className="font-semibold">{p.guest_name}</p>}
             {p.caption && <p className="text-muted-foreground line-clamp-2">{p.caption}</p>}
             <div className="flex gap-1 mt-2">
-              <button disabled={busy === p.id || p.approved} onClick={() => act(p.id, true)}
-                className="flex-1 inline-flex items-center justify-center gap-1 bg-primary/10 text-primary text-xs py-1 rounded disabled:opacity-50">
+              <button
+                disabled={busy === p.id || p.approved}
+                onClick={() => act(p.id, true)}
+                className="flex-1 inline-flex items-center justify-center gap-1 bg-primary/10 text-primary text-xs py-1 rounded disabled:opacity-50"
+              >
                 <Check className="w-3 h-3" /> {p.approved ? "OK" : "Valider"}
               </button>
-              <button disabled={busy === p.id} onClick={() => act(p.id, false)}
-                className="flex-1 inline-flex items-center justify-center gap-1 bg-destructive/10 text-destructive text-xs py-1 rounded disabled:opacity-50">
+              <button
+                disabled={busy === p.id}
+                onClick={() => act(p.id, false)}
+                className="flex-1 inline-flex items-center justify-center gap-1 bg-destructive/10 text-destructive text-xs py-1 rounded disabled:opacity-50"
+              >
                 <X className="w-3 h-3" /> Retirer
               </button>
             </div>
