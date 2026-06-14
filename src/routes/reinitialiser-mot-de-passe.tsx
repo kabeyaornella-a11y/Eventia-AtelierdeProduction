@@ -21,12 +21,18 @@ function ResetPasswordPage() {
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
-    // Méthode 1 : token_hash dans le hash de l'URL (notre flow custom via Resend)
     const hashParams = new URLSearchParams(window.location.hash.slice(1));
-    const tokenHash = hashParams.get("token_hash");
-    const type = hashParams.get("type");
+    const searchParams = new URLSearchParams(window.location.search);
 
-    if (tokenHash && type === "recovery") {
+    const tokenHash = hashParams.get("token_hash");
+    const hashType = hashParams.get("type");
+    const code = searchParams.get("code");
+    const accessToken = hashParams.get("access_token");
+    const refreshToken = hashParams.get("refresh_token");
+
+    // Format 1 : notre flow custom (admin generateLink + Resend)
+    // URL: /reinitialiser-mot-de-passe#token_hash=xxx&type=recovery
+    if (tokenHash && hashType === "recovery") {
       supabase.auth.verifyOtp({ token_hash: tokenHash, type: "recovery" }).then(({ error }) => {
         if (!error) setReady(true);
         else toast.error("Lien invalide ou expiré. Demandez un nouveau lien.");
@@ -34,14 +40,36 @@ function ResetPasswordPage() {
       return;
     }
 
-    // Méthode 2 : événement PASSWORD_RECOVERY (flow Supabase natif, fallback)
+    // Format 2 : flow PKCE Supabase natif (resetPasswordForEmail)
+    // URL: /reinitialiser-mot-de-passe?code=xxx
+    if (code) {
+      supabase.auth.exchangeCodeForSession(code).then(({ error }) => {
+        if (!error) setReady(true);
+        else toast.error("Lien invalide ou expiré. Demandez un nouveau lien.");
+      });
+      return;
+    }
+
+    // Format 3 : flow implicite Supabase
+    // URL: /reinitialiser-mot-de-passe#access_token=xxx&refresh_token=xxx&type=recovery
+    if (accessToken && refreshToken && hashType === "recovery") {
+      supabase.auth
+        .setSession({ access_token: accessToken, refresh_token: refreshToken })
+        .then(({ error }) => {
+          if (!error) setReady(true);
+          else toast.error("Lien invalide ou expiré. Demandez un nouveau lien.");
+        });
+      return;
+    }
+
+    // Fallback : événement PASSWORD_RECOVERY (Supabase redirige avec session active)
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event) => {
       if (event === "PASSWORD_RECOVERY") setReady(true);
     });
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) setReady(true);
+      if (data.session?.user) setReady(true);
     });
     return () => subscription.unsubscribe();
   }, []);
@@ -80,8 +108,11 @@ function ResetPasswordPage() {
             className="mt-10 bg-ivory border border-primary/15 p-8 shadow-soft space-y-4"
           >
             <div>
-              <label className="eyebrow text-xs">Nouveau mot de passe</label>
+              <label htmlFor="new-password" className="eyebrow text-xs">
+                Nouveau mot de passe
+              </label>
               <input
+                id="new-password"
                 type="password"
                 required
                 minLength={8}

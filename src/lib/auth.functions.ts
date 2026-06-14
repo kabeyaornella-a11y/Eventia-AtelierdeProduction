@@ -1,9 +1,23 @@
 import { createServerFn } from "@tanstack/react-start";
 
-/** ─── Réinitialisation de mot de passe bypass-Supabase ─────────────────────
- *  Génère un token de recovery côté serveur (service role) et envoie
- *  un email branded via Resend — sans dépendre du Site URL Supabase.
- */
+const SITE_URL = "https://www.eventiasignature.com";
+const _FALLBACK_URL = "https://nxqbihotrcfbknydxpny.supabase.co";
+const _FALLBACK_ANON =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im54cWJpaG90cmNmYmtueWR4cG55Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA5NTM2OTQsImV4cCI6MjA5NjUyOTY5NH0.9wE0rQNPGbzuK56dTtAqspvty-vL7puzzJJvXHv0VRA";
+
+function translateResetError(msg: string): string {
+  const lower = msg.toLowerCase();
+  if (lower.includes("invalid api key") || lower.includes("invalid_api_key"))
+    return "Service non configuré. Veuillez contacter le support Eventia.";
+  if (lower.includes("user not found") || lower.includes("no user found"))
+    return "Aucun compte n'est associé à cette adresse e-mail.";
+  if (lower.includes("email rate limit") || lower.includes("rate limit"))
+    return "Trop de tentatives. Veuillez réessayer dans quelques minutes.";
+  if (lower.includes("email address not authorized"))
+    return "Cette adresse e-mail n'est pas autorisée.";
+  return "Impossible d'envoyer l'email. Veuillez réessayer.";
+}
+
 export const sendPasswordResetEmail = createServerFn({ method: "POST" })
   .validator((data: unknown) => {
     const d = data as { email: string };
@@ -11,31 +25,75 @@ export const sendPasswordResetEmail = createServerFn({ method: "POST" })
     return d;
   })
   .handler(async ({ data }) => {
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-
-    // 1. Générer le lien de recovery (token_hash côté admin)
-    const { data: linkData, error: linkErr } = await (supabaseAdmin.auth.admin as any).generateLink(
-      {
-        type: "recovery",
-        email: data.email,
-      },
-    );
-    if (linkErr) return { success: false, error: linkErr.message };
-
-    const hashedToken = linkData?.properties?.hashed_token ?? linkData?.properties?.token;
-    if (!hashedToken)
-      return { success: false, error: "Impossible de générer le lien de réinitialisation." };
-
-    // 2. Construire l'URL sur notre domaine
-    const SITE = "https://www.eventiasignature.com";
-    const resetUrl = `${SITE}/reinitialiser-mot-de-passe#token_hash=${encodeURIComponent(hashedToken)}&type=recovery`;
-
-    // 3. Envoyer via Resend
+    const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY ?? process.env.SUPABASE_SERVICE_ROLE;
     const RESEND_KEY = process.env.RESEND_API_KEY;
-    if (!RESEND_KEY) return { success: false, error: "Service email non configuré." };
+    const supabaseUrl = (
+      process.env.SUPABASE_URL ??
+      (import.meta.env.VITE_SUPABASE_URL as string | undefined) ??
+      _FALLBACK_URL
+    ).replace(/\/$/, "");
+    const anonKey =
+      (import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string | undefined) ??
+      (import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined) ??
+      _FALLBACK_ANON;
+    const redirectTo = `${SITE_URL}/reinitialiser-mot-de-passe`;
+    const WS = (await import("ws")).default;
+    const { createClient } = await import("@supabase/supabase-js");
 
-    const html = `
-<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"></head>
+    // ── Chemin 1 : admin generateLink + Resend (email brandé en français) ──
+    if (SERVICE_KEY && RESEND_KEY) {
+      try {
+        const admin = createClient(supabaseUrl, SERVICE_KEY, {
+          auth: { persistSession: false, autoRefreshToken: false },
+          realtime: { transport: WS as unknown as typeof WebSocket },
+        });
+        const { data: linkData, error: linkErr } = await (
+          admin.auth.admin as {
+            generateLink: (
+              opts: unknown,
+            ) => Promise<{ data: unknown; error: { message: string } | null }>;
+          }
+        ).generateLink({ type: "recovery", email: data.email });
+
+        if (!linkErr) {
+          const props = (linkData as { properties?: { hashed_token?: string; token?: string } })
+            ?.properties;
+          const hashedToken = props?.hashed_token ?? props?.token;
+          if (hashedToken) {
+            const resetUrl = `${redirectTo}#token_hash=${encodeURIComponent(hashedToken)}&type=recovery`;
+            const res = await fetch("https://api.resend.com/emails", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${RESEND_KEY}`,
+              },
+              body: JSON.stringify({
+                from: "Eventia Signature <onboarding@resend.dev>",
+                to: [data.email],
+                subject: "Réinitialisation de votre mot de passe — Eventia Signature",
+                html: buildResetEmailHtml(resetUrl),
+              }),
+            });
+            if (res.ok) return { success: true };
+          }
+        }
+      } catch {
+        // fall through to native Supabase
+      }
+    }
+
+    // ── Chemin 2 : resetPasswordForEmail natif Supabase (fallback garanti) ──
+    const client = createClient(supabaseUrl, anonKey, {
+      auth: { persistSession: false, autoRefreshToken: false },
+      realtime: { transport: WS as unknown as typeof WebSocket },
+    });
+    const { error } = await client.auth.resetPasswordForEmail(data.email, { redirectTo });
+    if (error) return { success: false, error: translateResetError(error.message) };
+    return { success: true };
+  });
+
+function buildResetEmailHtml(resetUrl: string): string {
+  return `<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"></head>
 <body style="margin:0;padding:0;background:#F8EFE1;font-family:Georgia,serif;">
   <table width="100%" cellpadding="0" cellspacing="0" style="background:#F8EFE1;padding:40px 0;">
     <tr><td align="center">
@@ -60,25 +118,4 @@ export const sendPasswordResetEmail = createServerFn({ method: "POST" })
     </td></tr>
   </table>
 </body></html>`;
-
-    const res = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${RESEND_KEY}`,
-      },
-      body: JSON.stringify({
-        from: "Eventia Signature <onboarding@resend.dev>",
-        to: [data.email],
-        subject: "Réinitialisation de votre mot de passe — Eventia Signature",
-        html,
-      }),
-    });
-
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      return { success: false, error: (err as any)?.message ?? "Erreur envoi email." };
-    }
-
-    return { success: true };
-  });
+}

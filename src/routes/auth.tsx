@@ -32,8 +32,17 @@ function translateAuthError(message: string): string {
     "Password should be at least 6 characters":
       "Le mot de passe doit contenir au moins 6 caractères.",
     "Signup requires a valid password": "Veuillez saisir un mot de passe valide.",
+    "Invalid API key": "Service non configuré. Veuillez contacter le support.",
+    "Email rate limit exceeded": "Trop de tentatives. Réessayez dans quelques minutes.",
+    "User not found": "Aucun compte associé à cette adresse e-mail.",
+    "Password should be at least 8 characters":
+      "Le mot de passe doit contenir au moins 8 caractères.",
+    "New password should be different from the old password.":
+      "Le nouveau mot de passe doit être différent de l'ancien.",
+    "Token has expired or is invalid": "Lien expiré ou invalide. Demandez un nouveau lien.",
   };
-  return map[message] ?? message;
+  const entry = Object.entries(map).find(([k]) => message.includes(k));
+  return entry ? entry[1] : message;
 }
 
 function AuthPage() {
