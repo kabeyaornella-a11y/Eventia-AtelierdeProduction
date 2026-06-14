@@ -35,8 +35,8 @@
   --color-gold: var(--gold);
   --color-gold-deep: var(--gold-deep);
   --color-cacao: var(--cacao);
-  --font-display: "Cormorant Garamond", "Playfair Display", serif;
-  --font-serif-soft: "Cormorant Garamond", "Playfair Display", serif;
+  --font-display: "Cormorant Garamond", serif;
+  --font-serif-soft: "Cormorant Garamond", serif;
   --font-script: "Great Vibes", "Cormorant Garamond", cursive;
   --font-sans: "Jost", "Inter", system-ui, sans-serif;
 }

@@ -12,10 +12,6 @@ export const Route = createFileRoute("/experiences/$slug")({
       meta: [
         { title },
         { name: "description", content: desc },
-        {
-          name: "keywords",
-          content: `${e?.name ?? "expérience digitale"}, invitation digitale mariage premium, wedding website luxe, Eventia Signature`,
-        },
         { property: "og:title", content: title },
         { property: "og:description", content: desc },
         ...(e ? [{ property: "og:image" as const, content: e.image }] : []),

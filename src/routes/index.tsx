@@ -523,24 +523,26 @@ function HomePage() {
                   priceFrom: e.priceFrom,
                 })
               }
-              className="group block text-left"
+              className="group block text-left border border-primary/15 hover:border-primary/35 hover:shadow-gold transition-all duration-500 overflow-hidden bg-ivory"
             >
-              <div className="relative aspect-[4/5] overflow-hidden shadow-soft">
+              <div className="relative aspect-[4/5] overflow-hidden">
                 <img
                   src={e.image}
                   alt={e.name}
                   loading="lazy"
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  className="w-full h-full object-cover transition-transform duration-[1100ms] ease-out group-hover:scale-[1.07]"
                 />
-                <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-cacao/85 via-cacao/30 to-transparent text-ivory">
-                  <div className="font-display text-lg">{e.name}</div>
-                  <div className="text-[11px] eyebrow !text-primary-soft mt-1">
+                <div className="absolute inset-0 bg-gradient-to-t from-cacao/80 via-cacao/20 to-transparent" />
+                <div className="absolute inset-x-0 bottom-0 p-3 text-ivory">
+                  <div className="eyebrow !text-primary-soft text-[9px] mb-1">
                     {collections.find((c) => c.slug === e.univers)?.name}
                   </div>
-                  <div className="mt-3 inline-flex items-center gap-1.5 text-[10px] tracking-[0.22em] uppercase text-primary-soft opacity-0 group-hover:opacity-100 transition-opacity">
-                    <Eye className="size-3" /> Voir l'expérience
-                  </div>
+                  <div className="font-display text-base leading-tight">{e.name}</div>
                 </div>
+              </div>
+              <div className="px-3 py-2.5 flex items-center justify-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <Eye className="size-3 text-primary" />
+                <span className="eyebrow text-[9px] text-primary">Aperçu</span>
               </div>
             </button>
           ))}

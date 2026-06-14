@@ -16,11 +16,6 @@ export const Route = createFileRoute("/contact")({
         content:
           "Contactez Eventia Signature pour créer une expérience digitale premium : mariage, save the date, RSVP, album photo live et demande sur mesure.",
       },
-      {
-        name: "keywords",
-        content:
-          "contact invitation digitale mariage, devis wedding website luxe, RSVP mariage premium, Eventia Signature",
-      },
       { property: "og:title", content: "Contact — Eventia Signature" },
       { property: "og:description", content: "Parlons de votre événement." },
       { property: "og:image", content: img },

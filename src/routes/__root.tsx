@@ -93,11 +93,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:title", content: "Eventia Signature — Maison d'expériences digitales" },
       { name: "twitter:title", content: "Eventia Signature — Maison d'expériences digitales" },
       {
-        name: "keywords",
-        content:
-          "invitation digitale mariage premium, save the date animé, wedding website luxe, RSVP mariage, album photo live, Eventia Signature",
-      },
-      {
         property: "og:description",
         content:
           "Des expériences digitales élégantes pour annoncer, accueillir et marquer les esprits.",
@@ -116,7 +111,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Great+Vibes&family=Jost:wght@300;400;500;600&family=Inter:wght@300;400;500;600&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Great+Vibes&family=Jost:wght@300;400;500;600&family=Inter:wght@300;400;500;600&display=swap",
       },
     ],
   }),

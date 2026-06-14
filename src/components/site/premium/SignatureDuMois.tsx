@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Sparkles } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { cloudinaryPoster } from "@/lib/cloudinary-models";
 
 type Props = {
@@ -43,9 +43,11 @@ export function SignatureDuMois({
   cta = "Découvrir cette expérience",
 }: Props) {
   const cd = useCountdown(endsAt);
+
   return (
-    <div className="relative overflow-hidden bg-gradient-to-br from-ivory via-background to-accent/40 border border-primary/20 shadow-gold">
-      <div className="grid md:grid-cols-[1.05fr_1fr] gap-0">
+    <div className="relative overflow-hidden border border-primary/20 shadow-gold bg-ivory">
+      <div className="grid md:grid-cols-[1.1fr_1fr] gap-0">
+        {/* Visuel */}
         <div className="relative aspect-[4/3] md:aspect-auto overflow-hidden">
           {video ? (
             <video
@@ -61,49 +63,79 @@ export function SignatureDuMois({
           ) : image ? (
             <img src={image} alt={title} className="w-full h-full object-cover" />
           ) : null}
-          <div className="absolute inset-0 bg-gradient-to-r from-cacao/30 to-transparent md:from-transparent md:to-ivory/30" />
-          <div className="absolute top-4 left-4 px-3 py-1.5 bg-ivory/95 backdrop-blur text-primary text-[10px] tracking-[0.22em] uppercase flex items-center gap-2">
-            <Sparkles className="size-3" />
-            {edition}
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent to-ivory/20 md:to-ivory/40" />
+
+          {/* Badge édition */}
+          <div className="absolute top-5 left-5 px-3 py-1.5 bg-ivory/95 backdrop-blur-sm border border-primary/20">
+            <span className="eyebrow text-primary text-[9px]">{edition}</span>
+          </div>
+
+          {/* Ornement script superposé */}
+          <div className="absolute bottom-5 left-5 right-5 text-center pointer-events-none">
+            <div className="font-script text-3xl text-ivory/70 drop-shadow leading-none">
+              {title}
+            </div>
           </div>
         </div>
-        <div className="p-8 md:p-12 flex flex-col justify-center">
-          <div className="eyebrow">Le modèle du mois</div>
-          <h3 className="font-display text-3xl md:text-4xl mt-3 leading-tight">{title}</h3>
-          <p className="font-serif-soft italic text-base text-muted-foreground mt-4 leading-relaxed">
+
+        {/* Panneau texte */}
+        <div className="p-8 md:p-12 flex flex-col justify-center bg-ivory">
+          {/* Ornement supérieur */}
+          <div className="flex items-center gap-3 mb-6">
+            <div className="h-px flex-1 bg-primary/25" />
+            <div className="size-[5px] rounded-full bg-primary/60" />
+            <div className="h-px flex-1 bg-primary/25" />
+          </div>
+
+          <div className="eyebrow text-[10px] text-center mb-3">Le modèle du mois</div>
+          <h3 className="font-display text-3xl md:text-4xl leading-tight text-center">{title}</h3>
+
+          <p className="font-serif-soft italic text-sm text-muted-foreground mt-5 leading-relaxed text-center">
             {story}
           </p>
+
           {typeof remaining === "number" && (
-            <div className="mt-6 text-sm text-foreground/80">
-              <span className="font-display text-2xl text-primary">{remaining}</span>{" "}
-              <span className="text-xs tracking-wide uppercase">pièces restantes</span>
+            <div className="mt-6 text-center">
+              <span className="font-display text-3xl text-primary">{remaining}</span>
+              <span className="block text-[10px] tracking-[0.2em] uppercase text-muted-foreground mt-1">
+                pièces restantes
+              </span>
             </div>
           )}
+
           {cd && (
-            <div className="mt-6 grid grid-cols-4 gap-2 max-w-xs">
+            <div className="mt-6 grid grid-cols-4 gap-2">
               {[
                 { v: cd.days, l: "jours" },
                 { v: cd.hours, l: "heures" },
                 { v: cd.minutes, l: "min" },
                 { v: cd.seconds, l: "sec" },
               ].map((u) => (
-                <div key={u.l} className="text-center bg-ivory border border-border/60 py-3">
+                <div
+                  key={u.l}
+                  className="text-center border border-primary/20 bg-champagne/20 py-3"
+                >
                   <div className="font-display text-2xl text-primary leading-none">
                     {String(u.v).padStart(2, "0")}
                   </div>
-                  <div className="text-[10px] tracking-[0.18em] uppercase text-muted-foreground mt-1">
+                  <div className="text-[9px] tracking-[0.18em] uppercase text-muted-foreground mt-1">
                     {u.l}
                   </div>
                 </div>
               ))}
             </div>
           )}
-          <a
-            href={href}
-            className="mt-8 inline-flex items-center gap-3 self-start px-7 py-3 bg-primary text-ivory text-xs tracking-[0.22em] uppercase hover:bg-gold-deep transition-colors"
-          >
-            {cta}
-          </a>
+
+          {/* CTA */}
+          <div className="mt-8 flex justify-center">
+            <a
+              href={href}
+              className="group/cta inline-flex items-center gap-3 px-7 py-3 bg-primary text-ivory text-[11px] tracking-[0.22em] uppercase hover:bg-gold-deep transition-colors"
+            >
+              {cta}
+              <ArrowRight className="size-3.5 transition-transform duration-300 group-hover/cta:translate-x-1" />
+            </a>
+          </div>
         </div>
       </div>
     </div>
