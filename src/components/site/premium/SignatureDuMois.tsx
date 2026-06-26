@@ -113,10 +113,15 @@ export function SignatureDuMois({
               ].map((u) => (
                 <div
                   key={u.l}
-                  className="text-center border border-primary/20 bg-champagne/20 py-3"
+                  className="text-center border border-primary/20 bg-champagne/20 py-3 overflow-hidden"
                 >
-                  <div className="font-display text-2xl text-primary leading-none">
-                    {String(u.v).padStart(2, "0")}
+                  <div className="relative h-8 overflow-hidden">
+                    <div
+                      key={u.v}
+                      className="font-display text-2xl text-primary leading-none animate-slot-up"
+                    >
+                      {String(u.v).padStart(2, "0")}
+                    </div>
                   </div>
                   <div className="text-[9px] tracking-[0.18em] uppercase text-muted-foreground mt-1">
                     {u.l}

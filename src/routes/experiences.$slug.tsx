@@ -113,19 +113,43 @@ function ExperiencePage() {
         </div>
       </Section>
 
-      {/* HISTOIRE */}
-      <Section className="max-w-4xl text-center pt-0">
-        <div className="eyebrow mb-4">Histoire</div>
-        <p className="font-serif-soft text-2xl md:text-3xl italic text-foreground/90 leading-relaxed">
-          {e.story}
-        </p>
-        <div className="gold-rule mx-auto mt-10" />
-      </Section>
+      {/* NOTRE HISTOIRE */}
+      <div className="bg-cacao/3 border-y border-primary/10">
+        <Section className="max-w-4xl">
+          <div className="text-center mb-10">
+            <div className="eyebrow mb-3">Notre histoire</div>
+            <div className="font-script text-5xl md:text-6xl text-primary/30 leading-none select-none">
+              &ldquo;
+            </div>
+          </div>
 
-      {/* PALETTE / INSPIRATION / MUSIQUE */}
+          <p className="font-serif-soft text-2xl md:text-3xl italic text-foreground/90 leading-relaxed text-center">
+            {e.story}
+          </p>
+
+          <div className="gold-rule mx-auto mt-8" />
+
+          <div className="mt-10 grid md:grid-cols-2 gap-8 text-left">
+            <div className="space-y-2">
+              <div className="eyebrow text-[10px]">L'univers</div>
+              <p className="font-serif-soft italic text-base text-foreground/80 leading-relaxed">
+                {c.manifesto}
+              </p>
+            </div>
+            <div className="space-y-2">
+              <div className="eyebrow text-[10px]">L'ambiance</div>
+              <p className="font-serif-soft italic text-base text-foreground/80 leading-relaxed">
+                {e.inspiration}
+              </p>
+            </div>
+          </div>
+        </Section>
+      </div>
+
+      {/* PALETTE & MUSIQUE */}
       <div className="bg-ivory/60 border-y border-border/60">
         <Section>
-          <div className="grid md:grid-cols-3 gap-10">
+          <div className="grid md:grid-cols-2 gap-10">
             <div className="space-y-4">
               <div className="eyebrow">Palette</div>
               <div className="flex gap-2 flex-wrap">
@@ -137,12 +161,6 @@ function ExperiencePage() {
                   />
                 ))}
               </div>
-            </div>
-            <div className="space-y-3">
-              <div className="eyebrow">Inspiration</div>
-              <p className="font-serif-soft italic text-lg text-foreground/85 leading-relaxed">
-                {e.inspiration}
-              </p>
             </div>
             <div className="space-y-3">
               <div className="eyebrow">Musique</div>

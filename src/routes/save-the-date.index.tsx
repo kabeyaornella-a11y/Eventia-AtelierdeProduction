@@ -4,6 +4,74 @@ import { saveTheDateFormats } from "@/lib/eventia-data";
 import { ModelGrid } from "@/components/site/ModelGrid";
 import { saveTheDateModels } from "@/lib/cloudinary-models";
 
+function EnvelopeHero() {
+  return (
+    <div className="flex justify-center py-10 select-none" aria-hidden="true">
+      <div className="relative" style={{ width: 260, height: 170, perspective: "900px" }}>
+        {/* Corps de l'enveloppe */}
+        <svg viewBox="0 0 260 170" className="absolute inset-0 w-full h-full" aria-hidden="true">
+          <rect
+            x="1.5"
+            y="1.5"
+            width="257"
+            height="167"
+            fill="oklch(0.975 0.012 80)"
+            stroke="oklch(0.625 0.105 60)"
+            strokeWidth="1.5"
+            strokeOpacity="0.35"
+          />
+          {/* Plis latéraux */}
+          <polygon
+            points="1.5,1.5 1.5,168.5 96,92"
+            fill="oklch(0.625 0.105 60)"
+            fillOpacity="0.05"
+          />
+          <polygon
+            points="258.5,1.5 258.5,168.5 164,92"
+            fill="oklch(0.625 0.105 60)"
+            fillOpacity="0.05"
+          />
+          {/* Pli inférieur */}
+          <polygon
+            points="1.5,168.5 130,100 258.5,168.5"
+            fill="oklch(0.625 0.105 60)"
+            fillOpacity="0.07"
+          />
+        </svg>
+
+        {/* Carte qui monte */}
+        <div
+          className="absolute left-8 right-8 bg-[oklch(0.88_0.052_80)] border border-primary/25 shadow-gold
+                     flex flex-col items-center justify-center gap-1 animate-letter-rise"
+          style={{ height: 76, bottom: "28%" }}
+        >
+          <div className="eyebrow text-[8px]">Save The Date</div>
+          <div className="font-script text-xl text-primary mt-0.5">Eventia Signature</div>
+          <div className="gold-rule mt-1" />
+        </div>
+
+        {/* Rabat qui s'ouvre */}
+        <div className="absolute top-0 left-0 w-full" style={{ height: 90, perspective: "900px" }}>
+          <svg
+            viewBox="0 0 260 90"
+            className="w-full animate-envelope-lid"
+            style={{ height: 90, transformOrigin: "top center", display: "block" }}
+            aria-hidden="true"
+          >
+            <polygon
+              points="1.5,1.5 258.5,1.5 130,87"
+              fill="oklch(0.952 0.022 78)"
+              stroke="oklch(0.625 0.105 60)"
+              strokeWidth="1.5"
+              strokeOpacity="0.35"
+            />
+          </svg>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export const Route = createFileRoute("/save-the-date/")({
   head: () => ({
     meta: [
@@ -26,6 +94,7 @@ export const Route = createFileRoute("/save-the-date/")({
           title="Une première émotion à partager."
           intro="Avant l'invitation complète, une annonce singulière. Trois formules, quatre modèles signature, une même exigence."
         />
+        <EnvelopeHero />
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
           {saveTheDateFormats.map((f) => (
             <Link
