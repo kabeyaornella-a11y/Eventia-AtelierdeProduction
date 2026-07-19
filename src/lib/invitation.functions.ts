@@ -25,7 +25,7 @@ export const getInvitationBundle = createServerFn({ method: "GET" })
       supabaseAdmin
         .from("rsvps")
         .select(
-          "id, guest_name, status, guests_count, allergies, needs_transport, message, created_at",
+          "id, guest_name, status, guests_count, companions, allergies, needs_transport, message, created_at",
         )
         .eq("invitation_id", inv.id)
         .order("created_at", { ascending: false }),
@@ -39,12 +39,20 @@ export const getInvitationBundle = createServerFn({ method: "GET" })
     return { invitation: inv, rsvps: rsvps ?? [], playlist: playlist ?? [] };
   });
 
+const companionSchema = z.object({
+  name: z.string().trim().min(1).max(120),
+  type: z.enum(["adult", "child"]).default("adult"),
+  allergies: z.string().trim().max(300).optional().or(z.literal("")),
+});
+
 const rsvpSchema = z.object({
   token: tokenSchema,
   guest_name: z.string().trim().min(1).max(120),
   guest_email: z.string().email().max(255).optional().or(z.literal("")),
   status: z.enum(["yes", "no", "maybe"]),
-  guests_count: z.number().int().min(1).max(10),
+  // Accompagnants nominatifs (hors répondant principal). guests_count est
+  // dérivé de cette liste + 1, jamais reçu directement du client.
+  companions: z.array(companionSchema).max(9).optional().default([]),
   allergies: z.string().trim().max(300).optional().or(z.literal("")),
   needs_transport: z.boolean().optional().default(false),
   message: z.string().max(800).optional().or(z.literal("")),
@@ -74,7 +82,8 @@ export const submitRsvp = createServerFn({ method: "POST" })
       guest_name: data.guest_name,
       guest_email: data.guest_email || null,
       status: data.status,
-      guests_count: data.guests_count,
+      guests_count: 1 + data.companions.length,
+      companions: data.companions,
       allergies: data.allergies || null,
       needs_transport: data.needs_transport ?? false,
       message: data.message || null,

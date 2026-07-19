@@ -16,13 +16,12 @@ import {
   Gift,
   Ticket,
   ExternalLink,
+  Upload,
 } from "lucide-react";
 import heroImg from "@/assets/exp-aube-celeste.jpg";
-import voilesImg from "@/assets/collection-voiles.jpg";
-import jardinImg from "@/assets/exp-jardin-suspendu.jpg";
-import operaImg from "@/assets/exp-opera-blanc.jpg";
-import reveImg from "@/assets/exp-reve-ivoire.jpg";
 import { getInvitationBundle, submitRsvp, addPlaylistTrack } from "@/lib/invitation.functions";
+import { listApprovedGallery, submitGalleryPhoto } from "@/lib/gallery.functions";
+import { createGalleryUploadUrl } from "@/lib/gallery-upload.functions";
 import { toast } from "sonner";
 import {
   Accordion,
@@ -32,6 +31,7 @@ import {
 } from "@/components/ui/accordion";
 import type { InvitationBlocks } from "@/lib/invitation-blocks";
 import { normalizeAccommodations } from "@/lib/invitation-blocks";
+import { CompanionsField, type Companion } from "@/components/site/CompanionsField";
 
 export const Route = createFileRoute("/invitation/$token")({
   head: ({ params }) => ({
@@ -84,18 +84,26 @@ function useCountdown(target: Date) {
   };
 }
 
+type Photo = { id: string; guest_name: string | null; caption: string | null; image_url: string };
+
 function InvitationPage() {
   const { token } = Route.useParams();
   const fetchBundle = useServerFn(getInvitationBundle);
   const sendRsvp = useServerFn(submitRsvp);
   const sendTrack = useServerFn(addPlaylistTrack);
+  const fetchGallery = useServerFn(listApprovedGallery);
+  const createUploadUrl = useServerFn(createGalleryUploadUrl);
+  const sendPhotoData = useServerFn(submitGalleryPhoto);
 
   const [invitation, setInvitation] = useState<Invitation | null>(null);
   const [playlist, setPlaylist] = useState<Track[]>([]);
+  const [photos, setPhotos] = useState<Photo[]>([]);
+  const [galleryFile, setGalleryFile] = useState<File | null>(null);
+  const [galleryUploading, setGalleryUploading] = useState(false);
   const [loaded, setLoaded] = useState(false);
 
   const [rsvp, setRsvp] = useState<"yes" | "no" | "maybe" | null>(null);
-  const [guestCount, setGuestCount] = useState(1);
+  const [companions, setCompanions] = useState<Companion[]>([]);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [allergies, setAllergies] = useState("");
@@ -113,6 +121,8 @@ function InvitationPage() {
       const res = await fetchBundle({ data: { token } });
       setInvitation(res.invitation as Invitation | null);
       setPlaylist((res.playlist ?? []) as Track[]);
+      const gallery = await fetchGallery({ data: { token } }).catch(() => ({ photos: [] }));
+      setPhotos((gallery.photos ?? []) as Photo[]);
     } finally {
       setLoaded(true);
     }
@@ -150,7 +160,7 @@ function InvitationPage() {
             guest_name: name.trim(),
             guest_email: email.trim(),
             status: rsvp,
-            guests_count: guestCount,
+            companions,
             allergies: allergies.trim(),
             needs_transport: needsTransport,
             message: message.trim(),
@@ -186,6 +196,34 @@ function InvitationPage() {
       refresh();
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Erreur ajout titre");
+    }
+  };
+
+  const sendPhoto = async () => {
+    if (!galleryFile) return;
+    if (galleryFile.size > 10 * 1024 * 1024) {
+      toast.error("Photo trop lourde (max 10 Mo)");
+      return;
+    }
+    setGalleryUploading(true);
+    try {
+      const ext = (galleryFile.name.split(".").pop() || "jpg").toLowerCase();
+      const { path, url } = await createUploadUrl({ data: { token, ext } });
+      const upRes = await fetch(url, {
+        method: "PUT",
+        body: galleryFile,
+        headers: { "Content-Type": galleryFile.type },
+      });
+      if (!upRes.ok) throw new Error("Upload échoué");
+      await sendPhotoData({
+        data: { token, guest_name: name.trim() || undefined, image_url: `storage://${path}` },
+      });
+      toast.success("Merci ! Ta photo est en attente de validation.");
+      setGalleryFile(null);
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Erreur d'envoi");
+    } finally {
+      setGalleryUploading(false);
     }
   };
 
@@ -428,15 +466,58 @@ function InvitationPage() {
               <div className="eyebrow text-primary">Galerie live</div>
               <h2 className="font-display text-4xl mt-2">Partagez vos plus belles images</h2>
               <p className="font-serif-soft italic text-muted-foreground mt-3 max-w-md mx-auto">
-                Le jour J, vos clichés viendront ici, ensemble, comme un livre d'or vivant.
+                Le jour J, vos clichés viennent ici, ensemble, comme un livre d'or vivant.
               </p>
             </div>
-            <div className="grid grid-cols-3 gap-2">
-              {[voilesImg, jardinImg, operaImg, reveImg, heroImg, voilesImg].map((src, i) => (
-                <div key={i} className="aspect-square overflow-hidden bg-muted">
-                  <img src={src} alt="" className="w-full h-full object-cover opacity-90" />
-                </div>
-              ))}
+
+            <div className="grid sm:grid-cols-[1fr_auto] gap-2 mb-6 max-w-md mx-auto">
+              <label className="flex items-center gap-2 px-4 py-3 bg-ivory border border-border text-sm cursor-pointer truncate">
+                <Upload className="size-4 shrink-0 text-primary" />
+                <span className="truncate">
+                  {galleryFile ? galleryFile.name : "Choisir une photo"}
+                </span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(e) => setGalleryFile(e.target.files?.[0] ?? null)}
+                />
+              </label>
+              <button
+                onClick={sendPhoto}
+                disabled={!galleryFile || galleryUploading}
+                className="px-5 py-3 text-xs tracking-[0.18em] uppercase text-ivory bg-primary hover:bg-cacao disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {galleryUploading ? "Envoi…" : "Envoyer"}
+              </button>
+            </div>
+
+            {photos.length === 0 ? (
+              <p className="text-center text-sm font-serif-soft italic text-muted-foreground">
+                Soyez le premier à partager une photo.
+              </p>
+            ) : (
+              <div className="grid grid-cols-3 gap-2">
+                {photos.slice(0, 9).map((p) => (
+                  <div key={p.id} className="aspect-square overflow-hidden bg-muted">
+                    <img
+                      src={p.image_url}
+                      alt={p.caption ?? ""}
+                      loading="lazy"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <div className="text-center mt-6">
+              <a
+                href={`/galerie/${token}`}
+                className="text-xs tracking-[0.18em] uppercase text-primary hover:underline"
+              >
+                Voir toute la galerie
+              </a>
             </div>
           </section>
         )}
@@ -513,26 +594,14 @@ function InvitationPage() {
                   className="w-full px-4 py-3 bg-background border border-border text-sm"
                 />
               </div>
-              <div className="flex items-center gap-3">
-                <label className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
-                  Convives
-                </label>
-                <input
-                  type="number"
-                  min={1}
-                  max={10}
-                  value={guestCount}
-                  onChange={(e) => setGuestCount(parseInt(e.target.value) || 1)}
-                  className="w-24 px-3 py-3 bg-background border border-border text-sm"
-                />
-              </div>
-
               <input
-                placeholder="Allergies ou régime alimentaire (optionnel)"
+                placeholder="Vos allergies ou régime alimentaire (optionnel)"
                 value={allergies}
                 onChange={(e) => setAllergies(e.target.value)}
                 className="w-full px-4 py-3 bg-background border border-border text-sm"
               />
+
+              <CompanionsField value={companions} onChange={setCompanions} />
 
               <label className="flex items-center gap-3 text-sm text-foreground/80">
                 <input

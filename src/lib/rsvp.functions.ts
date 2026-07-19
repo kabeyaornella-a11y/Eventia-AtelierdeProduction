@@ -19,7 +19,7 @@ export const listMyRsvps = createServerFn({ method: "GET" })
     const { data: rsvps, error } = await context.supabase
       .from("rsvps")
       .select(
-        "id, guest_name, guest_email, status, guests_count, allergies, needs_transport, message, created_at",
+        "id, guest_name, guest_email, status, guests_count, companions, allergies, needs_transport, message, created_at",
       )
       .eq("invitation_id", data.invitation_id)
       .order("created_at", { ascending: false });
@@ -33,7 +33,7 @@ export const getInvitationByRsvpToken = createServerFn({ method: "GET" })
   .handler(async ({ data }) => {
     const { data: inv, error } = await supabase
       .from("invitations")
-      .select("id, couple_names, event_date, venue, theme, hero_url")
+      .select("id, token, couple_names, event_date, venue, theme, hero_url")
       .eq("rsvp_token", data.token)
       .maybeSingle();
     if (error) throw new Error(error.message);
@@ -41,12 +41,18 @@ export const getInvitationByRsvpToken = createServerFn({ method: "GET" })
     return { invitation: inv };
   });
 
+const companionSchema = z.object({
+  name: z.string().trim().min(1).max(120),
+  type: z.enum(["adult", "child"]).default("adult"),
+  allergies: z.string().trim().max(300).optional().or(z.literal("")),
+});
+
 const submitSchema = z.object({
   token: z.string().min(8).max(64),
   guest_name: z.string().trim().min(1).max(120),
   guest_email: z.string().email().max(200).optional().or(z.literal("")),
   status: z.enum(["yes", "no", "maybe"]),
-  guests_count: z.number().int().min(1).max(10).default(1),
+  companions: z.array(companionSchema).max(9).optional().default([]),
   allergies: z.string().trim().max(300).optional().or(z.literal("")),
   needs_transport: z.boolean().optional().default(false),
   message: z.string().max(500).optional().or(z.literal("")),
@@ -72,7 +78,8 @@ export const submitRsvp = createServerFn({ method: "POST" })
       guest_name: data.guest_name,
       guest_email: data.guest_email || null,
       status: data.status,
-      guests_count: data.guests_count,
+      guests_count: 1 + data.companions.length,
+      companions: data.companions,
       allergies: data.allergies || null,
       needs_transport: data.needs_transport ?? false,
       message: data.message || null,

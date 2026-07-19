@@ -7,17 +7,23 @@ import { z } from "zod";
  */
 export const createGalleryUploadUrl = createServerFn({ method: "POST" })
   .inputValidator((d: { token: string; ext: string }) =>
-    z.object({
-      token: z.string().min(8).max(128),
-      ext: z.string().regex(/^(jpg|jpeg|png|webp|heic)$/i),
-    }).parse(d)
+    z
+      .object({
+        token: z
+          .string()
+          .min(8)
+          .max(128)
+          .regex(/^[a-zA-Z0-9_-]+$/),
+        ext: z.string().regex(/^(jpg|jpeg|png|webp|heic)$/i),
+      })
+      .parse(d),
   )
   .handler(async ({ data }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data: inv, error } = await supabaseAdmin
       .from("invitations")
       .select("id, allow_gallery")
-      .eq("rsvp_token", data.token)
+      .or(`token.eq.${data.token},rsvp_token.eq.${data.token}`)
       .maybeSingle();
     if (error || !inv) throw new Error("Invitation introuvable");
     if (!inv.allow_gallery) throw new Error("Galerie désactivée");

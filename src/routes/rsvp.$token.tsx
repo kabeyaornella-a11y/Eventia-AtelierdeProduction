@@ -6,6 +6,7 @@ import { Heart, Check, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { SiteLayout, Section, GoldButton } from "@/components/site/SiteLayout";
 import { getInvitationByRsvpToken, submitRsvp } from "@/lib/rsvp.functions";
+import { CompanionsField, type Companion } from "@/components/site/CompanionsField";
 
 export const Route = createFileRoute("/rsvp/$token")({
   head: ({ params }) => ({
@@ -32,7 +33,7 @@ function RsvpPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"yes" | "no" | "maybe">("yes");
-  const [guests, setGuests] = useState(1);
+  const [companions, setCompanions] = useState<Companion[]>([]);
   const [allergies, setAllergies] = useState("");
   const [needsTransport, setNeedsTransport] = useState(false);
   const [message, setMessage] = useState("");
@@ -50,7 +51,7 @@ function RsvpPage() {
           guest_name: name,
           guest_email: email,
           status,
-          guests_count: guests,
+          companions,
           allergies,
           needs_transport: needsTransport,
           message,
@@ -106,7 +107,7 @@ function RsvpPage() {
         <div className="max-w-lg mx-auto">
           <div className="text-center mb-8">
             <Heart className="size-6 text-primary mx-auto mb-3" />
-            <div className="eyebrow text-primary">RSVP</div>
+            <div className="eyebrow text-primary">Réponse rapide</div>
             <h1 className="font-display text-4xl mt-2">{inv.couple_names}</h1>
             <p className="font-serif-soft italic text-muted-foreground mt-2">
               {new Date(inv.event_date).toLocaleDateString("fr-FR", {
@@ -115,6 +116,12 @@ function RsvpPage() {
                 year: "numeric",
               })}
               {inv.venue ? ` · ${inv.venue}` : ""}
+            </p>
+            <p className="text-xs text-muted-foreground mt-4">
+              Vous voulez revoir tous les détails (programme, hébergement, cadeaux…) ?{" "}
+              <a href={`/invitation/${inv.token}`} className="text-primary hover:underline">
+                Ouvrir l'invitation complète
+              </a>
             </p>
           </div>
 
@@ -158,24 +165,14 @@ function RsvpPage() {
             {status !== "no" && (
               <>
                 <div>
-                  <label className="text-xs eyebrow">Nombre de convives</label>
-                  <input
-                    type="number"
-                    min={1}
-                    max={10}
-                    value={guests}
-                    onChange={(e) => setGuests(Number(e.target.value))}
-                    className="w-full mt-1 px-4 py-3 bg-background border border-border text-sm"
-                  />
-                </div>
-                <div>
-                  <label className="text-xs eyebrow">Allergies ou régime alimentaire</label>
+                  <label className="text-xs eyebrow">Vos allergies ou régime alimentaire</label>
                   <input
                     value={allergies}
                     onChange={(e) => setAllergies(e.target.value)}
                     className="w-full mt-1 px-4 py-3 bg-background border border-border text-sm"
                   />
                 </div>
+                <CompanionsField value={companions} onChange={setCompanions} />
                 <label className="flex items-center gap-3 text-sm text-foreground/80">
                   <input
                     type="checkbox"

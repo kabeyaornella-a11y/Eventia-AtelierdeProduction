@@ -25,7 +25,9 @@ export const Route = createFileRoute("/api/public/rsvp-reminders")({
           .eq("production_status", "ready");
 
         for (const inv of invitations ?? []) {
-          const days = Math.ceil((new Date(inv.event_date as string).getTime() - now.getTime()) / 86400000);
+          const days = Math.ceil(
+            (new Date(inv.event_date as string).getTime() - now.getTime()) / 86400000,
+          );
           if (!windows.includes(days)) continue;
 
           const { data: rsvps } = await supabaseAdmin
@@ -33,7 +35,12 @@ export const Route = createFileRoute("/api/public/rsvp-reminders")({
             .select("guest_email, status")
             .eq("invitation_id", inv.id);
 
-          const url = `https://eventia-signature-atelier.lovable.app/rsvp/${inv.rsvp_token ?? inv.token}`;
+          // Lien de "réponse rapide" (page /rsvp/$token) — distinct de l'invitation
+          // complète (/invitation/$token) : formulaire minimal, pensé pour les
+          // rappels par email des invités qui n'ont pas encore répondu.
+          const origin =
+            process.env.PUBLIC_SITE_URL || "https://eventia-signature-atelier.lovable.app";
+          const url = `${origin}/rsvp/${inv.rsvp_token ?? inv.token}`;
           for (const r of rsvps ?? []) {
             if (!r.guest_email || r.status === "yes" || r.status === "no") continue;
             await supabaseAdmin.from("email_logs").insert({
