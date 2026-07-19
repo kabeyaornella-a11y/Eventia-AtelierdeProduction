@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
+import { z } from "zod";
 import {
   Heart,
   Music,
@@ -17,11 +18,18 @@ import {
   Ticket,
   ExternalLink,
   Upload,
+  Mic,
 } from "lucide-react";
 import heroImg from "@/assets/exp-aube-celeste.jpg";
 import { getInvitationBundle, submitRsvp, addPlaylistTrack } from "@/lib/invitation.functions";
 import { listApprovedGallery, submitGalleryPhoto } from "@/lib/gallery.functions";
 import { createGalleryUploadUrl } from "@/lib/gallery-upload.functions";
+import {
+  createAudioUploadUrl,
+  submitAudioMessage,
+  listApprovedAudioMessages,
+} from "@/lib/audio-messages.functions";
+import { AudioRecorder } from "@/components/site/AudioRecorder";
 import { toast } from "sonner";
 import {
   Accordion,
@@ -34,8 +42,12 @@ import { normalizeAccommodations } from "@/lib/invitation-blocks";
 import { CompanionsField, type Companion } from "@/components/site/CompanionsField";
 import { Reveal } from "@/components/site/Reveal";
 import { FramedCard } from "@/components/site/FramedCard";
+import { markGuestOpened } from "@/lib/guest-list.functions";
+
+const searchSchema = z.object({ g: z.string().optional() });
 
 export const Route = createFileRoute("/invitation/$token")({
+  validateSearch: searchSchema,
   head: ({ params }) => ({
     meta: [
       { title: `Vous êtes invité·e — Eventia` },
@@ -91,18 +103,31 @@ type Photo = { id: string; guest_name: string | null; caption: string | null; im
 
 function InvitationPage() {
   const { token } = Route.useParams();
+  const { g: guestToken } = Route.useSearch();
   const fetchBundle = useServerFn(getInvitationBundle);
   const sendRsvp = useServerFn(submitRsvp);
   const sendTrack = useServerFn(addPlaylistTrack);
   const fetchGallery = useServerFn(listApprovedGallery);
   const createUploadUrl = useServerFn(createGalleryUploadUrl);
   const sendPhotoData = useServerFn(submitGalleryPhoto);
+  const markOpened = useServerFn(markGuestOpened);
+  const createAudioUrl = useServerFn(createAudioUploadUrl);
+  const sendAudioData = useServerFn(submitAudioMessage);
+  const fetchAudioMessages = useServerFn(listApprovedAudioMessages);
 
   const [invitation, setInvitation] = useState<Invitation | null>(null);
   const [playlist, setPlaylist] = useState<Track[]>([]);
   const [photos, setPhotos] = useState<Photo[]>([]);
   const [galleryFile, setGalleryFile] = useState<File | null>(null);
   const [galleryUploading, setGalleryUploading] = useState(false);
+  const [audioMessages, setAudioMessages] = useState<
+    Array<{
+      id: string;
+      guest_name: string | null;
+      audio_url: string;
+      duration_seconds: number | null;
+    }>
+  >([]);
   const [loaded, setLoaded] = useState(false);
   const [splashDismissed, setSplashDismissed] = useState(false);
 
@@ -127,6 +152,14 @@ function InvitationPage() {
       setPlaylist((res.playlist ?? []) as Track[]);
       const gallery = await fetchGallery({ data: { token } }).catch(() => ({ photos: [] }));
       setPhotos((gallery.photos ?? []) as Photo[]);
+      const audio = await fetchAudioMessages({ data: { token } }).catch(() => ({ messages: [] }));
+      setAudioMessages(audio.messages ?? []);
+      if (guestToken) {
+        const opened = await markOpened({ data: { token, guest_token: guestToken } }).catch(() => ({
+          guest: null,
+        }));
+        if (opened.guest?.name) setName(opened.guest.name);
+      }
     } finally {
       setLoaded(true);
     }
@@ -169,6 +202,7 @@ function InvitationPage() {
             needs_transport: needsTransport,
             message: message.trim(),
             company,
+            guest_token: guestToken ?? "",
           },
         });
       }
@@ -228,6 +262,29 @@ function InvitationPage() {
       toast.error(e instanceof Error ? e.message : "Erreur d'envoi");
     } finally {
       setGalleryUploading(false);
+    }
+  };
+
+  const sendAudio = async (blob: Blob, ext: string, durationSeconds: number) => {
+    try {
+      const { path, url } = await createAudioUrl({ data: { token, ext } });
+      const upRes = await fetch(url, {
+        method: "PUT",
+        body: blob,
+        headers: { "Content-Type": blob.type || "audio/webm" },
+      });
+      if (!upRes.ok) throw new Error("Envoi échoué");
+      await sendAudioData({
+        data: {
+          token,
+          guest_name: name.trim() || undefined,
+          audio_url: path,
+          duration_seconds: durationSeconds,
+        },
+      });
+      toast.success("Merci ! Ton message est en attente de validation.");
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Erreur d'envoi");
     }
   };
 
@@ -698,6 +755,37 @@ function InvitationPage() {
                   <Send className="size-4" /> {submitting ? "Envoi…" : "Envoyer ma réponse"}
                 </button>
               </div>
+            )}
+          </section>
+        </Reveal>
+
+        <Reveal>
+          <section>
+            <div className="text-center mb-8">
+              <Mic className="size-5 text-primary mx-auto mb-2" />
+              <div className="eyebrow text-primary">Guestbook vocal</div>
+              <h2 className="font-display text-4xl mt-2">Un mot de vive voix pour les mariés</h2>
+              <p className="font-serif-soft italic text-muted-foreground mt-3 max-w-md mx-auto">
+                Laissez un message vocal — les mariés l'écouteront précieusement après le grand
+                jour.
+              </p>
+            </div>
+            <div className="max-w-md mx-auto">
+              <AudioRecorder onSend={sendAudio} />
+            </div>
+            {audioMessages.length > 0 && (
+              <ul className="max-w-md mx-auto mt-6 space-y-3">
+                {audioMessages.slice(0, 10).map((m) => (
+                  <li key={m.id} className="bg-ivory border border-primary/10 p-4">
+                    {m.guest_name && (
+                      <div className="text-xs uppercase tracking-[0.15em] text-muted-foreground mb-2">
+                        {m.guest_name}
+                      </div>
+                    )}
+                    <audio src={m.audio_url} controls className="w-full" />
+                  </li>
+                ))}
+              </ul>
             )}
           </section>
         </Reveal>

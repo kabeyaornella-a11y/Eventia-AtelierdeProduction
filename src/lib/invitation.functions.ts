@@ -59,6 +59,9 @@ const rsvpSchema = z.object({
   // Honeypot anti-spam : champ invisible pour un humain, rempli par les bots
   // qui auto-complètent tous les champs d'un formulaire. Doit rester vide.
   company: z.string().max(200).optional().or(z.literal("")),
+  // Présent si l'invité est arrivé via son lien personnalisé (?g=...) —
+  // relie ce RSVP à sa fiche dans la liste d'invités du couple.
+  guest_token: z.string().min(4).max(64).optional().or(z.literal("")),
 });
 
 /** Création publique d'un RSVP via token. */
@@ -77,18 +80,46 @@ export const submitRsvp = createServerFn({ method: "POST" })
       .maybeSingle();
     if (!inv) throw new Error("Invitation introuvable");
 
-    const { error } = await supabaseAdmin.from("rsvps").insert({
-      invitation_id: inv.id,
-      guest_name: data.guest_name,
-      guest_email: data.guest_email || null,
-      status: data.status,
-      guests_count: 1 + data.companions.length,
-      companions: data.companions,
-      allergies: data.allergies || null,
-      needs_transport: data.needs_transport ?? false,
-      message: data.message || null,
-    });
+    let guestId: string | null = null;
+    let guestAlreadyOpened = false;
+    if (data.guest_token) {
+      const { data: guest } = await supabaseAdmin
+        .from("invitation_guests")
+        .select("id, opened_at")
+        .eq("invitation_id", inv.id)
+        .eq("guest_token", data.guest_token)
+        .maybeSingle();
+      guestId = guest?.id ?? null;
+      guestAlreadyOpened = !!guest?.opened_at;
+    }
+
+    const { data: inserted, error } = await supabaseAdmin
+      .from("rsvps")
+      .insert({
+        invitation_id: inv.id,
+        guest_name: data.guest_name,
+        guest_email: data.guest_email || null,
+        status: data.status,
+        guests_count: 1 + data.companions.length,
+        companions: data.companions,
+        allergies: data.allergies || null,
+        needs_transport: data.needs_transport ?? false,
+        message: data.message || null,
+        guest_id: guestId,
+      })
+      .select("id")
+      .single();
     if (error) throw new Error(error.message);
+
+    if (guestId) {
+      await supabaseAdmin
+        .from("invitation_guests")
+        .update({
+          rsvp_id: inserted.id,
+          ...(guestAlreadyOpened ? {} : { opened_at: new Date().toISOString() }),
+        })
+        .eq("id", guestId);
+    }
     return { ok: true };
   });
 

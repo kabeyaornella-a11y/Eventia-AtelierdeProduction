@@ -59,6 +59,7 @@ import { Route as AuthenticatedAdminInvitationsRouteImport } from './routes/_aut
 import { Route as AuthenticatedAdminCommandesRouteImport } from './routes/_authenticated/admin/commandes'
 import { Route as AuthenticatedAdminB2bRouteImport } from './routes/_authenticated/admin/b2b'
 import { Route as AuthenticatedAdminAteliersRouteImport } from './routes/_authenticated/admin/ateliers'
+import { Route as AuthenticatedMesInvitationsIdTableauDeBordRouteImport } from './routes/_authenticated/mes-invitations.$id.tableau-de-bord'
 import { Route as AuthenticatedMesInvitationsIdLiveRouteImport } from './routes/_authenticated/mes-invitations.$id.live'
 
 const VoilesRoute = VoilesRouteImport.update({
@@ -320,6 +321,12 @@ const AuthenticatedAdminAteliersRoute =
     path: '/ateliers',
     getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
+const AuthenticatedMesInvitationsIdTableauDeBordRoute =
+  AuthenticatedMesInvitationsIdTableauDeBordRouteImport.update({
+    id: '/$id/tableau-de-bord',
+    path: '/$id/tableau-de-bord',
+    getParentRoute: () => AuthenticatedMesInvitationsRoute,
+  } as any)
 const AuthenticatedMesInvitationsIdLiveRoute =
   AuthenticatedMesInvitationsIdLiveRouteImport.update({
     id: '/$id/live',
@@ -378,6 +385,7 @@ export interface FileRoutesByFullPath {
   '/api/public/wedding-reminders': typeof ApiPublicWeddingRemindersRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
   '/mes-invitations/$id/live': typeof AuthenticatedMesInvitationsIdLiveRoute
+  '/mes-invitations/$id/tableau-de-bord': typeof AuthenticatedMesInvitationsIdTableauDeBordRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -428,6 +436,7 @@ export interface FileRoutesByTo {
   '/api/public/wedding-reminders': typeof ApiPublicWeddingRemindersRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
   '/mes-invitations/$id/live': typeof AuthenticatedMesInvitationsIdLiveRoute
+  '/mes-invitations/$id/tableau-de-bord': typeof AuthenticatedMesInvitationsIdTableauDeBordRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -482,6 +491,7 @@ export interface FileRoutesById {
   '/api/public/wedding-reminders': typeof ApiPublicWeddingRemindersRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/mes-invitations/$id/live': typeof AuthenticatedMesInvitationsIdLiveRoute
+  '/_authenticated/mes-invitations/$id/tableau-de-bord': typeof AuthenticatedMesInvitationsIdTableauDeBordRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -536,6 +546,7 @@ export interface FileRouteTypes {
     | '/api/public/wedding-reminders'
     | '/admin/'
     | '/mes-invitations/$id/live'
+    | '/mes-invitations/$id/tableau-de-bord'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -586,6 +597,7 @@ export interface FileRouteTypes {
     | '/api/public/wedding-reminders'
     | '/admin'
     | '/mes-invitations/$id/live'
+    | '/mes-invitations/$id/tableau-de-bord'
   id:
     | '__root__'
     | '/'
@@ -639,6 +651,7 @@ export interface FileRouteTypes {
     | '/api/public/wedding-reminders'
     | '/_authenticated/admin/'
     | '/_authenticated/mes-invitations/$id/live'
+    | '/_authenticated/mes-invitations/$id/tableau-de-bord'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -1030,6 +1043,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminAteliersRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
+    '/_authenticated/mes-invitations/$id/tableau-de-bord': {
+      id: '/_authenticated/mes-invitations/$id/tableau-de-bord'
+      path: '/$id/tableau-de-bord'
+      fullPath: '/mes-invitations/$id/tableau-de-bord'
+      preLoaderRoute: typeof AuthenticatedMesInvitationsIdTableauDeBordRouteImport
+      parentRoute: typeof AuthenticatedMesInvitationsRoute
+    }
     '/_authenticated/mes-invitations/$id/live': {
       id: '/_authenticated/mes-invitations/$id/live'
       path: '/$id/live'
@@ -1066,12 +1086,15 @@ const AuthenticatedAdminRouteRouteWithChildren =
 
 interface AuthenticatedMesInvitationsRouteChildren {
   AuthenticatedMesInvitationsIdLiveRoute: typeof AuthenticatedMesInvitationsIdLiveRoute
+  AuthenticatedMesInvitationsIdTableauDeBordRoute: typeof AuthenticatedMesInvitationsIdTableauDeBordRoute
 }
 
 const AuthenticatedMesInvitationsRouteChildren: AuthenticatedMesInvitationsRouteChildren =
   {
     AuthenticatedMesInvitationsIdLiveRoute:
       AuthenticatedMesInvitationsIdLiveRoute,
+    AuthenticatedMesInvitationsIdTableauDeBordRoute:
+      AuthenticatedMesInvitationsIdTableauDeBordRoute,
   }
 
 const AuthenticatedMesInvitationsRouteWithChildren =
