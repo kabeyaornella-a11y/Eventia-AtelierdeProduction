@@ -33,6 +33,11 @@ export type InvitationBlocks = {
   accommodations?: AccommodationOption[] | string;
   transport?: TitledBlock;
   thank_you?: string;
+  /** Image de cadre ornemental (PNG, centre transparent) pour habiller les
+   * cartes d'info (hébergement...) façon écrin. Optionnel — sans elle, les
+   * cartes restent dans le style actuel. À choisir dans la Médiathèque admin
+   * (onglet Décorations) ou coller une URL Cloudinary directement. */
+  frame_url?: string;
 };
 
 /** Convertit un ancien bloc "accommodations" texte libre en liste v2. */

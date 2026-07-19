@@ -15,7 +15,7 @@ export const getInvitationBundle = createServerFn({ method: "GET" })
     const { data: inv } = await supabaseAdmin
       .from("invitations")
       .select(
-        "id, token, rsvp_token, couple_names, event_date, venue, hero_url, message, allow_playlist, allow_gallery, theme, blocks",
+        "id, token, rsvp_token, couple_names, event_date, venue, hero_url, message, allow_playlist, allow_gallery, theme, blocks, intro_video_url",
       )
       .eq("token", data.token)
       .maybeSingle();

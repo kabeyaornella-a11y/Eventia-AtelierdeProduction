@@ -36,6 +36,7 @@ function StudioPage() {
   const [theme, setTheme] = useState<string>("");
   const [blocks, setBlocks] = useState<Blocks>({});
   const [tone, setTone] = useState<"elegant" | "romantique" | "festif" | "minimal">("elegant");
+  const [introVideoUrl, setIntroVideoUrl] = useState("");
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
@@ -43,6 +44,7 @@ function StudioPage() {
       setTheme(inv.theme ?? collections[0]?.slug ?? "bloom");
       const loaded = (inv.blocks as Blocks) ?? {};
       setBlocks({ ...loaded, accommodations: normalizeAccommodations(loaded.accommodations) });
+      setIntroVideoUrl((inv as { intro_video_url?: string | null }).intro_video_url ?? "");
     }
   }, [inv]);
 
@@ -101,6 +103,7 @@ function StudioPage() {
           theme,
           production_status: status,
           progress: status === "ready" ? 100 : status === "review" ? 75 : 40,
+          intro_video_url: introVideoUrl,
         },
       });
       toast.success("Enregistré");
@@ -296,6 +299,34 @@ function StudioPage() {
             value={blocks.thank_you ?? ""}
             onChange={(v) => setBlocks({ ...blocks, thank_you: v })}
           />
+
+          <div>
+            <label className="eyebrow text-xs">Cadre ornemental pour les cartes (optionnel)</label>
+            <input
+              value={blocks.frame_url ?? ""}
+              onChange={(e) => setBlocks({ ...blocks, frame_url: e.target.value })}
+              placeholder="URL d'un PNG à centre transparent — laisser vide pour le style de carte standard"
+              className="w-full mt-2 px-4 py-3 bg-ivory border border-border text-sm"
+            />
+            <p className="text-xs text-muted-foreground mt-1">
+              À choisir dans la Médiathèque admin (onglet Décorations) — habille les cartes
+              Hébergement façon écrin.
+            </p>
+          </div>
+
+          <div>
+            <label className="eyebrow text-xs">Vidéo d'intro / splash d'entrée (optionnel)</label>
+            <input
+              value={introVideoUrl}
+              onChange={(e) => setIntroVideoUrl(e.target.value)}
+              placeholder="URL Cloudinary — laisser vide pour ne pas afficher de splash"
+              className="w-full mt-2 px-4 py-3 bg-ivory border border-border text-sm"
+            />
+            <p className="text-xs text-muted-foreground mt-1">
+              Récupérable depuis la Médiathèque (admin) après upload, ou collée directement depuis
+              Cloudinary.
+            </p>
+          </div>
         </div>
 
         <div className="flex flex-wrap gap-3 mt-10 pt-6 border-t border-border">

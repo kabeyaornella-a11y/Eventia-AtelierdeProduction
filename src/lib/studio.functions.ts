@@ -101,6 +101,8 @@ const saveBlocksSchema = z.object({
   theme: z.string().max(64).optional(),
   production_status: z.enum(["briefing", "design", "review", "ready", "delivered"]).optional(),
   progress: z.number().int().min(0).max(100).optional(),
+  // Splash d'entrée optionnel (phase 3) : vidéo Cloudinary, laisser vide pour ne rien changer.
+  intro_video_url: z.string().url().max(500).optional().or(z.literal("")),
 });
 
 /** Sauvegarde manuelle des blocs (édition / direction artistique). */
@@ -112,6 +114,7 @@ export const saveInvitationBlocks = createServerFn({ method: "POST" })
     if (data.theme) patch.theme = data.theme;
     if (data.production_status) patch.production_status = data.production_status;
     if (data.progress !== undefined) patch.progress = data.progress;
+    if (data.intro_video_url !== undefined) patch.intro_video_url = data.intro_video_url || null;
     const { error } = await context.supabase
       .from("invitations")
       .update(patch as never)

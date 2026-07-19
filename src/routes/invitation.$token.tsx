@@ -32,6 +32,8 @@ import {
 import type { InvitationBlocks } from "@/lib/invitation-blocks";
 import { normalizeAccommodations } from "@/lib/invitation-blocks";
 import { CompanionsField, type Companion } from "@/components/site/CompanionsField";
+import { Reveal } from "@/components/site/Reveal";
+import { FramedCard } from "@/components/site/FramedCard";
 
 export const Route = createFileRoute("/invitation/$token")({
   head: ({ params }) => ({
@@ -65,6 +67,7 @@ type Invitation = {
   allow_playlist: boolean;
   allow_gallery: boolean;
   blocks: InvitationBlocks | null;
+  intro_video_url: string | null;
 };
 type Track = { id: string; title: string; artist: string | null; suggested_by: string | null };
 
@@ -101,6 +104,7 @@ function InvitationPage() {
   const [galleryFile, setGalleryFile] = useState<File | null>(null);
   const [galleryUploading, setGalleryUploading] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  const [splashDismissed, setSplashDismissed] = useState(false);
 
   const [rsvp, setRsvp] = useState<"yes" | "no" | "maybe" | null>(null);
   const [companions, setCompanions] = useState<Companion[]>([]);
@@ -235,8 +239,35 @@ function InvitationPage() {
     );
   }
 
+  const showSplash = !!invitation?.intro_video_url && !splashDismissed;
+
   return (
     <div className="min-h-screen bg-background text-foreground">
+      {showSplash && (
+        <button
+          type="button"
+          onClick={() => setSplashDismissed(true)}
+          aria-label="Découvrir l'invitation"
+          className="fixed inset-0 z-50 cursor-pointer bg-cacao text-ivory"
+        >
+          <video
+            src={invitation?.intro_video_url ?? undefined}
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-cacao/30 via-transparent to-cacao/60" />
+          <div className="absolute inset-x-0 bottom-16 flex flex-col items-center gap-2">
+            <span className="text-[11px] tracking-[0.3em] uppercase text-ivory/90">
+              Toucher pour découvrir
+            </span>
+            <span className="size-2 rounded-full border border-ivory/70 animate-pulse" />
+          </div>
+        </button>
+      )}
+
       <header className="relative h-[80vh] min-h-[520px] overflow-hidden">
         <img src={heroSrc} alt="" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-b from-cacao/40 via-cacao/20 to-background" />
@@ -275,387 +306,415 @@ function InvitationPage() {
 
       <main className="mx-auto max-w-3xl px-6 py-20 space-y-24">
         {blocks?.welcome_message && (
-          <section className="text-center">
-            <p className="font-serif-soft italic text-lg md:text-xl leading-relaxed text-foreground/90 max-w-xl mx-auto whitespace-pre-line">
-              {blocks.welcome_message}
-            </p>
-          </section>
+          <Reveal>
+            <section className="text-center">
+              <p className="font-serif-soft italic text-lg md:text-xl leading-relaxed text-foreground/90 max-w-xl mx-auto whitespace-pre-line">
+                {blocks.welcome_message}
+              </p>
+            </section>
+          </Reveal>
         )}
 
         {blocks?.story && (
-          <section className="text-center">
-            <div className="eyebrow text-primary">Notre histoire</div>
-            <p className="font-serif-soft italic text-base md:text-lg leading-relaxed text-foreground/90 max-w-xl mx-auto mt-4 whitespace-pre-line">
-              {blocks.story}
-            </p>
-          </section>
+          <Reveal>
+            <section className="text-center">
+              <div className="eyebrow text-primary">Notre histoire</div>
+              <p className="font-serif-soft italic text-base md:text-lg leading-relaxed text-foreground/90 max-w-xl mx-auto mt-4 whitespace-pre-line">
+                {blocks.story}
+              </p>
+            </section>
+          </Reveal>
         )}
 
         {!!blocks?.programme?.length && (
-          <section>
-            <div className="text-center mb-10">
-              <Clock className="size-5 text-primary mx-auto mb-2" />
-              <div className="eyebrow text-primary">Programme</div>
-              <h2 className="font-display text-4xl mt-2">Le déroulé de la journée</h2>
-            </div>
-            <ol className="space-y-6">
-              {blocks.programme.map((step, i) => (
-                <li key={i} className="flex gap-5 items-start">
-                  <div className="font-display text-lg text-primary w-16 shrink-0 text-right">
-                    {step.time}
-                  </div>
-                  <div className="w-px self-stretch bg-primary/20 shrink-0" />
-                  <div>
-                    <h3 className="font-display text-xl">{step.title}</h3>
-                    {step.description && (
-                      <p className="font-serif-soft italic text-muted-foreground mt-1">
-                        {step.description}
-                      </p>
-                    )}
-                  </div>
-                </li>
-              ))}
-            </ol>
-          </section>
+          <Reveal>
+            <section>
+              <div className="text-center mb-10">
+                <Clock className="size-5 text-primary mx-auto mb-2" />
+                <div className="eyebrow text-primary">Programme</div>
+                <h2 className="font-display text-4xl mt-2">Le déroulé de la journée</h2>
+              </div>
+              <ol className="space-y-6">
+                {blocks.programme.map((step, i) => (
+                  <li key={i} className="flex gap-5 items-start">
+                    <div className="font-display text-lg text-primary w-16 shrink-0 text-right">
+                      {step.time}
+                    </div>
+                    <div className="w-px self-stretch bg-primary/20 shrink-0" />
+                    <div>
+                      <h3 className="font-display text-xl">{step.title}</h3>
+                      {step.description && (
+                        <p className="font-serif-soft italic text-muted-foreground mt-1">
+                          {step.description}
+                        </p>
+                      )}
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </section>
+          </Reveal>
         )}
 
         {blocks?.dress_code && (blocks.dress_code.title || blocks.dress_code.description) && (
-          <section className="text-center">
-            <Shirt className="size-5 text-primary mx-auto mb-2" />
-            <div className="eyebrow text-primary">Dress code</div>
-            <h2 className="font-display text-4xl mt-2">
-              {blocks.dress_code.title || "Tenue de la journée"}
-            </h2>
-            {blocks.dress_code.description && (
-              <p className="font-serif-soft italic text-muted-foreground mt-3 max-w-md mx-auto">
-                {blocks.dress_code.description}
-              </p>
-            )}
-          </section>
+          <Reveal>
+            <section className="text-center">
+              <Shirt className="size-5 text-primary mx-auto mb-2" />
+              <div className="eyebrow text-primary">Dress code</div>
+              <h2 className="font-display text-4xl mt-2">
+                {blocks.dress_code.title || "Tenue de la journée"}
+              </h2>
+              {blocks.dress_code.description && (
+                <p className="font-serif-soft italic text-muted-foreground mt-3 max-w-md mx-auto">
+                  {blocks.dress_code.description}
+                </p>
+              )}
+            </section>
+          </Reveal>
         )}
 
         {!!accommodations.length && (
-          <section>
-            <div className="text-center mb-10">
-              <BedDouble className="size-5 text-primary mx-auto mb-2" />
-              <div className="eyebrow text-primary">Hébergement</div>
-              <h2 className="font-display text-4xl mt-2">Où poser ses valises</h2>
-            </div>
-            <div className="grid sm:grid-cols-2 gap-5">
-              {accommodations.map((opt, i) => (
-                <div key={i} className="bg-ivory border border-primary/15 p-6 shadow-soft">
-                  {opt.area && (
-                    <div className="text-[10px] tracking-[0.2em] uppercase text-muted-foreground mb-1">
-                      {opt.area}
-                    </div>
-                  )}
-                  <h3 className="font-display text-xl">{opt.name}</h3>
-                  {opt.notes && (
-                    <p className="font-serif-soft italic text-sm text-muted-foreground mt-2">
-                      {opt.notes}
-                    </p>
-                  )}
-                  {opt.promo_code && (
-                    <p className="text-xs mt-3">
-                      Code&nbsp;:{" "}
-                      <span className="font-mono bg-primary/10 text-primary px-2 py-0.5">
-                        {opt.promo_code}
-                      </span>
-                    </p>
-                  )}
-                  {opt.booking_url && (
-                    <a
-                      href={opt.booking_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 text-xs tracking-[0.15em] uppercase text-primary mt-4 hover:underline"
-                    >
-                      Réserver <ExternalLink className="size-3" />
-                    </a>
-                  )}
-                </div>
-              ))}
-            </div>
-          </section>
+          <Reveal>
+            <section>
+              <div className="text-center mb-10">
+                <BedDouble className="size-5 text-primary mx-auto mb-2" />
+                <div className="eyebrow text-primary">Hébergement</div>
+                <h2 className="font-display text-4xl mt-2">Où poser ses valises</h2>
+              </div>
+              <div className="grid sm:grid-cols-2 gap-5">
+                {accommodations.map((opt, i) => (
+                  <FramedCard key={i} frameUrl={blocks?.frame_url}>
+                    {opt.area && (
+                      <div className="text-[10px] tracking-[0.2em] uppercase text-muted-foreground mb-1">
+                        {opt.area}
+                      </div>
+                    )}
+                    <h3 className="font-display text-xl">{opt.name}</h3>
+                    {opt.notes && (
+                      <p className="font-serif-soft italic text-sm text-muted-foreground mt-2">
+                        {opt.notes}
+                      </p>
+                    )}
+                    {opt.promo_code && (
+                      <p className="text-xs mt-3">
+                        Code&nbsp;:{" "}
+                        <span className="font-mono bg-primary/10 text-primary px-2 py-0.5">
+                          {opt.promo_code}
+                        </span>
+                      </p>
+                    )}
+                    {opt.booking_url && (
+                      <a
+                        href={opt.booking_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 text-xs tracking-[0.15em] uppercase text-primary mt-4 hover:underline"
+                      >
+                        Réserver <ExternalLink className="size-3" />
+                      </a>
+                    )}
+                  </FramedCard>
+                ))}
+              </div>
+            </section>
+          </Reveal>
         )}
 
         {blocks?.transport && (blocks.transport.title || blocks.transport.description) && (
-          <section className="text-center">
-            <Car className="size-5 text-primary mx-auto mb-2" />
-            <div className="eyebrow text-primary">Transport</div>
-            <h2 className="font-display text-4xl mt-2">
-              {blocks.transport.title || "Comment venir"}
-            </h2>
-            {blocks.transport.description && (
-              <p className="font-serif-soft italic text-muted-foreground mt-3 max-w-md mx-auto">
-                {blocks.transport.description}
-              </p>
-            )}
-          </section>
+          <Reveal>
+            <section className="text-center">
+              <Car className="size-5 text-primary mx-auto mb-2" />
+              <div className="eyebrow text-primary">Transport</div>
+              <h2 className="font-display text-4xl mt-2">
+                {blocks.transport.title || "Comment venir"}
+              </h2>
+              {blocks.transport.description && (
+                <p className="font-serif-soft italic text-muted-foreground mt-3 max-w-md mx-auto">
+                  {blocks.transport.description}
+                </p>
+              )}
+            </section>
+          </Reveal>
         )}
 
         {blocks?.gifts && (blocks.gifts.title || blocks.gifts.description) && (
-          <section className="bg-ivory border border-primary/15 p-10 text-center">
-            <Gift className="size-5 text-primary mx-auto mb-2" />
-            <div className="eyebrow text-primary">Cadeaux</div>
-            <h2 className="font-display text-3xl mt-2">
-              {blocks.gifts.title || "Liste de cadeaux"}
-            </h2>
-            {blocks.gifts.description && (
-              <p className="font-serif-soft italic text-muted-foreground mt-3 max-w-md mx-auto">
-                {blocks.gifts.description}
-              </p>
-            )}
-          </section>
+          <Reveal>
+            <section className="bg-ivory border border-primary/15 p-10 text-center">
+              <Gift className="size-5 text-primary mx-auto mb-2" />
+              <div className="eyebrow text-primary">Cadeaux</div>
+              <h2 className="font-display text-3xl mt-2">
+                {blocks.gifts.title || "Liste de cadeaux"}
+              </h2>
+              {blocks.gifts.description && (
+                <p className="font-serif-soft italic text-muted-foreground mt-3 max-w-md mx-auto">
+                  {blocks.gifts.description}
+                </p>
+              )}
+            </section>
+          </Reveal>
         )}
 
         {allowPlaylist && (
-          <section>
-            <div className="text-center mb-8">
-              <Music className="size-5 text-primary mx-auto mb-2" />
-              <div className="eyebrow text-primary">Playlist collaborative</div>
-              <h2 className="font-display text-4xl mt-2">Quel morceau aimeriez-vous danser ?</h2>
-            </div>
-            <div className="grid sm:grid-cols-[1fr_1fr_auto] gap-2 mb-4">
-              <input
-                value={song}
-                onChange={(e) => setSong(e.target.value)}
-                placeholder="Titre"
-                className="px-4 py-3 bg-ivory border border-border text-sm"
-              />
-              <input
-                value={artist}
-                onChange={(e) => setArtist(e.target.value)}
-                placeholder="Artiste (optionnel)"
-                className="px-4 py-3 bg-ivory border border-border text-sm"
-              />
-              <button
-                onClick={addSong}
-                className="px-5 py-3 text-xs tracking-[0.18em] uppercase text-ivory bg-primary hover:bg-cacao"
-              >
-                Ajouter
-              </button>
-            </div>
-            <ul className="bg-ivory border border-primary/10 divide-y divide-border/60">
-              {playlist.length === 0 && (
-                <li className="px-4 py-6 text-center text-sm font-serif-soft italic text-muted-foreground">
-                  Soyez le premier à proposer un morceau.
-                </li>
-              )}
-              {playlist.map((t) => (
-                <li key={t.id} className="flex items-center justify-between px-4 py-3 text-sm">
-                  <span className="font-serif-soft italic">
-                    {t.artist ? `${t.artist} — ${t.title}` : t.title}
-                    {t.suggested_by && (
-                      <span className="text-muted-foreground text-xs ml-2">
-                        par {t.suggested_by}
-                      </span>
-                    )}
-                  </span>
-                  <Music className="size-3.5 text-primary/60" />
-                </li>
-              ))}
-            </ul>
-          </section>
+          <Reveal>
+            <section>
+              <div className="text-center mb-8">
+                <Music className="size-5 text-primary mx-auto mb-2" />
+                <div className="eyebrow text-primary">Playlist collaborative</div>
+                <h2 className="font-display text-4xl mt-2">Quel morceau aimeriez-vous danser ?</h2>
+              </div>
+              <div className="grid sm:grid-cols-[1fr_1fr_auto] gap-2 mb-4">
+                <input
+                  value={song}
+                  onChange={(e) => setSong(e.target.value)}
+                  placeholder="Titre"
+                  className="px-4 py-3 bg-ivory border border-border text-sm"
+                />
+                <input
+                  value={artist}
+                  onChange={(e) => setArtist(e.target.value)}
+                  placeholder="Artiste (optionnel)"
+                  className="px-4 py-3 bg-ivory border border-border text-sm"
+                />
+                <button
+                  onClick={addSong}
+                  className="px-5 py-3 text-xs tracking-[0.18em] uppercase text-ivory bg-primary hover:bg-cacao"
+                >
+                  Ajouter
+                </button>
+              </div>
+              <ul className="bg-ivory border border-primary/10 divide-y divide-border/60">
+                {playlist.length === 0 && (
+                  <li className="px-4 py-6 text-center text-sm font-serif-soft italic text-muted-foreground">
+                    Soyez le premier à proposer un morceau.
+                  </li>
+                )}
+                {playlist.map((t) => (
+                  <li key={t.id} className="flex items-center justify-between px-4 py-3 text-sm">
+                    <span className="font-serif-soft italic">
+                      {t.artist ? `${t.artist} — ${t.title}` : t.title}
+                      {t.suggested_by && (
+                        <span className="text-muted-foreground text-xs ml-2">
+                          par {t.suggested_by}
+                        </span>
+                      )}
+                    </span>
+                    <Music className="size-3.5 text-primary/60" />
+                  </li>
+                ))}
+              </ul>
+            </section>
+          </Reveal>
         )}
 
         {allowGallery && (
-          <section>
-            <div className="text-center mb-8">
-              <ImageIcon className="size-5 text-primary mx-auto mb-2" />
-              <div className="eyebrow text-primary">Galerie live</div>
-              <h2 className="font-display text-4xl mt-2">Partagez vos plus belles images</h2>
-              <p className="font-serif-soft italic text-muted-foreground mt-3 max-w-md mx-auto">
-                Le jour J, vos clichés viennent ici, ensemble, comme un livre d'or vivant.
-              </p>
-            </div>
-
-            <div className="grid sm:grid-cols-[1fr_auto] gap-2 mb-6 max-w-md mx-auto">
-              <label className="flex items-center gap-2 px-4 py-3 bg-ivory border border-border text-sm cursor-pointer truncate">
-                <Upload className="size-4 shrink-0 text-primary" />
-                <span className="truncate">
-                  {galleryFile ? galleryFile.name : "Choisir une photo"}
-                </span>
-                <input
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  onChange={(e) => setGalleryFile(e.target.files?.[0] ?? null)}
-                />
-              </label>
-              <button
-                onClick={sendPhoto}
-                disabled={!galleryFile || galleryUploading}
-                className="px-5 py-3 text-xs tracking-[0.18em] uppercase text-ivory bg-primary hover:bg-cacao disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {galleryUploading ? "Envoi…" : "Envoyer"}
-              </button>
-            </div>
-
-            {photos.length === 0 ? (
-              <p className="text-center text-sm font-serif-soft italic text-muted-foreground">
-                Soyez le premier à partager une photo.
-              </p>
-            ) : (
-              <div className="grid grid-cols-3 gap-2">
-                {photos.slice(0, 9).map((p) => (
-                  <div key={p.id} className="aspect-square overflow-hidden bg-muted">
-                    <img
-                      src={p.image_url}
-                      alt={p.caption ?? ""}
-                      loading="lazy"
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                ))}
+          <Reveal>
+            <section>
+              <div className="text-center mb-8">
+                <ImageIcon className="size-5 text-primary mx-auto mb-2" />
+                <div className="eyebrow text-primary">Galerie live</div>
+                <h2 className="font-display text-4xl mt-2">Partagez vos plus belles images</h2>
+                <p className="font-serif-soft italic text-muted-foreground mt-3 max-w-md mx-auto">
+                  Le jour J, vos clichés viennent ici, ensemble, comme un livre d'or vivant.
+                </p>
               </div>
-            )}
 
-            <div className="text-center mt-6">
-              <a
-                href={`/galerie/${token}`}
-                className="text-xs tracking-[0.18em] uppercase text-primary hover:underline"
-              >
-                Voir toute la galerie
-              </a>
-            </div>
-          </section>
+              <div className="grid sm:grid-cols-[1fr_auto] gap-2 mb-6 max-w-md mx-auto">
+                <label className="flex items-center gap-2 px-4 py-3 bg-ivory border border-border text-sm cursor-pointer truncate">
+                  <Upload className="size-4 shrink-0 text-primary" />
+                  <span className="truncate">
+                    {galleryFile ? galleryFile.name : "Choisir une photo"}
+                  </span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(e) => setGalleryFile(e.target.files?.[0] ?? null)}
+                  />
+                </label>
+                <button
+                  onClick={sendPhoto}
+                  disabled={!galleryFile || galleryUploading}
+                  className="px-5 py-3 text-xs tracking-[0.18em] uppercase text-ivory bg-primary hover:bg-cacao disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {galleryUploading ? "Envoi…" : "Envoyer"}
+                </button>
+              </div>
+
+              {photos.length === 0 ? (
+                <p className="text-center text-sm font-serif-soft italic text-muted-foreground">
+                  Soyez le premier à partager une photo.
+                </p>
+              ) : (
+                <div className="grid grid-cols-3 gap-2">
+                  {photos.slice(0, 9).map((p) => (
+                    <div key={p.id} className="aspect-square overflow-hidden bg-muted">
+                      <img
+                        src={p.image_url}
+                        alt={p.caption ?? ""}
+                        loading="lazy"
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              <div className="text-center mt-6">
+                <a
+                  href={`/galerie/${token}`}
+                  className="text-xs tracking-[0.18em] uppercase text-primary hover:underline"
+                >
+                  Voir toute la galerie
+                </a>
+              </div>
+            </section>
+          </Reveal>
         )}
 
         {!!blocks?.faq?.length && (
-          <section>
-            <div className="text-center mb-8">
-              <Ticket className="size-5 text-primary mx-auto mb-2" />
-              <div className="eyebrow text-primary">Questions fréquentes</div>
-              <h2 className="font-display text-4xl mt-2">Tout ce qu'il faut savoir</h2>
-            </div>
-            <Accordion type="single" collapsible className="bg-ivory border border-primary/10 px-2">
-              {blocks.faq.map((item, i) => (
-                <AccordionItem key={i} value={`faq-${i}`}>
-                  <AccordionTrigger className="font-display text-base px-3">
-                    {item.q}
-                  </AccordionTrigger>
-                  <AccordionContent className="font-serif-soft italic text-muted-foreground px-3">
-                    {item.a}
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
-          </section>
+          <Reveal>
+            <section>
+              <div className="text-center mb-8">
+                <Ticket className="size-5 text-primary mx-auto mb-2" />
+                <div className="eyebrow text-primary">Questions fréquentes</div>
+                <h2 className="font-display text-4xl mt-2">Tout ce qu'il faut savoir</h2>
+              </div>
+              <Accordion
+                type="single"
+                collapsible
+                className="bg-ivory border border-primary/10 px-2"
+              >
+                {blocks.faq.map((item, i) => (
+                  <AccordionItem key={i} value={`faq-${i}`}>
+                    <AccordionTrigger className="font-display text-base px-3">
+                      {item.q}
+                    </AccordionTrigger>
+                    <AccordionContent className="font-serif-soft italic text-muted-foreground px-3">
+                      {item.a}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </section>
+          </Reveal>
         )}
 
-        <section id="rsvp" className="text-center">
-          <div className="eyebrow text-primary">RSVP</div>
-          <h2 className="font-display text-4xl mt-2">Confirmez votre présence</h2>
-          <p className="font-serif-soft italic text-muted-foreground mt-3">
-            Réponse souhaitée avant le{" "}
-            {new Date(eventDate.getTime() - 14 * 86400000).toLocaleDateString("fr-FR")}.
-          </p>
+        <Reveal>
+          <section id="rsvp" className="text-center">
+            <div className="eyebrow text-primary">RSVP</div>
+            <h2 className="font-display text-4xl mt-2">Confirmez votre présence</h2>
+            <p className="font-serif-soft italic text-muted-foreground mt-3">
+              Réponse souhaitée avant le{" "}
+              {new Date(eventDate.getTime() - 14 * 86400000).toLocaleDateString("fr-FR")}.
+            </p>
 
-          {done ? (
-            <div className="mt-10 bg-ivory border border-primary/20 p-10 shadow-soft">
-              <Check className="size-10 text-primary mx-auto" />
-              <h3 className="font-display text-2xl mt-4">Merci {name.split(" ")[0]}</h3>
-              <p className="font-serif-soft italic text-muted-foreground mt-2">
-                {blocks?.thank_you || "Votre réponse a été reçue."}
-              </p>
-            </div>
-          ) : (
-            <div className="mt-10 bg-ivory border border-primary/15 p-8 md:p-10 shadow-soft text-left space-y-6">
-              <div className="grid grid-cols-3 gap-2">
-                {(
-                  [
-                    { v: "yes", l: "Avec joie" },
-                    { v: "maybe", l: "Peut-être" },
-                    { v: "no", l: "Avec regret" },
-                  ] as const
-                ).map((o) => (
-                  <button
-                    key={o.v}
-                    onClick={() => setRsvp(o.v)}
-                    className={`px-3 py-4 text-xs tracking-[0.18em] uppercase border ${rsvp === o.v ? "border-primary bg-primary/5 text-primary" : "border-border hover:border-primary/50"}`}
-                  >
-                    {o.l}
-                  </button>
-                ))}
+            {done ? (
+              <div className="mt-10 bg-ivory border border-primary/20 p-10 shadow-soft">
+                <Check className="size-10 text-primary mx-auto" />
+                <h3 className="font-display text-2xl mt-4">Merci {name.split(" ")[0]}</h3>
+                <p className="font-serif-soft italic text-muted-foreground mt-2">
+                  {blocks?.thank_you || "Votre réponse a été reçue."}
+                </p>
               </div>
+            ) : (
+              <div className="mt-10 bg-ivory border border-primary/15 p-8 md:p-10 shadow-soft text-left space-y-6">
+                <div className="grid grid-cols-3 gap-2">
+                  {(
+                    [
+                      { v: "yes", l: "Avec joie" },
+                      { v: "maybe", l: "Peut-être" },
+                      { v: "no", l: "Avec regret" },
+                    ] as const
+                  ).map((o) => (
+                    <button
+                      key={o.v}
+                      onClick={() => setRsvp(o.v)}
+                      className={`px-3 py-4 text-xs tracking-[0.18em] uppercase border ${rsvp === o.v ? "border-primary bg-primary/5 text-primary" : "border-border hover:border-primary/50"}`}
+                    >
+                      {o.l}
+                    </button>
+                  ))}
+                </div>
 
-              <div className="grid sm:grid-cols-2 gap-4">
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <input
+                    placeholder="Prénom & Nom"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="w-full px-4 py-3 bg-background border border-border text-sm"
+                  />
+                  <input
+                    placeholder="Email (optionnel)"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full px-4 py-3 bg-background border border-border text-sm"
+                  />
+                </div>
                 <input
-                  placeholder="Prénom & Nom"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Vos allergies ou régime alimentaire (optionnel)"
+                  value={allergies}
+                  onChange={(e) => setAllergies(e.target.value)}
                   className="w-full px-4 py-3 bg-background border border-border text-sm"
                 />
-                <input
-                  placeholder="Email (optionnel)"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-4 py-3 bg-background border border-border text-sm"
+
+                <CompanionsField value={companions} onChange={setCompanions} />
+
+                <label className="flex items-center gap-3 text-sm text-foreground/80">
+                  <input
+                    type="checkbox"
+                    checked={needsTransport}
+                    onChange={(e) => setNeedsTransport(e.target.checked)}
+                    className="size-4 accent-primary"
+                  />
+                  J'aurai besoin d'un transport vers le lieu
+                </label>
+
+                <textarea
+                  placeholder="Un mot doux pour les mariés…"
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  rows={3}
+                  className="w-full px-4 py-3 bg-background border border-border text-sm font-serif-soft italic"
                 />
+
+                {/* Honeypot anti-spam : invisible pour un humain, jamais rempli sauf par un bot. */}
+                <div className="absolute -left-[9999px] opacity-0" aria-hidden="true">
+                  <label htmlFor="company">Ne pas remplir</label>
+                  <input
+                    id="company"
+                    name="company"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    value={company}
+                    onChange={(e) => setCompany(e.target.value)}
+                  />
+                </div>
+
+                <button
+                  onClick={submit}
+                  disabled={!rsvp || !name.trim() || submitting}
+                  className="w-full inline-flex items-center justify-center gap-2 px-7 py-3.5 text-xs tracking-[0.22em] uppercase text-ivory bg-primary hover:bg-cacao disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-gold"
+                >
+                  <Send className="size-4" /> {submitting ? "Envoi…" : "Envoyer ma réponse"}
+                </button>
               </div>
-              <input
-                placeholder="Vos allergies ou régime alimentaire (optionnel)"
-                value={allergies}
-                onChange={(e) => setAllergies(e.target.value)}
-                className="w-full px-4 py-3 bg-background border border-border text-sm"
-              />
+            )}
+          </section>
+        </Reveal>
 
-              <CompanionsField value={companions} onChange={setCompanions} />
-
-              <label className="flex items-center gap-3 text-sm text-foreground/80">
-                <input
-                  type="checkbox"
-                  checked={needsTransport}
-                  onChange={(e) => setNeedsTransport(e.target.checked)}
-                  className="size-4 accent-primary"
-                />
-                J'aurai besoin d'un transport vers le lieu
-              </label>
-
-              <textarea
-                placeholder="Un mot doux pour les mariés…"
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                rows={3}
-                className="w-full px-4 py-3 bg-background border border-border text-sm font-serif-soft italic"
-              />
-
-              {/* Honeypot anti-spam : invisible pour un humain, jamais rempli sauf par un bot. */}
-              <div className="absolute -left-[9999px] opacity-0" aria-hidden="true">
-                <label htmlFor="company">Ne pas remplir</label>
-                <input
-                  id="company"
-                  name="company"
-                  tabIndex={-1}
-                  autoComplete="off"
-                  value={company}
-                  onChange={(e) => setCompany(e.target.value)}
-                />
-              </div>
-
-              <button
-                onClick={submit}
-                disabled={!rsvp || !name.trim() || submitting}
-                className="w-full inline-flex items-center justify-center gap-2 px-7 py-3.5 text-xs tracking-[0.22em] uppercase text-ivory bg-primary hover:bg-cacao disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-gold"
-              >
-                <Send className="size-4" /> {submitting ? "Envoi…" : "Envoyer ma réponse"}
-              </button>
-            </div>
-          )}
-        </section>
-
-        <section className="bg-ivory border border-primary/15 p-10 text-center">
-          <BookOpen className="size-5 text-primary mx-auto mb-2" />
-          <div className="eyebrow text-primary">Livre audio</div>
-          <h2 className="font-display text-3xl mt-2">L'histoire des mariés</h2>
-          <p className="font-serif-soft italic text-muted-foreground mt-3 max-w-md mx-auto">
-            Une histoire racontée à deux voix, à écouter avant le grand jour.
-          </p>
-          <button className="mt-6 inline-flex items-center gap-2 px-7 py-3.5 text-xs tracking-[0.22em] uppercase text-foreground border border-foreground/40 hover:border-primary hover:text-primary">
-            <Heart className="size-4" /> Écouter (4 min 12)
-          </button>
-        </section>
+        <Reveal>
+          <section className="bg-ivory border border-primary/15 p-10 text-center">
+            <BookOpen className="size-5 text-primary mx-auto mb-2" />
+            <div className="eyebrow text-primary">Livre audio</div>
+            <h2 className="font-display text-3xl mt-2">L'histoire des mariés</h2>
+            <p className="font-serif-soft italic text-muted-foreground mt-3 max-w-md mx-auto">
+              Une histoire racontée à deux voix, à écouter avant le grand jour.
+            </p>
+            <button className="mt-6 inline-flex items-center gap-2 px-7 py-3.5 text-xs tracking-[0.22em] uppercase text-foreground border border-foreground/40 hover:border-primary hover:text-primary">
+              <Heart className="size-4" /> Écouter (4 min 12)
+            </button>
+          </section>
+        </Reveal>
 
         <footer className="text-center text-[11px] tracking-[0.22em] uppercase text-muted-foreground pt-10 border-t border-border">
           Invitation Eventia · {token}
