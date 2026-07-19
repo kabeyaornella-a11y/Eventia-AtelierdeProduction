@@ -54,6 +54,7 @@ import { Route as ApiPublicRsvpRemindersRouteImport } from './routes/api/public/
 import { Route as ApiPublicGumroadRouteImport } from './routes/api/public/gumroad'
 import { Route as ApiPublicEmailWorkerRouteImport } from './routes/api/public/email-worker'
 import { Route as AuthenticatedStudioIdRouteImport } from './routes/_authenticated/studio.$id'
+import { Route as AuthenticatedAdminMediasRouteImport } from './routes/_authenticated/admin/medias'
 import { Route as AuthenticatedAdminInvitationsRouteImport } from './routes/_authenticated/admin/invitations'
 import { Route as AuthenticatedAdminCommandesRouteImport } from './routes/_authenticated/admin/commandes'
 import { Route as AuthenticatedAdminB2bRouteImport } from './routes/_authenticated/admin/b2b'
@@ -290,6 +291,12 @@ const AuthenticatedStudioIdRoute = AuthenticatedStudioIdRouteImport.update({
   path: '/studio/$id',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedAdminMediasRoute =
+  AuthenticatedAdminMediasRouteImport.update({
+    id: '/medias',
+    path: '/medias',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
 const AuthenticatedAdminInvitationsRoute =
   AuthenticatedAdminInvitationsRouteImport.update({
     id: '/invitations',
@@ -362,6 +369,7 @@ export interface FileRoutesByFullPath {
   '/admin/b2b': typeof AuthenticatedAdminB2bRoute
   '/admin/commandes': typeof AuthenticatedAdminCommandesRoute
   '/admin/invitations': typeof AuthenticatedAdminInvitationsRoute
+  '/admin/medias': typeof AuthenticatedAdminMediasRoute
   '/studio/$id': typeof AuthenticatedStudioIdRoute
   '/api/public/email-worker': typeof ApiPublicEmailWorkerRoute
   '/api/public/gumroad': typeof ApiPublicGumroadRoute
@@ -411,6 +419,7 @@ export interface FileRoutesByTo {
   '/admin/b2b': typeof AuthenticatedAdminB2bRoute
   '/admin/commandes': typeof AuthenticatedAdminCommandesRoute
   '/admin/invitations': typeof AuthenticatedAdminInvitationsRoute
+  '/admin/medias': typeof AuthenticatedAdminMediasRoute
   '/studio/$id': typeof AuthenticatedStudioIdRoute
   '/api/public/email-worker': typeof ApiPublicEmailWorkerRoute
   '/api/public/gumroad': typeof ApiPublicGumroadRoute
@@ -464,6 +473,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/b2b': typeof AuthenticatedAdminB2bRoute
   '/_authenticated/admin/commandes': typeof AuthenticatedAdminCommandesRoute
   '/_authenticated/admin/invitations': typeof AuthenticatedAdminInvitationsRoute
+  '/_authenticated/admin/medias': typeof AuthenticatedAdminMediasRoute
   '/_authenticated/studio/$id': typeof AuthenticatedStudioIdRoute
   '/api/public/email-worker': typeof ApiPublicEmailWorkerRoute
   '/api/public/gumroad': typeof ApiPublicGumroadRoute
@@ -517,6 +527,7 @@ export interface FileRouteTypes {
     | '/admin/b2b'
     | '/admin/commandes'
     | '/admin/invitations'
+    | '/admin/medias'
     | '/studio/$id'
     | '/api/public/email-worker'
     | '/api/public/gumroad'
@@ -566,6 +577,7 @@ export interface FileRouteTypes {
     | '/admin/b2b'
     | '/admin/commandes'
     | '/admin/invitations'
+    | '/admin/medias'
     | '/studio/$id'
     | '/api/public/email-worker'
     | '/api/public/gumroad'
@@ -618,6 +630,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/b2b'
     | '/_authenticated/admin/commandes'
     | '/_authenticated/admin/invitations'
+    | '/_authenticated/admin/medias'
     | '/_authenticated/studio/$id'
     | '/api/public/email-worker'
     | '/api/public/gumroad'
@@ -982,6 +995,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedStudioIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/admin/medias': {
+      id: '/_authenticated/admin/medias'
+      path: '/medias'
+      fullPath: '/admin/medias'
+      preLoaderRoute: typeof AuthenticatedAdminMediasRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
     '/_authenticated/admin/invitations': {
       id: '/_authenticated/admin/invitations'
       path: '/invitations'
@@ -1025,6 +1045,7 @@ interface AuthenticatedAdminRouteRouteChildren {
   AuthenticatedAdminB2bRoute: typeof AuthenticatedAdminB2bRoute
   AuthenticatedAdminCommandesRoute: typeof AuthenticatedAdminCommandesRoute
   AuthenticatedAdminInvitationsRoute: typeof AuthenticatedAdminInvitationsRoute
+  AuthenticatedAdminMediasRoute: typeof AuthenticatedAdminMediasRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
 }
 
@@ -1034,6 +1055,7 @@ const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren
     AuthenticatedAdminB2bRoute: AuthenticatedAdminB2bRoute,
     AuthenticatedAdminCommandesRoute: AuthenticatedAdminCommandesRoute,
     AuthenticatedAdminInvitationsRoute: AuthenticatedAdminInvitationsRoute,
+    AuthenticatedAdminMediasRoute: AuthenticatedAdminMediasRoute,
     AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
   }
 

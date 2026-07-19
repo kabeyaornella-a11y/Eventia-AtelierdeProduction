@@ -1,7 +1,14 @@
 import { createFileRoute, Outlet, Link, redirect } from "@tanstack/react-router";
 import { getMyAdminStatus } from "@/lib/admin.functions";
 import { SiteLayout, Section } from "@/components/site/SiteLayout";
-import { LayoutDashboard, ShoppingBag, Mail, Heart, Building2 } from "lucide-react";
+import {
+  LayoutDashboard,
+  ShoppingBag,
+  Mail,
+  Heart,
+  Building2,
+  Image as ImageIcon,
+} from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/admin")({
   ssr: false,
@@ -23,6 +30,7 @@ function AdminLayout() {
     { to: "/admin/commandes" as const, label: "Commandes", icon: ShoppingBag, exact: false },
     { to: "/admin/ateliers" as const, label: "Ateliers", icon: Mail, exact: false },
     { to: "/admin/invitations" as const, label: "Invitations", icon: Heart, exact: false },
+    { to: "/admin/medias" as const, label: "Médiathèque", icon: ImageIcon, exact: false },
     { to: "/admin/b2b" as const, label: "B2B", icon: Building2, exact: false },
   ];
   return (
