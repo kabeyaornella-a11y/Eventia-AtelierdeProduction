@@ -18,7 +18,9 @@ export const listMyRsvps = createServerFn({ method: "GET" })
     if (!inv) throw new Error("Invitation introuvable");
     const { data: rsvps, error } = await context.supabase
       .from("rsvps")
-      .select("id, guest_name, guest_email, status, guests_count, message, created_at")
+      .select(
+        "id, guest_name, guest_email, status, guests_count, allergies, needs_transport, message, created_at",
+      )
       .eq("invitation_id", data.invitation_id)
       .order("created_at", { ascending: false });
     if (error) throw new Error(error.message);
@@ -45,13 +47,19 @@ const submitSchema = z.object({
   guest_email: z.string().email().max(200).optional().or(z.literal("")),
   status: z.enum(["yes", "no", "maybe"]),
   guests_count: z.number().int().min(1).max(10).default(1),
+  allergies: z.string().trim().max(300).optional().or(z.literal("")),
+  needs_transport: z.boolean().optional().default(false),
   message: z.string().max(500).optional().or(z.literal("")),
+  // Honeypot anti-spam : doit rester vide, cf. invitation.functions.ts.
+  company: z.string().max(200).optional().or(z.literal("")),
 });
 
 /** Soumet un RSVP public via token. */
 export const submitRsvp = createServerFn({ method: "POST" })
   .inputValidator((i) => submitSchema.parse(i))
   .handler(async ({ data }) => {
+    if (data.company) return { ok: true };
+
     const { data: inv, error: e1 } = await supabase
       .from("invitations")
       .select("id")
@@ -65,6 +73,8 @@ export const submitRsvp = createServerFn({ method: "POST" })
       guest_email: data.guest_email || null,
       status: data.status,
       guests_count: data.guests_count,
+      allergies: data.allergies || null,
+      needs_transport: data.needs_transport ?? false,
       message: data.message || null,
     });
     if (error) throw new Error(error.message);

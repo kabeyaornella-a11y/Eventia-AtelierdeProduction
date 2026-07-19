@@ -61,9 +61,14 @@ Retourne un JSON avec exactement ces clés :
     { "q": "Que faire en cas d'imprévu ?", "a": "..." }
   ],
   "gifts": { "title": "Liste de cadeaux", "description": "message élégant sur la liste / cagnotte (80 mots)" },
-  "accommodations": "suggestions d'hébergement à proximité (80 mots, 2-3 options génériques)",
+  "accommodations": [
+    { "name": "Nom de l'hôtel/lieu", "area": "Quartier ou distance du lieu", "notes": "2-3 phrases : type d'hébergement, ambiance", "promo_code": "code promo si pertinent, sinon vide", "booking_url": "" }
+  ],
+  "transport": { "title": "Transport", "description": "100 mots max : comment venir, parking, navettes éventuelles" },
   "thank_you": "message de remerciement post-RSVP (40 mots)"
-}`;
+}
+
+Fournis 2 options dans "accommodations" (styles différents, ex. une adresse de charme et une option pratique).`;
 
     const raw = await callLovableAI({ system, prompt, json: true });
     let blocks: Record<string, Json>;
