@@ -1,0 +1,2 @@
+- [Netlify build config](netlify-build.md) — Nitro netlify preset outputs static assets to `dist/`, not `.output/public/`; SSR function in `.netlify/functions-internal/`
+- [Invitation engine specs](invitation-engine-specs.md) — Scene-based cinematic system, GSAP+Three.js+SVG stack, Supabase SaaS data model; 11-part Project Bible in passation PDFs
