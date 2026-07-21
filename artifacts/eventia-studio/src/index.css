@@ -56,67 +56,67 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
-/* ── Eventia Studio Dark Theme ── */
+/* ── Eventia Studio · Thème Ivoire ── */
 :root {
-  --button-outline: rgba(201, 169, 110, 0.2);
-  --badge-outline: rgba(201, 169, 110, 0.1);
+  --button-outline: rgba(201, 169, 110, 0.25);
+  --badge-outline: rgba(201, 169, 110, 0.15);
   --opaque-button-border-intensity: -8;
-  --elevate-1: rgba(255, 255, 255, 0.04);
-  --elevate-2: rgba(255, 255, 255, 0.09);
+  --elevate-1: rgba(42, 31, 24, 0.03);
+  --elevate-2: rgba(42, 31, 24, 0.06);
 
-  /* Core dark palette — Eventia dark warm brown */
-  --background:          20 18% 8%;      /* #1A1110 */
-  --foreground:          40 25% 96%;     /* #F9F6F1 */
-  --border:              28 18% 18%;     /* warm dark border */
-  --card:                20 20% 12%;     /* #2A1F18 */
-  --card-foreground:     40 25% 96%;
-  --card-border:         28 18% 18%;
-  --popover:             20 20% 10%;
-  --popover-foreground:  40 25% 96%;
-  --popover-border:      28 18% 18%;
-  --primary:             38 51% 61%;     /* #C9A96E gold */
-  --primary-foreground:  20 18% 8%;
-  --secondary:           20 15% 17%;
-  --secondary-foreground: 40 20% 85%;
-  --muted:               20 12% 14%;
-  --muted-foreground:    20 10% 52%;
-  --accent:              38 51% 61%;     /* gold */
-  --accent-foreground:   20 18% 8%;
+  /* Palette ivoire chaud */
+  --background:          36 33% 96%;    /* #FAF6F0 ivoire */
+  --foreground:          20 38% 14%;    /* #2A1F18 brun foncé */
+  --border:              30 22% 88%;    /* bordure chaude claire */
+  --card:                0 0% 100%;     /* blanc pur */
+  --card-foreground:     20 38% 14%;
+  --card-border:         30 22% 90%;
+  --popover:             0 0% 100%;
+  --popover-foreground:  20 38% 14%;
+  --popover-border:      30 22% 88%;
+  --primary:             38 51% 61%;    /* #C9A96E or */
+  --primary-foreground:  0 0% 100%;
+  --secondary:           36 25% 92%;    /* ivoire légèrement sombre */
+  --secondary-foreground: 20 38% 14%;
+  --muted:               36 20% 93%;
+  --muted-foreground:    20 12% 46%;
+  --accent:              38 51% 61%;    /* or */
+  --accent-foreground:   0 0% 100%;
   --destructive:         0 72% 51%;
   --destructive-foreground: 0 0% 100%;
-  --input:               20 15% 20%;
+  --input:               0 0% 100%;
   --ring:                38 51% 61%;
 
-  /* Sidebar — slightly darker than background */
-  --sidebar:                  20 18% 6%;
-  --sidebar-foreground:       40 20% 85%;
-  --sidebar-border:           28 15% 13%;
+  /* Sidebar — ivoire légèrement plus sombre */
+  --sidebar:                  36 28% 93%;
+  --sidebar-foreground:       20 38% 14%;
+  --sidebar-border:           30 20% 86%;
   --sidebar-primary:          38 51% 61%;
-  --sidebar-primary-foreground: 20 18% 8%;
-  --sidebar-accent:           20 18% 12%;
-  --sidebar-accent-foreground: 40 20% 85%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent:           36 30% 89%;
+  --sidebar-accent-foreground: 20 38% 14%;
   --sidebar-ring:             38 51% 61%;
 
   /* Charts */
   --chart-1: 38 51% 61%;
   --chart-2: 38 35% 50%;
-  --chart-3: 20 15% 35%;
-  --chart-4: 40 28% 75%;
-  --chart-5: 15 35% 45%;
+  --chart-3: 20 15% 65%;
+  --chart-4: 36 30% 80%;
+  --chart-5: 15 25% 55%;
 
   --app-font-sans: 'Jost', sans-serif;
   --app-font-serif: 'Cormorant Garamond', serif;
   --app-font-mono: 'JetBrains Mono', monospace;
-  --radius: 0.25rem;
+  --radius: 0.5rem;
 
-  --shadow-2xs: 0px 2px 4px 0px rgba(0,0,0,0.4);
-  --shadow-xs:  0px 2px 4px 0px rgba(0,0,0,0.4);
-  --shadow-sm:  0px 2px 4px 0px rgba(0,0,0,0.4), 0px 1px 2px -1px rgba(0,0,0,0.3);
-  --shadow:     0px 4px 8px 0px rgba(0,0,0,0.4), 0px 1px 2px -1px rgba(0,0,0,0.3);
-  --shadow-md:  0px 4px 12px 0px rgba(0,0,0,0.5), 0px 2px 4px -1px rgba(0,0,0,0.3);
-  --shadow-lg:  0px 8px 24px 0px rgba(0,0,0,0.5), 0px 4px 6px -1px rgba(0,0,0,0.3);
-  --shadow-xl:  0px 16px 40px 0px rgba(0,0,0,0.6), 0px 8px 10px -1px rgba(0,0,0,0.4);
-  --shadow-2xl: 0px 24px 64px 0px rgba(0,0,0,0.7);
+  --shadow-2xs: 0px 1px 2px 0px rgba(42,31,24,0.06);
+  --shadow-xs:  0px 1px 3px 0px rgba(42,31,24,0.08);
+  --shadow-sm:  0px 2px 6px 0px rgba(42,31,24,0.08), 0px 1px 2px -1px rgba(42,31,24,0.04);
+  --shadow:     0px 4px 12px 0px rgba(42,31,24,0.09), 0px 1px 2px -1px rgba(42,31,24,0.04);
+  --shadow-md:  0px 6px 16px 0px rgba(42,31,24,0.1), 0px 2px 4px -1px rgba(42,31,24,0.05);
+  --shadow-lg:  0px 12px 32px 0px rgba(42,31,24,0.12), 0px 4px 6px -1px rgba(42,31,24,0.06);
+  --shadow-xl:  0px 20px 48px 0px rgba(42,31,24,0.14), 0px 8px 10px -1px rgba(42,31,24,0.07);
+  --shadow-2xl: 0px 32px 64px 0px rgba(42,31,24,0.16);
 
   --tracking-normal: 0em;
   --spacing: 0.25rem;
@@ -134,127 +134,135 @@
   * { @apply border-border; }
   body { @apply font-sans antialiased bg-background text-foreground; }
 
-  /* Scrollbar */
+  /* Scrollbar léger */
   ::-webkit-scrollbar { width: 4px; height: 4px; }
   ::-webkit-scrollbar-track { background: hsl(var(--background)); }
-  ::-webkit-scrollbar-thumb { background: hsl(var(--border)); border-radius: 2px; }
-  ::-webkit-scrollbar-thumb:hover { background: hsl(var(--primary)); }
+  ::-webkit-scrollbar-thumb { background: rgba(201,169,110,0.35); border-radius: 2px; }
+  ::-webkit-scrollbar-thumb:hover { background: #C9A96E; }
 }
 
-/* ── Eventia Studio specific ── */
-.gold { color: #C9A96E; }
+/* ── Variables de couleur pour usage inline ── */
+:root {
+  --c-bg:         #FAF6F0;
+  --c-sidebar:    #F3EDE4;
+  --c-card:       #FFFFFF;
+  --c-text:       #2A1F18;
+  --c-text-muted: rgba(42,31,24,0.45);
+  --c-gold:       #C9A96E;
+  --c-border:     rgba(42,31,24,0.1);
+  --c-border-med: rgba(42,31,24,0.16);
+  --c-shadow:     rgba(42,31,24,0.08);
+  --c-header:     #FFFFFF;
+}
+
+/* ── Éléments Studio ── */
+.gold { color: var(--c-gold); }
 .serif { font-family: 'Cormorant Garamond', serif; }
 
-.block-row {
+/* Carte de bloc */
+.block-card {
+  background: var(--c-card);
+  border-radius: 8px;
+  border: 1px solid var(--c-border);
+  box-shadow: 0 1px 4px var(--c-shadow);
+  margin: 4px 12px;
+  padding: 12px 14px;
   display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
+  align-items: flex-start;
+  gap: 12px;
   cursor: pointer;
-  border-left: 2px solid transparent;
   transition: all 0.2s ease;
-  user-select: none;
 }
-.block-row:hover { background: hsl(var(--sidebar-accent)); }
-.block-row.active {
-  border-left-color: #C9A96E;
-  background: rgba(201,169,110,0.1);
-}
-.block-row.disabled { opacity: 0.4; }
+.block-card:hover { box-shadow: 0 2px 8px rgba(42,31,24,0.12); border-color: var(--c-border-med); }
+.block-card.active { border-color: var(--c-gold); box-shadow: 0 2px 8px rgba(201,169,110,0.2); }
+.block-card.disabled { opacity: 0.45; }
 
+/* Coche or */
+.check-box {
+  width: 22px; height: 22px; border-radius: 5px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+}
+.check-box.on  { background: var(--c-gold); border: none; }
+.check-box.on::after { content: '✓'; color: #fff; font-size: 13px; font-weight: 700; }
+.check-box.off { background: #fff; border: 1.5px solid rgba(42,31,24,0.2); }
+
+/* Onglets de config */
 .tab-btn {
-  flex: 1;
-  padding: 7px 4px;
-  font-size: 10px;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  text-align: center;
-  color: hsl(var(--muted-foreground));
-  border-bottom: 2px solid transparent;
-  cursor: pointer;
-  transition: all 0.2s ease;
+  flex: 1; padding: 9px 4px;
+  font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; text-align: center;
+  color: var(--c-text-muted); border-bottom: 2px solid transparent;
+  cursor: pointer; transition: all 0.2s ease; background: none; border-top: none; border-left: none; border-right: none;
 }
-.tab-btn.active {
-  color: #C9A96E;
-  border-bottom-color: #C9A96E;
-}
+.tab-btn.active { color: var(--c-gold); border-bottom-color: var(--c-gold); }
 
+/* Labels */
 .field-label {
-  font-size: 10px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: hsl(var(--muted-foreground));
-  margin-bottom: 6px;
-  display: block;
+  font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--c-text-muted); margin-bottom: 6px; display: block;
 }
 
+/* Inputs */
 .studio-input {
-  width: 100%;
-  background: hsl(var(--input));
-  border: 1px solid hsl(var(--border));
-  color: hsl(var(--foreground));
-  padding: 8px 10px;
-  font-size: 13px;
-  font-family: 'Jost', sans-serif;
-  outline: none;
-  transition: border-color 0.2s;
-  border-radius: 2px;
+  width: 100%; background: #fff; border: 1px solid var(--c-border-med);
+  color: var(--c-text); padding: 9px 11px; font-size: 13px;
+  font-family: 'Jost', sans-serif; outline: none; transition: border-color 0.2s;
+  border-radius: 6px;
 }
-.studio-input:focus { border-color: #C9A96E; }
+.studio-input:focus { border-color: var(--c-gold); }
 
 .studio-select {
-  width: 100%;
-  background: hsl(var(--input));
-  border: 1px solid hsl(var(--border));
-  color: hsl(var(--foreground));
-  padding: 8px 10px;
-  font-size: 12px;
-  font-family: 'Jost', sans-serif;
-  outline: none;
-  cursor: pointer;
-  border-radius: 2px;
-  appearance: none;
+  width: 100%; background: #fff; border: 1px solid var(--c-border-med);
+  color: var(--c-text); padding: 9px 11px; font-size: 12px;
+  font-family: 'Jost', sans-serif; outline: none; cursor: pointer;
+  border-radius: 6px; appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23C9A96E' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 10px center;
-  padding-right: 28px;
+  background-repeat: no-repeat; background-position: right 10px center; padding-right: 28px;
 }
-.studio-select:focus { border-color: #C9A96E; }
+.studio-select:focus { border-color: var(--c-gold); }
 
+/* Bouton format gras/italic… */
 .format-btn {
-  width: 30px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: hsl(var(--input));
-  border: 1px solid hsl(var(--border));
-  color: hsl(var(--muted-foreground));
-  cursor: pointer;
-  font-size: 13px;
-  font-weight: 700;
-  border-radius: 2px;
-  transition: all 0.2s;
-  flex-shrink: 0;
+  width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
+  background: #fff; border: 1px solid var(--c-border-med); color: var(--c-text-muted);
+  cursor: pointer; font-size: 13px; font-weight: 700; border-radius: 6px;
+  transition: all 0.2s; flex-shrink: 0;
 }
-.format-btn:hover { border-color: #C9A96E; color: #C9A96E; }
-.format-btn.active { background: rgba(201,169,110,0.15); border-color: #C9A96E; color: #C9A96E; }
+.format-btn:hover { border-color: var(--c-gold); color: var(--c-gold); }
+.format-btn.active { background: rgba(201,169,110,0.1); border-color: var(--c-gold); color: var(--c-gold); }
 
+/* Zone d'upload */
 .upload-zone {
-  border: 1px dashed hsl(var(--border));
-  border-radius: 2px;
-  padding: 16px;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.2s;
+  border: 1.5px dashed var(--c-border-med); border-radius: 8px;
+  padding: 18px; text-align: center; cursor: pointer; transition: all 0.2s;
+  background: hsl(36,20%,98%);
 }
-.upload-zone:hover { border-color: #C9A96E; background: rgba(201,169,110,0.05); }
+.upload-zone:hover { border-color: var(--c-gold); background: rgba(201,169,110,0.04); }
 
+/* En-tête de section accordéon */
+.section-header {
+  background: #2A1F18; color: #FAF6F0; padding: 10px 14px;
+  font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase;
+  cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+  border-radius: 6px; margin: 4px 12px;
+}
+
+/* Bouton formule */
+.formula-btn {
+  width: 100%; padding: 11px; text-align: center;
+  font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+  cursor: pointer; transition: all 0.2s; border-radius: 6px;
+  font-family: 'Jost', sans-serif; border: 1px solid var(--c-border-med);
+}
+.formula-btn.active { background: var(--c-gold); color: #fff; border-color: var(--c-gold); }
+.formula-btn.inactive { background: #fff; color: var(--c-text-muted); }
+
+/* Animations */
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(12px); }
+  from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-.fade-up { animation: fadeUp 0.3s ease both; }
+.fade-up { animation: fadeUp 0.28s ease both; }
 
 @keyframes phoneGlow {
   0%,100% { box-shadow: 0 0 30px rgba(201,169,110,0.1), 0 40px 80px rgba(0,0,0,0.7); }
