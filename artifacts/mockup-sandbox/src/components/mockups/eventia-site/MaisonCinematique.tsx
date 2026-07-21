@@ -1,590 +1,302 @@
 export function MaisonCinematique() {
+  const collections = [
+    { name: "Les Voiles", tagline: "Aérien · Délicat", img: "/__mockup/images/collection-voiles.jpg" },
+    { name: "Les Seuils", tagline: "Passages · Majesté", img: "/__mockup/images/collection-seuils.jpg" },
+    { name: "Les Écrins", tagline: "Joaillerie · Précieux", img: "/__mockup/images/collection-ecrins.jpg" },
+    { name: "L'Union", tagline: "Chaleur · Famille", img: "/__mockup/images/collection-union.jpg" },
+    { name: "Save the Date", tagline: "Première annonce", img: "/__mockup/images/collection-std.jpg" },
+  ];
+
   return (
-    <div className="min-h-screen w-full bg-[#F5F0E8] overflow-x-hidden">
-      {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#F5F0E8]/90 backdrop-blur-md border-b border-[#C9A96E]/20">
-        <div className="max-w-[1400px] mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="text-2xl text-[#2A1F18]" style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontWeight: 600 }}>
-            Eventia Signature
-          </div>
-          <div className="hidden md:flex items-center gap-8" style={{ fontFamily: "'Jost', sans-serif", fontSize: "15px", letterSpacing: "0.5px" }}>
-            <a href="#collections" className="text-[#2A1F18] hover:text-[#C9A96E] transition-colors">Collections</a>
-            <a href="#tarifs" className="text-[#2A1F18] hover:text-[#C9A96E] transition-colors">Tarifs</a>
-            <a href="#approche" className="text-[#2A1F18] hover:text-[#C9A96E] transition-colors">Notre approche</a>
-            <a href="#contact" className="text-[#2A1F18] hover:text-[#C9A96E] transition-colors">Contact</a>
-          </div>
-          <button 
-            className="px-6 py-2.5 bg-[#C9A96E] text-white transition-all hover:bg-[#B89860]"
-            style={{ fontFamily: "'Jost', sans-serif", fontSize: "14px", letterSpacing: "1px", textTransform: "uppercase" }}
-          >
-            Voir les collections
-          </button>
+    <div className="min-h-screen w-full" style={{ fontFamily: "'Jost', sans-serif", background: "#F5F0E8", color: "#2A1F18" }}>
+
+      {/* ── NAV ── */}
+      <nav style={{
+        position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
+        display: "flex", alignItems: "center", justifyContent: "space-between",
+        padding: "0 56px", height: 72,
+        background: "rgba(245,240,232,0.92)", backdropFilter: "blur(16px)",
+        borderBottom: "1px solid rgba(201,169,110,0.2)",
+      }}>
+        <span style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontSize: 24, color: "#2A1F18" }}>
+          Eventia <span style={{ color: "#C9A96E" }}>Signature</span>
+        </span>
+        <div style={{ display: "flex", gap: 36, fontSize: 12, letterSpacing: 2.5, textTransform: "uppercase", color: "#7A6858" }}>
+          {["Collections", "Tarifs", "Notre approche", "Contact"].map(l => (
+            <span key={l} style={{ cursor: "pointer" }}>{l}</span>
+          ))}
         </div>
+        <button style={{
+          background: "#C9A96E", color: "#FBF7F0", border: "none",
+          padding: "12px 28px", fontSize: 11, letterSpacing: 2.5,
+          textTransform: "uppercase", cursor: "pointer", fontFamily: "'Jost', sans-serif",
+        }}>
+          Voir les collections
+        </button>
       </nav>
 
-      {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center pt-20">
-        <div className="absolute inset-0 overflow-hidden">
-          {/* Stylized placeholder image with gold gradient */}
-          <div className="absolute inset-0 bg-gradient-to-br from-[#C9A96E]/20 via-[#F5F0E8] to-[#A0907A]/30"></div>
-          <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-gradient-radial from-[#C9A96E]/30 to-transparent rounded-full blur-3xl"></div>
-          <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-gradient-radial from-[#A0907A]/20 to-transparent rounded-full blur-3xl"></div>
-          
-          {/* Decorative geometric shape */}
-          <div 
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] border border-[#C9A96E]/20"
-            style={{ 
-              clipPath: "polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)",
-              transform: "translate(-50%, -50%) rotate(45deg)"
-            }}
-          ></div>
-        </div>
+      {/* ── HERO FULL BLEED ── */}
+      <section style={{
+        minHeight: "100vh", paddingTop: 72,
+        display: "flex", alignItems: "center",
+        position: "relative", overflow: "hidden",
+      }}>
+        {/* Background photo */}
+        <div style={{
+          position: "absolute", inset: 0,
+          backgroundImage: `url('/__mockup/images/hero-bg.jpg')`,
+          backgroundSize: "cover", backgroundPosition: "center",
+          filter: "brightness(0.35) saturate(0.8)",
+          zIndex: 0,
+        }} />
+        {/* Gold overlay gradient */}
+        <div style={{
+          position: "absolute", inset: 0,
+          background: "linear-gradient(135deg, rgba(42,31,24,0.7) 0%, transparent 60%, rgba(201,169,110,0.1) 100%)",
+          zIndex: 0,
+        }} />
 
-        <div className="relative z-10 max-w-[1200px] mx-auto px-6 text-center">
-          <div 
-            className="text-[#2A1F18] mb-4 opacity-80"
-            style={{ fontFamily: "'Jost', sans-serif", fontSize: "18px", letterSpacing: "3px", textTransform: "uppercase" }}
-          >
-            Vos invitations de mariage
-          </div>
-          <h1 
-            className="text-[#2A1F18] mb-8 leading-[0.9]"
-            style={{ 
-              fontFamily: "'Cormorant Garamond', serif", 
-              fontStyle: "italic", 
-              fontWeight: 600,
-              fontSize: "clamp(4rem, 12vw, 10rem)"
-            }}
-          >
-            Signature
-          </h1>
-          <p 
-            className="text-[#2A1F18]/70 max-w-[600px] mx-auto mb-12 leading-relaxed"
-            style={{ fontFamily: "'Jost', sans-serif", fontSize: "18px", lineHeight: "1.8" }}
-          >
-            Des faire-parts digitaux qui racontent votre histoire avec l'élégance et l'émotion qu'elle mérite. Une expérience cinématique pour vos invités.
-          </p>
-          <button 
-            className="px-12 py-4 bg-[#2A1F18] text-[#F9F6F1] transition-all hover:bg-[#3A2F28] hover:scale-105"
-            style={{ fontFamily: "'Jost', sans-serif", fontSize: "14px", letterSpacing: "2px", textTransform: "uppercase" }}
-          >
-            Découvrir nos invitations
-          </button>
-        </div>
-
-        {/* Scroll indicator */}
-        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce">
-          <div className="w-px h-16 bg-gradient-to-b from-transparent via-[#C9A96E] to-transparent"></div>
-          <div className="w-1.5 h-1.5 rounded-full bg-[#C9A96E]"></div>
-        </div>
-      </section>
-
-      {/* Divider line */}
-      <div className="h-px bg-gradient-to-r from-transparent via-[#C9A96E] to-transparent"></div>
-
-      {/* Collections Section */}
-      <section id="collections" className="py-32 bg-[#F5F0E8]">
-        <div className="max-w-[1400px] mx-auto px-6">
-          <div className="text-center mb-20">
-            <div 
-              className="text-[#C9A96E] mb-4"
-              style={{ fontFamily: "'Jost', sans-serif", fontSize: "14px", letterSpacing: "3px", textTransform: "uppercase" }}
-            >
-              Nos Collections
-            </div>
-            <h2 
-              className="text-[#2A1F18] mb-6"
-              style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontSize: "clamp(3rem, 6vw, 5rem)", fontWeight: 600 }}
-            >
-              Cinq univers d'exception
-            </h2>
-            <p 
-              className="text-[#2A1F18]/70 max-w-[700px] mx-auto"
-              style={{ fontFamily: "'Jost', sans-serif", fontSize: "17px", lineHeight: "1.8" }}
-            >
-              Chaque collection capture une esthétique, une émotion, un moment unique de votre histoire.
+        <div style={{ position: "relative", zIndex: 1, width: "100%", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 0 }}>
+          {/* Left content */}
+          <div style={{ padding: "80px 64px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+            <p style={{ fontSize: 11, letterSpacing: 5, textTransform: "uppercase", color: "#C9A96E", marginBottom: 32 }}>
+              Faire-parts digitaux · Mariage de luxe
             </p>
-          </div>
-
-          {/* Horizontal scrollable collections */}
-          <div className="overflow-x-auto pb-8 -mx-6 px-6" style={{ scrollbarWidth: "thin", scrollbarColor: "#C9A96E #F5F0E8" }}>
-            <div className="flex gap-8 min-w-max">
-              {[
-                { name: "Les Voiles", tagline: "Légèreté éthérée", gradient: "from-[#C9A96E]/30 to-[#F9F6F1]" },
-                { name: "Les Seuils", tagline: "Passages intemporels", gradient: "from-[#A0907A]/40 to-[#F5F0E8]" },
-                { name: "Les Écrins", tagline: "Luxe raffiné", gradient: "from-[#C9A96E]/40 via-[#A0907A]/20 to-[#F9F6F1]" },
-                { name: "L'Union", tagline: "Harmonie parfaite", gradient: "from-[#2A1F18]/20 to-[#C9A96E]/30" },
-                { name: "Save the Date", tagline: "Premier chapitre", gradient: "from-[#F9F6F1] to-[#C9A96E]/20" }
-              ].map((collection, i) => (
-                <div 
-                  key={i} 
-                  className="group cursor-pointer"
-                  style={{ width: "380px", flexShrink: 0 }}
-                >
-                  {/* Video placeholder with gradient */}
-                  <div 
-                    className={`relative h-[520px] bg-gradient-to-br ${collection.gradient} mb-6 overflow-hidden transition-transform group-hover:scale-[1.02]`}
-                    style={{ clipPath: i === 2 ? "polygon(0 0, 100% 0, 100% 95%, 0 100%)" : undefined }}
-                  >
-                    {/* Decorative frame */}
-                    <div className="absolute inset-8 border border-[#C9A96E]/30 group-hover:border-[#C9A96E]/60 transition-colors"></div>
-                    
-                    {/* Collection number */}
-                    <div 
-                      className="absolute top-6 right-6 text-[#C9A96E]/40"
-                      style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "80px", fontStyle: "italic", lineHeight: 1 }}
-                    >
-                      {String(i + 1).padStart(2, '0')}
-                    </div>
-
-                    {/* Center ornament */}
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                      <div className="w-20 h-20 border border-[#C9A96E]/40 rotate-45 group-hover:rotate-[60deg] transition-transform duration-700"></div>
-                    </div>
-                  </div>
-
-                  <h3 
-                    className="text-[#2A1F18] mb-2"
-                    style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontSize: "32px", fontWeight: 600 }}
-                  >
-                    {collection.name}
-                  </h3>
-                  <p 
-                    className="text-[#2A1F18]/60"
-                    style={{ fontFamily: "'Jost', sans-serif", fontSize: "15px", letterSpacing: "1px" }}
-                  >
-                    {collection.tagline}
-                  </p>
+            <h1 style={{
+              fontFamily: "'Cormorant Garamond', serif",
+              fontStyle: "italic",
+              fontSize: "clamp(56px, 6vw, 88px)",
+              fontWeight: 300,
+              color: "#F9F6F1",
+              lineHeight: 1.0,
+              margin: "0 0 16px",
+              letterSpacing: "-1px",
+            }}>
+              Vos invitations
+            </h1>
+            <h1 style={{
+              fontFamily: "'Cormorant Garamond', serif",
+              fontSize: "clamp(56px, 6vw, 88px)",
+              fontWeight: 600,
+              color: "#F9F6F1",
+              lineHeight: 1.0,
+              margin: "0 0 40px",
+              letterSpacing: "-1px",
+            }}>
+              SIGNATURE
+            </h1>
+            <p style={{ fontSize: 17, color: "rgba(249,246,241,0.75)", lineHeight: 1.75, maxWidth: 400, marginBottom: 48, fontWeight: 300 }}>
+              Des expériences cinématiques sur-mesure. Vos invités ne reçoivent pas un lien — ils vivent un moment.
+            </p>
+            <div style={{ display: "flex", gap: 16 }}>
+              <button style={{
+                background: "#C9A96E", color: "#2A1F18", border: "none",
+                padding: "18px 44px", fontSize: 12, letterSpacing: 3,
+                textTransform: "uppercase", cursor: "pointer", fontFamily: "'Jost', sans-serif",
+                fontWeight: 500,
+              }}>
+                Créer mon invitation
+              </button>
+              <button style={{
+                background: "transparent", color: "#F9F6F1",
+                border: "1px solid rgba(249,246,241,0.4)",
+                padding: "18px 36px", fontSize: 12, letterSpacing: 2,
+                textTransform: "uppercase", cursor: "pointer", fontFamily: "'Jost', sans-serif",
+              }}>
+                Voir les collections
+              </button>
+            </div>
+            <div style={{ marginTop: 48, display: "flex", gap: 40 }}>
+              {[{ v: "+500", l: "Couples" }, { v: "4.9★", l: "Note" }, { v: "7j", l: "Livraison" }].map(s => (
+                <div key={s.l}>
+                  <div style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontSize: 28, color: "#C9A96E" }}>{s.v}</div>
+                  <div style={{ fontSize: 11, letterSpacing: 2, textTransform: "uppercase", color: "rgba(249,246,241,0.5)", marginTop: 2 }}>{s.l}</div>
                 </div>
               ))}
             </div>
           </div>
+
+          {/* Right: phone */}
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "80px 64px" }}>
+            <div style={{ position: "relative" }}>
+              <div style={{
+                position: "absolute", inset: -40,
+                border: "1px solid rgba(201,169,110,0.25)",
+                borderRadius: 4,
+              }} />
+              <img
+                src="/__mockup/images/phone-mockup.jpg"
+                alt="Invitation"
+                style={{
+                  height: 520, objectFit: "cover",
+                  borderRadius: 28,
+                  boxShadow: "0 60px 120px rgba(0,0,0,0.5), 0 20px 40px rgba(201,169,110,0.2)",
+                }}
+              />
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* How it works - Dark section with diagonal cut */}
-      <section 
-        id="approche" 
-        className="relative py-32 bg-[#2A1F18] text-[#F9F6F1]"
-        style={{ clipPath: "polygon(0 5%, 100% 0, 100% 100%, 0 95%)" }}
-      >
-        <div className="max-w-[1200px] mx-auto px-6">
-          <div className="text-center mb-24">
-            <div 
-              className="text-[#C9A96E] mb-4"
-              style={{ fontFamily: "'Jost', sans-serif", fontSize: "14px", letterSpacing: "3px", textTransform: "uppercase" }}
-            >
-              Notre Approche
+      {/* ── COLLECTIONS — DARK SECTION ── */}
+      <section style={{ background: "#2A1F18", padding: "100px 64px" }}>
+        <div style={{ marginBottom: 56 }}>
+          <p style={{ fontSize: 11, letterSpacing: 5, textTransform: "uppercase", color: "#C9A96E", marginBottom: 20 }}>Collections</p>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
+            <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 52, fontWeight: 400, color: "#F9F6F1", margin: 0, lineHeight: 1.1 }}>
+              Cinq univers visuels,<br /><em style={{ fontStyle: "italic", color: "#C9A96E" }}>chacun une œuvre</em>
+            </h2>
+            <span style={{ fontSize: 13, color: "rgba(249,246,241,0.5)", cursor: "pointer", letterSpacing: 1 }}>
+              Voir toutes les collections →
+            </span>
+          </div>
+        </div>
+        {/* Horizontal scroll cards */}
+        <div style={{ display: "flex", gap: 16, overflowX: "auto", paddingBottom: 8 }}>
+          {collections.map((c, i) => (
+            <div key={c.name} style={{
+              flexShrink: 0, width: 280, position: "relative", overflow: "hidden", cursor: "pointer",
+              border: "1px solid rgba(201,169,110,0.2)",
+            }}>
+              <img src={c.img} alt={c.name} style={{ width: 280, height: 380, objectFit: "cover", display: "block", transition: "transform 0.5s" }} />
+              <div style={{
+                position: "absolute", inset: 0,
+                background: "linear-gradient(to top, rgba(42,31,24,0.85) 0%, rgba(42,31,24,0.2) 50%, transparent 100%)",
+              }} />
+              <div style={{ position: "absolute", bottom: 24, left: 20, right: 20 }}>
+                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 22, color: "#F9F6F1", marginBottom: 4 }}>{c.name}</div>
+                <div style={{ fontSize: 11, color: "rgba(249,246,241,0.6)", letterSpacing: 2, textTransform: "uppercase" }}>{c.tagline}</div>
+              </div>
             </div>
-            <h2 
-              className="text-[#F9F6F1] mb-6"
-              style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontSize: "clamp(3rem, 6vw, 5rem)", fontWeight: 600 }}
-            >
-              Trois étapes vers l'excellence
+          ))}
+        </div>
+      </section>
+
+      {/* ── PROCESS — LIGHT SECTION ── */}
+      <section style={{ background: "#F5F0E8", padding: "100px 64px" }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: 80 }}>
+            <p style={{ fontSize: 11, letterSpacing: 5, textTransform: "uppercase", color: "#C9A96E", marginBottom: 20 }}>L'expérience Eventia</p>
+            <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 52, fontWeight: 400, margin: 0 }}>
+              De la première idée<br />à l'invitation parfaite
             </h2>
           </div>
-
-          <div className="grid md:grid-cols-3 gap-16">
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 0 }}>
             {[
-              { 
-                step: "01", 
-                title: "Choisir", 
-                desc: "Explorez nos collections et sélectionnez l'univers qui résonne avec votre histoire."
-              },
-              { 
-                step: "02", 
-                title: "Personnaliser", 
-                desc: "Notre équipe sculpte votre invitation : textes, vidéos, animations, musique."
-              },
-              { 
-                step: "03", 
-                title: "Partager", 
-                desc: "Envoyez un lien unique. Vos invités vivent une expérience cinématique inoubliable."
-              }
-            ].map((item, i) => (
-              <div key={i} className="relative group">
-                <div 
-                  className="text-[#C9A96E]/20 mb-6 group-hover:text-[#C9A96E]/40 transition-colors"
-                  style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "120px", fontStyle: "italic", lineHeight: 1 }}
-                >
-                  {item.step}
-                </div>
-                <h3 
-                  className="text-[#F9F6F1] mb-4"
-                  style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontSize: "36px", fontWeight: 600 }}
-                >
-                  {item.title}
-                </h3>
-                <p 
-                  className="text-[#F9F6F1]/70 leading-relaxed"
-                  style={{ fontFamily: "'Jost', sans-serif", fontSize: "16px", lineHeight: "1.8" }}
-                >
-                  {item.desc}
-                </p>
-
-                {/* Decorative line */}
-                <div className="absolute -top-8 left-0 w-16 h-px bg-[#C9A96E]/40 group-hover:w-24 transition-all"></div>
+              { n: "I", title: "Choisissez", desc: "Parcourez nos collections et identifiez l'univers qui vous ressemble. Chaque ambiance, chaque mouvement a été pensé pour émouvoir." },
+              { n: "II", title: "Personnalisez", desc: "Vous remplissez votre formulaire. Notre équipe intègre vos textes, vos photos, votre histoire. Livraison sous 7 jours." },
+              { n: "III", title: "Partagez", desc: "Un lien unique, pour toujours. Vos invités répondent directement. Vous suivez les RSVP en temps réel depuis votre espace." },
+            ].map((s, i) => (
+              <div key={s.n} style={{
+                padding: "48px 40px",
+                borderRight: i < 2 ? "1px solid rgba(201,169,110,0.25)" : "none",
+              }}>
+                <div style={{
+                  fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic",
+                  fontSize: 80, color: "rgba(201,169,110,0.2)", lineHeight: 1, marginBottom: 24,
+                }}>{s.n}</div>
+                <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 28, fontWeight: 500, marginBottom: 16 }}>{s.title}</h3>
+                <p style={{ fontSize: 15, color: "#6B5C54", lineHeight: 1.75, fontWeight: 300 }}>{s.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Pricing Section */}
-      <section id="tarifs" className="py-32 bg-[#F5F0E8]">
-        <div className="max-w-[1400px] mx-auto px-6">
-          <div className="text-center mb-20">
-            <div 
-              className="text-[#C9A96E] mb-4"
-              style={{ fontFamily: "'Jost', sans-serif", fontSize: "14px", letterSpacing: "3px", textTransform: "uppercase" }}
-            >
-              Nos Offres
-            </div>
-            <h2 
-              className="text-[#2A1F18] mb-6"
-              style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontSize: "clamp(3rem, 6vw, 5rem)", fontWeight: 600 }}
-            >
-              Des formules pour chaque vision
-            </h2>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8 mb-16">
-            {[
-              {
-                name: "L'Essentielle",
-                price: "179€",
-                features: [
-                  "Template personnalisable",
-                  "Animations GSAP fluides",
-                  "Formulaire RSVP intégré",
-                  "Compte à rebours élégant",
-                  "Support par email"
-                ],
-                highlight: false
-              },
-              {
-                name: "La Signature",
-                price: "269€",
-                features: [
-                  "Tout de L'Essentielle",
-                  "Vidéo d'introduction (15s)",
-                  "Musique d'ambiance",
-                  "Animations avancées",
-                  "Galerie photos",
-                  "Support prioritaire"
-                ],
-                highlight: true
-              },
-              {
-                name: "L'Exception",
-                price: "549€",
-                features: [
-                  "Tout de La Signature",
-                  "Vidéo cinématique (30-45s)",
-                  "Design 100% sur-mesure",
-                  "Effets 3D et parallaxe",
-                  "Carte interactive",
-                  "Révisions illimitées",
-                  "Hotline dédiée"
-                ],
-                highlight: false
-              }
-            ].map((offer, i) => (
-              <div 
-                key={i}
-                className={`relative p-8 bg-white border-2 transition-all hover:scale-[1.02] ${
-                  offer.highlight 
-                    ? "border-[#C9A96E] shadow-2xl md:-translate-y-4" 
-                    : "border-[#C9A96E]/20 hover:border-[#C9A96E]/40"
-                }`}
-              >
-                {offer.highlight && (
-                  <div 
-                    className="absolute -top-4 left-1/2 -translate-x-1/2 px-6 py-1.5 bg-[#C9A96E] text-white"
-                    style={{ fontFamily: "'Jost', sans-serif", fontSize: "12px", letterSpacing: "2px", textTransform: "uppercase" }}
-                  >
-                    Populaire
-                  </div>
-                )}
-
-                <h3 
-                  className="text-[#2A1F18] mb-2"
-                  style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontSize: "32px", fontWeight: 600 }}
-                >
-                  {offer.name}
-                </h3>
-                <div 
-                  className="text-[#C9A96E] mb-8"
-                  style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "56px", fontWeight: 600 }}
-                >
-                  {offer.price}
+      {/* ── PRICING — DARK ── */}
+      <section style={{ background: "#2A1F18", padding: "100px 64px" }}>
+        <div style={{ textAlign: "center", marginBottom: 64 }}>
+          <p style={{ fontSize: 11, letterSpacing: 5, textTransform: "uppercase", color: "#C9A96E", marginBottom: 20 }}>Tarifs</p>
+          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 52, fontWeight: 400, color: "#F9F6F1", margin: 0 }}>
+            L'exception, à votre portée
+          </h2>
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 1, maxWidth: 1000, margin: "0 auto", background: "rgba(201,169,110,0.15)" }}>
+          {[
+            { name: "L'Essentielle", price: "179€", features: ["9 blocs inclus", "RSVP intégré", "Compte à rebours", "Plan & programme", "Livraison 7 jours"], highlight: false },
+            { name: "La Signature", price: "269€", features: ["Tout L'Essentielle", "Notre histoire", "Dress code animé", "Galerie photos", "Empreintes personnalisées", "Plan interactif"], highlight: true },
+            { name: "L'Exception", price: "549€", features: ["Tout La Signature", "Hébergements", "Activités & loisirs", "Liste de cadeaux", "Album live invités", "Accompagnement dédié"], highlight: false },
+          ].map((t, i) => (
+            <div key={t.name} style={{
+              padding: "56px 36px",
+              background: t.highlight ? "#C9A96E" : "#2A1F18",
+              position: "relative",
+            }}>
+              {t.highlight && (
+                <div style={{
+                  position: "absolute", top: 16, right: 16,
+                  background: "#2A1F18", color: "#C9A96E",
+                  fontSize: 10, letterSpacing: 2, padding: "4px 10px",
+                  textTransform: "uppercase",
+                }}>Le plus choisi</div>
+              )}
+              <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 24, fontWeight: 400, color: t.highlight ? "#2A1F18" : "#F9F6F1", marginBottom: 8 }}>{t.name}</div>
+              <div style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontSize: 52, color: t.highlight ? "#2A1F18" : "#C9A96E", marginBottom: 32 }}>{t.price}</div>
+              {t.features.map(f => (
+                <div key={f} style={{ display: "flex", gap: 10, fontSize: 14, marginBottom: 10, color: t.highlight ? "rgba(42,31,24,0.85)" : "rgba(249,246,241,0.75)" }}>
+                  <span style={{ color: t.highlight ? "#2A1F18" : "#C9A96E" }}>◆</span> {f}
                 </div>
-
-                <ul className="space-y-4 mb-8">
-                  {offer.features.map((feature, fi) => (
-                    <li 
-                      key={fi} 
-                      className="flex items-start gap-3 text-[#2A1F18]/80"
-                      style={{ fontFamily: "'Jost', sans-serif", fontSize: "15px", lineHeight: "1.6" }}
-                    >
-                      <span className="text-[#C9A96E] mt-1">✦</span>
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <button 
-                  className={`w-full py-3.5 transition-all ${
-                    offer.highlight
-                      ? "bg-[#2A1F18] text-[#F9F6F1] hover:bg-[#3A2F28]"
-                      : "bg-[#C9A96E] text-white hover:bg-[#B89860]"
-                  }`}
-                  style={{ fontFamily: "'Jost', sans-serif", fontSize: "13px", letterSpacing: "2px", textTransform: "uppercase" }}
-                >
-                  Choisir cette offre
-                </button>
-              </div>
-            ))}
-          </div>
-
-          {/* Save the Date pricing */}
-          <div className="max-w-[900px] mx-auto bg-gradient-to-br from-[#C9A96E]/10 to-[#A0907A]/10 p-12 border border-[#C9A96E]/30">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-              <div className="flex-1">
-                <h3 
-                  className="text-[#2A1F18] mb-3"
-                  style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontSize: "36px", fontWeight: 600 }}
-                >
-                  Save the Date
-                </h3>
-                <p 
-                  className="text-[#2A1F18]/70 mb-4"
-                  style={{ fontFamily: "'Jost', sans-serif", fontSize: "16px", lineHeight: "1.7" }}
-                >
-                  Annoncez votre date avec style. Trois formules élégantes pour créer l'anticipation.
-                </p>
-                <div 
-                  className="flex items-center gap-6 text-[#C9A96E]"
-                  style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "28px", fontWeight: 600 }}
-                >
-                  <span>29€</span>
-                  <span className="text-[#2A1F18]/30">•</span>
-                  <span>59€</span>
-                  <span className="text-[#2A1F18]/30">•</span>
-                  <span>89€</span>
-                </div>
-              </div>
-              <button 
-                className="px-10 py-3.5 bg-[#2A1F18] text-[#F9F6F1] transition-all hover:bg-[#3A2F28] whitespace-nowrap"
-                style={{ fontFamily: "'Jost', sans-serif", fontSize: "13px", letterSpacing: "2px", textTransform: "uppercase" }}
-              >
-                En savoir plus
+              ))}
+              <button style={{
+                marginTop: 32, width: "100%", padding: "14px",
+                background: t.highlight ? "#2A1F18" : "transparent",
+                border: t.highlight ? "none" : "1px solid rgba(201,169,110,0.4)",
+                color: t.highlight ? "#C9A96E" : "#C9A96E",
+                fontSize: 11, letterSpacing: 2.5, textTransform: "uppercase",
+                cursor: "pointer", fontFamily: "'Jost', sans-serif",
+              }}>
+                Choisir
               </button>
             </div>
-          </div>
+          ))}
         </div>
       </section>
 
-      {/* Testimonials - Dark section */}
-      <section className="py-32 bg-[#2A1F18] text-[#F9F6F1]">
-        <div className="max-w-[1200px] mx-auto px-6">
-          <div className="text-center mb-20">
-            <div 
-              className="text-[#C9A96E] mb-4"
-              style={{ fontFamily: "'Jost', sans-serif", fontSize: "14px", letterSpacing: "3px", textTransform: "uppercase" }}
-            >
-              Témoignages
-            </div>
-            <h2 
-              className="text-[#F9F6F1] mb-6"
-              style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontSize: "clamp(3rem, 6vw, 5rem)", fontWeight: 600 }}
-            >
-              Leurs histoires
-            </h2>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-12">
-            {[
-              {
-                quote: "L'invitation Eventia a donné le ton parfait pour notre mariage. Nos invités nous en parlent encore des mois après. Une expérience visuelle et émotionnelle exceptionnelle.",
-                author: "Léa & Thomas",
-                wedding: "Mariage · Juin 2025 · Provence",
-                collection: "Collection Les Écrins"
-              },
-              {
-                quote: "Le niveau de personnalisation et l'accompagnement d'Ornelle ont dépassé nos attentes. Chaque détail reflétait notre histoire. Un investissement qui en valait chaque centime.",
-                author: "Yasmine & Alexandre",
-                wedding: "Mariage · Septembre 2025 · Château de Versailles",
-                collection: "Collection L'Union"
-              }
-            ].map((testimonial, i) => (
-              <div key={i} className="relative p-10 bg-[#F9F6F1]/5 border border-[#C9A96E]/20 hover:border-[#C9A96E]/40 transition-colors">
-                {/* Quote mark */}
-                <div 
-                  className="text-[#C9A96E]/30 mb-6"
-                  style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "80px", lineHeight: 1, height: "60px" }}
-                >
-                  "
-                </div>
-
-                <p 
-                  className="text-[#F9F6F1]/90 mb-8 leading-relaxed"
-                  style={{ fontFamily: "'Jost', sans-serif", fontSize: "17px", lineHeight: "1.8" }}
-                >
-                  {testimonial.quote}
-                </p>
-
-                <div className="border-t border-[#C9A96E]/20 pt-6">
-                  <div 
-                    className="text-[#F9F6F1] mb-2"
-                    style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontSize: "24px", fontWeight: 600 }}
-                  >
-                    {testimonial.author}
-                  </div>
-                  <div 
-                    className="text-[#F9F6F1]/60 mb-1"
-                    style={{ fontFamily: "'Jost', sans-serif", fontSize: "14px" }}
-                  >
-                    {testimonial.wedding}
-                  </div>
-                  <div 
-                    className="text-[#C9A96E]"
-                    style={{ fontFamily: "'Jost', sans-serif", fontSize: "13px", letterSpacing: "1px" }}
-                  >
-                    {testimonial.collection}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Final CTA Section */}
-      <section className="relative py-40 bg-[#F5F0E8] overflow-hidden">
-        {/* Decorative elements */}
-        <div className="absolute top-1/2 left-1/4 w-64 h-64 bg-[#C9A96E]/10 rounded-full blur-3xl"></div>
-        <div className="absolute top-1/3 right-1/4 w-80 h-80 bg-[#A0907A]/10 rounded-full blur-3xl"></div>
-
-        <div className="relative z-10 max-w-[900px] mx-auto px-6 text-center">
-          <h2 
-            className="text-[#2A1F18] mb-8 leading-tight"
-            style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontSize: "clamp(3rem, 7vw, 6rem)", fontWeight: 600 }}
-          >
-            Racontez votre histoire avec élégance
+      {/* ── TESTIMONIALS ── */}
+      <section style={{ padding: "100px 64px", background: "#F5F0E8" }}>
+        <div style={{ textAlign: "center", marginBottom: 64 }}>
+          <p style={{ fontSize: 11, letterSpacing: 5, textTransform: "uppercase", color: "#C9A96E", marginBottom: 20 }}>Témoignages</p>
+          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 48, fontWeight: 400, margin: 0 }}>
+            Ce qu'ils nous ont confié
           </h2>
-          <p 
-            className="text-[#2A1F18]/70 max-w-[650px] mx-auto mb-12 leading-relaxed"
-            style={{ fontFamily: "'Jost', sans-serif", fontSize: "18px", lineHeight: "1.8" }}
-          >
-            Chaque mariage est unique. Créons ensemble l'invitation qui fera battre le cœur de vos invités avant même le jour J.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-            <button 
-              className="px-12 py-4 bg-[#2A1F18] text-[#F9F6F1] transition-all hover:bg-[#3A2F28] hover:scale-105"
-              style={{ fontFamily: "'Jost', sans-serif", fontSize: "14px", letterSpacing: "2px", textTransform: "uppercase" }}
-            >
-              Démarrer mon projet
-            </button>
-            <button 
-              className="px-12 py-4 border-2 border-[#C9A96E] text-[#2A1F18] transition-all hover:bg-[#C9A96E] hover:text-white"
-              style={{ fontFamily: "'Jost', sans-serif", fontSize: "14px", letterSpacing: "2px", textTransform: "uppercase" }}
-            >
-              Prendre rendez-vous
-            </button>
-          </div>
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 24, maxWidth: 1100, margin: "0 auto" }}>
+          {[
+            { n: "Sophie & Raphaël", t: "Nos invités nous ont encore parlé de l'invitation six mois après le mariage. L'effet était total.", l: "Paris · Juin 2025" },
+            { n: "Chiara & Maxime", t: "On ne s'attendait pas à quelque chose d'aussi cinématique. C'est bien au-delà de ce qu'on imaginait.", l: "Lyon · Septembre 2025" },
+            { n: "Inès & Karim", t: "Eventia a capturé notre histoire. L'invitation ressemblait à un vrai court-métrage de notre vie.", l: "Bordeaux · Avril 2026" },
+          ].map(t => (
+            <div key={t.n} style={{ background: "#FAF8F5", padding: "36px", border: "1px solid rgba(201,169,110,0.2)" }}>
+              <div style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontSize: 48, color: "rgba(201,169,110,0.3)", lineHeight: 0.8, marginBottom: 20 }}>«</div>
+              <p style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontSize: 18, color: "#2A1F18", lineHeight: 1.65, marginBottom: 24 }}>{t.t}</p>
+              <div style={{ fontSize: 13, color: "#C9A96E", letterSpacing: 1 }}>{t.n}</div>
+              <div style={{ fontSize: 11, color: "#A0907A", marginTop: 4 }}>{t.l}</div>
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* Footer */}
-      <footer id="contact" className="bg-[#2A1F18] text-[#F9F6F1] py-16 border-t border-[#C9A96E]/20">
-        <div className="max-w-[1400px] mx-auto px-6">
-          <div className="grid md:grid-cols-4 gap-12 mb-12">
-            <div className="md:col-span-2">
-              <div 
-                className="text-3xl mb-4"
-                style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontWeight: 600, color: "#C9A96E" }}
-              >
-                Eventia Signature
-              </div>
-              <p 
-                className="text-[#F9F6F1]/60 mb-6 max-w-[400px]"
-                style={{ fontFamily: "'Jost', sans-serif", fontSize: "15px", lineHeight: "1.7" }}
-              >
-                Maison française de faire-parts digitaux de mariage haut de gamme. Fondée par Ornelle (Kabéya Ornella).
-              </p>
-              <div 
-                className="text-[#F9F6F1]/80"
-                style={{ fontFamily: "'Jost', sans-serif", fontSize: "14px" }}
-              >
-                eventiasignature.com
-              </div>
-            </div>
-
-            <div>
-              <h4 
-                className="text-[#C9A96E] mb-4"
-                style={{ fontFamily: "'Jost', sans-serif", fontSize: "12px", letterSpacing: "2px", textTransform: "uppercase" }}
-              >
-                Collections
-              </h4>
-              <ul className="space-y-3" style={{ fontFamily: "'Jost', sans-serif", fontSize: "15px" }}>
-                <li><a href="#" className="text-[#F9F6F1]/70 hover:text-[#C9A96E] transition-colors">Les Voiles</a></li>
-                <li><a href="#" className="text-[#F9F6F1]/70 hover:text-[#C9A96E] transition-colors">Les Seuils</a></li>
-                <li><a href="#" className="text-[#F9F6F1]/70 hover:text-[#C9A96E] transition-colors">Les Écrins</a></li>
-                <li><a href="#" className="text-[#F9F6F1]/70 hover:text-[#C9A96E] transition-colors">L'Union</a></li>
-                <li><a href="#" className="text-[#F9F6F1]/70 hover:text-[#C9A96E] transition-colors">Save the Date</a></li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 
-                className="text-[#C9A96E] mb-4"
-                style={{ fontFamily: "'Jost', sans-serif", fontSize: "12px", letterSpacing: "2px", textTransform: "uppercase" }}
-              >
-                Liens
-              </h4>
-              <ul className="space-y-3" style={{ fontFamily: "'Jost', sans-serif", fontSize: "15px" }}>
-                <li><a href="#" className="text-[#F9F6F1]/70 hover:text-[#C9A96E] transition-colors">À propos</a></li>
-                <li><a href="#" className="text-[#F9F6F1]/70 hover:text-[#C9A96E] transition-colors">Portfolio</a></li>
-                <li><a href="#" className="text-[#F9F6F1]/70 hover:text-[#C9A96E] transition-colors">Blog</a></li>
-                <li><a href="#" className="text-[#F9F6F1]/70 hover:text-[#C9A96E] transition-colors">Contact</a></li>
-                <li><a href="#" className="text-[#F9F6F1]/70 hover:text-[#C9A96E] transition-colors">CGV</a></li>
-              </ul>
-            </div>
+      {/* ── FOOTER ── */}
+      <footer style={{ background: "#1A1110", color: "rgba(249,246,241,0.55)", padding: "64px 64px 40px" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1fr", gap: 48, marginBottom: 48 }}>
+          <div>
+            <div style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontSize: 26, color: "#C9A96E", marginBottom: 16 }}>Eventia Signature</div>
+            <p style={{ fontSize: 14, lineHeight: 1.7, maxWidth: 280 }}>Faire-parts digitaux de mariage. Une expérience cinématique, inoubliable, pour le plus beau jour de votre vie.</p>
           </div>
-
-          <div className="border-t border-[#C9A96E]/20 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-            <div 
-              className="text-[#F9F6F1]/50"
-              style={{ fontFamily: "'Jost', sans-serif", fontSize: "14px" }}
-            >
-              © 2026 Eventia Signature. Tous droits réservés.
+          {[
+            { t: "Collections", ls: ["Les Voiles", "Les Seuils", "Les Écrins", "L'Union", "Save the Date"] },
+            { t: "Eventia", ls: ["Notre approche", "L'équipe", "Presse", "Blog"] },
+            { t: "Contact", ls: ["Nous écrire", "Instagram", "Pinterest", "FAQ"] },
+          ].map(col => (
+            <div key={col.t}>
+              <div style={{ fontSize: 11, letterSpacing: 3, textTransform: "uppercase", color: "#C9A96E", marginBottom: 16 }}>{col.t}</div>
+              {col.ls.map(l => <div key={l} style={{ fontSize: 14, marginBottom: 8, cursor: "pointer" }}>{l}</div>)}
             </div>
-            <div className="flex gap-6">
-              <a 
-                href="#" 
-                className="text-[#F9F6F1]/50 hover:text-[#C9A96E] transition-colors"
-                style={{ fontFamily: "'Jost', sans-serif", fontSize: "14px" }}
-              >
-                Instagram
-              </a>
-              <a 
-                href="#" 
-                className="text-[#F9F6F1]/50 hover:text-[#C9A96E] transition-colors"
-                style={{ fontFamily: "'Jost', sans-serif", fontSize: "14px" }}
-              >
-                Pinterest
-              </a>
-              <a 
-                href="#" 
-                className="text-[#F9F6F1]/50 hover:text-[#C9A96E] transition-colors"
-                style={{ fontFamily: "'Jost', sans-serif", fontSize: "14px" }}
-              >
-                LinkedIn
-              </a>
-            </div>
-          </div>
+          ))}
+        </div>
+        <div style={{ borderTop: "1px solid rgba(249,246,241,0.08)", paddingTop: 24, display: "flex", justifyContent: "space-between", fontSize: 12 }}>
+          <span>© 2026 Eventia Signature</span>
+          <span>Mentions légales · CGV · Confidentialité</span>
         </div>
       </footer>
     </div>
