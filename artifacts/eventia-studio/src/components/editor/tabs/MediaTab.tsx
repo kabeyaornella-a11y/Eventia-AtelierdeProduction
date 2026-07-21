@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import type { Block, BlockType } from '@/types';
+import type { Block } from '@/types';
 
 interface Props {
   block: Block;
@@ -7,8 +7,10 @@ interface Props {
 }
 
 const GOLD = '#C9A96E';
+const TEXT = '#2A1F18';
+const MUTED = 'rgba(42,31,24,0.45)';
+const BORDER = 'rgba(42,31,24,0.12)';
 const sans = "'Jost', sans-serif";
-const serif = "'Cormorant Garamond', serif";
 
 function readFile(file: File): Promise<string> {
   return new Promise((res, rej) => {
@@ -19,33 +21,9 @@ function readFile(file: File): Promise<string> {
   });
 }
 
-function UploadButton({ label, accept, onFile, icon }: {
-  label: string; accept: string; icon: string;
-  onFile: (dataUrl: string, name: string) => void;
-}) {
-  const ref = useRef<HTMLInputElement>(null);
-  const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const url = await readFile(file);
-    onFile(url, file.name);
-    e.target.value = '';
-  };
-  return (
-    <>
-      <input ref={ref} type="file" accept={accept} onChange={handleChange} style={{ display: 'none' }} />
-      <div className="upload-zone" onClick={() => ref.current?.click()}>
-        <div style={{ fontSize: 22, marginBottom: 6 }}>{icon}</div>
-        <div style={{ fontSize: 11, color: 'rgba(249,246,241,0.5)', letterSpacing: 1 }}>{label}</div>
-        <div style={{ fontSize: 10, color: 'rgba(249,246,241,0.25)', marginTop: 4 }}>Cliquez pour choisir</div>
-      </div>
-    </>
-  );
-}
-
-function MultiUploadButton({ label, accept, onFiles, icon }: {
-  label: string; accept: string; icon: string;
-  onFiles: (dataUrls: { url: string; name: string }[]) => void;
+function UploadZone({ label, accept, icon, onFiles, multiple }: {
+  label: string; accept: string; icon: string; multiple?: boolean;
+  onFiles: (items: { url: string; name: string }[]) => void;
 }) {
   const ref = useRef<HTMLInputElement>(null);
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,32 +34,31 @@ function MultiUploadButton({ label, accept, onFiles, icon }: {
   };
   return (
     <>
-      <input ref={ref} type="file" accept={accept} multiple onChange={handleChange} style={{ display: 'none' }} />
+      <input ref={ref} type="file" accept={accept} multiple={multiple} onChange={handleChange} style={{ display: 'none' }} />
       <div className="upload-zone" onClick={() => ref.current?.click()}>
         <div style={{ fontSize: 22, marginBottom: 6 }}>{icon}</div>
-        <div style={{ fontSize: 11, color: 'rgba(249,246,241,0.5)', letterSpacing: 1 }}>{label}</div>
-        <div style={{ fontSize: 10, color: 'rgba(249,246,241,0.25)', marginTop: 4 }}>Sélection multiple possible</div>
+        <div style={{ fontSize: 11, color: MUTED, letterSpacing: 0.5 }}>{label}</div>
+        <div style={{ fontSize: 10, color: 'rgba(42,31,24,0.3)', marginTop: 3 }}>
+          {multiple ? 'Sélection multiple possible' : 'Cliquer pour choisir'}
+        </div>
       </div>
     </>
   );
 }
 
-function ImageGrid({ urls, onRemove }: { urls: string[]; onRemove: (i: number) => void }) {
+function ImageGrid({ urls, onRemove, size = 'medium' }: { urls: string[]; onRemove: (i: number) => void; size?: 'small' | 'medium' }) {
   if (urls.length === 0) return null;
+  const cols = size === 'small' ? 4 : 3;
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 4, marginTop: 10 }}>
+    <div style={{ display: 'grid', gridTemplateColumns: `repeat(${cols}, 1fr)`, gap: 4, marginTop: 8 }}>
       {urls.map((url, i) => (
-        <div key={i} style={{ position: 'relative', aspectRatio: '1' }}>
+        <div key={i} style={{ position: 'relative', aspectRatio: '1', borderRadius: 4, overflow: 'hidden', background: '#f0ebe4' }}>
           <img src={url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
-          <button
-            onClick={() => onRemove(i)}
-            style={{
-              position: 'absolute', top: 2, right: 2,
-              background: 'rgba(0,0,0,0.7)', border: 'none', color: '#fff',
-              width: 18, height: 18, cursor: 'pointer', fontSize: 10,
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-            }}
-          >✕</button>
+          <button onClick={() => onRemove(i)} style={{
+            position: 'absolute', top: 2, right: 2, background: 'rgba(255,255,255,0.9)',
+            border: 'none', color: TEXT, width: 18, height: 18, cursor: 'pointer',
+            fontSize: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 3,
+          }}>✕</button>
         </div>
       ))}
     </div>
@@ -90,104 +67,77 @@ function ImageGrid({ urls, onRemove }: { urls: string[]; onRemove: (i: number) =
 
 export default function MediaTab({ block, onUpdate }: Props) {
   const { type, media } = block;
-  const isVideoBlock = type === 'video_intro';
-
-  const setVideo = (url: string) =>
-    onUpdate(b => ({ ...b, media: { ...b.media, video: url } }));
 
   const addImages = (items: { url: string }[]) =>
     onUpdate(b => ({ ...b, media: { ...b.media, images: [...b.media.images, ...items.map(i => i.url)] } }));
-
   const removeImage = (i: number) =>
     onUpdate(b => ({ ...b, media: { ...b.media, images: b.media.images.filter((_, idx) => idx !== i) } }));
-
   const addIcons = (items: { url: string }[]) =>
     onUpdate(b => ({ ...b, media: { ...b.media, icons: [...(b.media.icons ?? []), ...items.map(i => i.url)] } }));
-
   const removeIcon = (i: number) =>
     onUpdate(b => ({ ...b, media: { ...b.media, icons: (b.media.icons ?? []).filter((_, idx) => idx !== i) } }));
-
-  const addAudio = (url: string) =>
-    onUpdate(b => ({ ...b, media: { ...b.media, audio: url } }));
+  const addAudio = (items: { url: string }[]) =>
+    onUpdate(b => ({ ...b, media: { ...b.media, audio: items[0]?.url } }));
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-      {/* Video — only for video_intro */}
-      {isVideoBlock && (
-        <div>
-          <label className="field-label">Vidéo de collection (URL Cloudinary)</label>
-          <p style={{ fontSize: 11, color: 'rgba(249,246,241,0.35)', marginBottom: 8, lineHeight: 1.5 }}>
-            Seul l'onglet <strong style={{ color: GOLD }}>Contenu</strong> permet de définir l'URL Cloudinary de la vidéo d'intro.
-            Pour les autres blocs, uploadez vos médias ci-dessous.
-          </p>
-          {media.video && (
-            <div style={{ background: '#0E0E0E', padding: 10, borderRadius: 2, marginBottom: 8 }}>
-              <div style={{ fontSize: 10, color: GOLD, letterSpacing: 1, marginBottom: 4 }}>Vidéo configurée :</div>
-              <div style={{ fontSize: 11, color: 'rgba(249,246,241,0.5)', wordBreak: 'break-all' }}>{media.video.slice(0, 60)}…</div>
-            </div>
-          )}
-        </div>
-      )}
 
-      {/* Photos */}
+      {/* Photos (not for video_intro) */}
       {type !== 'video_intro' && (
         <div>
           <label className="field-label">Photos ({media.images.length})</label>
-          <MultiUploadButton
+          <UploadZone
             label="Charger des photos"
             accept="image/jpeg,image/png,image/webp"
             icon="🖼️"
+            multiple
             onFiles={addImages}
           />
           <ImageGrid urls={media.images} onRemove={removeImage} />
         </div>
       )}
 
+      {/* Video intro hint */}
+      {type === 'video_intro' && (
+        <div style={{ padding: 14, background: 'rgba(201,169,110,0.08)', border: '1px solid rgba(201,169,110,0.2)', borderRadius: 8 }}>
+          <div style={{ fontSize: 11, color: TEXT, lineHeight: 1.6, marginBottom: 8 }}>
+            Pour la vidéo d'intro, renseignez l'URL Cloudinary dans l'onglet <strong style={{ color: GOLD }}>Contenu</strong>.
+          </div>
+          {media.video && (
+            <div style={{ fontSize: 10, color: MUTED, wordBreak: 'break-all' }}>
+              ✓ Vidéo : {media.video.slice(0, 50)}…
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Icons / frames */}
       <div>
         <label className="field-label">Icônes & cadres ({(media.icons ?? []).length})</label>
-        <MultiUploadButton
+        <UploadZone
           label="Charger des icônes / cadres (PNG, SVG)"
           accept="image/png,image/svg+xml,image/webp"
           icon="◆"
+          multiple
           onFiles={addIcons}
         />
-        {(media.icons ?? []).length > 0 && (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 4, marginTop: 8 }}>
-            {(media.icons ?? []).map((url, i) => (
-              <div key={i} style={{ position: 'relative', aspectRatio: '1', background: '#1A1110' }}>
-                <img src={url} alt="" style={{ width: '100%', height: '100%', objectFit: 'contain', padding: 4 }} />
-                <button
-                  onClick={() => removeIcon(i)}
-                  style={{
-                    position: 'absolute', top: 2, right: 2,
-                    background: 'rgba(0,0,0,0.7)', border: 'none', color: '#fff',
-                    width: 16, height: 16, cursor: 'pointer', fontSize: 9,
-                  }}
-                >✕</button>
-              </div>
-            ))}
-          </div>
-        )}
+        <ImageGrid urls={media.icons ?? []} onRemove={removeIcon} size="small" />
       </div>
 
       {/* Audio — only for audio_book */}
       {type === 'audio_book' && (
         <div>
           <label className="field-label">Fichier audio (MP3, AAC)</label>
-          <UploadButton
+          <UploadZone
             label="Charger un fichier audio"
             accept="audio/mpeg,audio/mp4,audio/aac,audio/wav"
             icon="🎙️"
-            onFile={addAudio}
+            onFiles={addAudio}
           />
           {media.audio && (
             <div style={{ marginTop: 8 }}>
-              <audio controls src={media.audio} style={{ width: '100%', height: 32 }} />
-              <button
-                onClick={() => onUpdate(b => ({ ...b, media: { ...b.media, audio: undefined } }))}
-                style={{ marginTop: 6, background: 'none', border: 'none', color: 'rgba(249,246,241,0.35)', cursor: 'pointer', fontSize: 11, fontFamily: sans }}
-              >
+              <audio controls src={media.audio} style={{ width: '100%', height: 34 }} />
+              <button onClick={() => onUpdate(b => ({ ...b, media: { ...b.media, audio: undefined } }))} style={{ marginTop: 6, background: 'none', border: 'none', color: MUTED, cursor: 'pointer', fontSize: 11, fontFamily: sans }}>
                 Supprimer l'audio
               </button>
             </div>
@@ -195,11 +145,11 @@ export default function MediaTab({ block, onUpdate }: Props) {
         </div>
       )}
 
-      {/* Info */}
-      <div style={{ padding: 12, background: 'rgba(201,169,110,0.05)', border: '1px solid rgba(201,169,110,0.1)' }}>
+      {/* Storage note */}
+      <div style={{ padding: 12, background: 'rgba(201,169,110,0.06)', border: '1px solid rgba(201,169,110,0.15)', borderRadius: 8 }}>
         <div style={{ fontSize: 10, letterSpacing: 2, textTransform: 'uppercase', color: GOLD, marginBottom: 6 }}>ℹ Stockage</div>
-        <div style={{ fontSize: 11, color: 'rgba(249,246,241,0.35)', lineHeight: 1.6 }}>
-          Les médias sont stockés temporairement dans l'éditeur. La connexion à Supabase Storage sera configurée prochainement pour la persistance complète.
+        <div style={{ fontSize: 11, color: MUTED, lineHeight: 1.6 }}>
+          Les médias sont chargés en mémoire pour l'aperçu. La connexion à Supabase Storage sera configurée pour la persistance complète.
         </div>
       </div>
     </div>

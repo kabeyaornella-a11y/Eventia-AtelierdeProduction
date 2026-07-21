@@ -13,8 +13,12 @@ interface Props {
 }
 
 const GOLD = '#C9A96E';
-const sans = "'Jost', sans-serif";
+const TEXT = '#2A1F18';
+const MUTED = 'rgba(42,31,24,0.45)';
+const BORDER = 'rgba(42,31,24,0.1)';
+const CARD = '#FFFFFF';
 const serif = "'Cormorant Garamond', serif";
+const sans = "'Jost', sans-serif";
 
 type Tab = 'content' | 'typography' | 'media' | 'animation';
 
@@ -32,22 +36,28 @@ export default function BlockConfig({ block, onBack, onUpdate }: Props) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden' }}>
       {/* Back + block name */}
-      <div style={{ padding: '10px 12px', borderBottom: '1px solid rgba(201,169,110,0.08)', flexShrink: 0 }}>
+      <div style={{ padding: '10px 14px', borderBottom: `1px solid ${BORDER}`, flexShrink: 0, background: '#FAF6F0' }}>
         <button
           onClick={onBack}
           style={{
-            background: 'none', border: 'none', color: 'rgba(249,246,241,0.4)',
+            background: 'none', border: 'none', color: MUTED,
             cursor: 'pointer', fontSize: 11, fontFamily: sans, padding: 0,
-            display: 'flex', alignItems: 'center', gap: 4, marginBottom: 8,
+            display: 'flex', alignItems: 'center', gap: 4, marginBottom: 10,
           }}
         >
           ← Bibliothèque
         </button>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <span style={{ fontSize: 16 }}>{meta.icon}</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <div style={{
+            width: 36, height: 36, background: GOLD, borderRadius: 8,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: 17, flexShrink: 0,
+          }}>
+            {meta.icon}
+          </div>
           <div>
-            <div style={{ fontFamily: serif, fontSize: 16, color: '#F9F6F1' }}>{meta.label}</div>
-            <div style={{ fontSize: 10, color: 'rgba(249,246,241,0.3)', letterSpacing: 1 }}>
+            <div style={{ fontFamily: serif, fontSize: 15, color: TEXT }}>{meta.label}</div>
+            <div style={{ fontSize: 10, color: MUTED, letterSpacing: 1 }}>
               Bloc {String(meta.number).padStart(2, '0')}
             </div>
           </div>
@@ -55,20 +65,16 @@ export default function BlockConfig({ block, onBack, onUpdate }: Props) {
       </div>
 
       {/* Tabs */}
-      <div style={{ display: 'flex', borderBottom: '1px solid rgba(201,169,110,0.08)', flexShrink: 0 }}>
+      <div style={{ display: 'flex', borderBottom: `1px solid ${BORDER}`, flexShrink: 0, background: '#FAF6F0' }}>
         {TABS.map(t => (
-          <button
-            key={t.id}
-            onClick={() => setTab(t.id)}
-            className={`tab-btn ${tab === t.id ? 'active' : ''}`}
-          >
+          <button key={t.id} onClick={() => setTab(t.id)} className={`tab-btn ${tab === t.id ? 'active' : ''}`}>
             {t.label}
           </button>
         ))}
       </div>
 
-      {/* Tab content */}
-      <div style={{ flex: 1, overflowY: 'auto', padding: 14 }}>
+      {/* Content */}
+      <div style={{ flex: 1, overflowY: 'auto', padding: 14, background: '#FAF6F0' }}>
         {tab === 'content'    && <ContentTab    block={block} onUpdate={onUpdate} />}
         {tab === 'typography' && <TypographyTab  block={block} onUpdate={onUpdate} />}
         {tab === 'media'      && <MediaTab       block={block} onUpdate={onUpdate} />}

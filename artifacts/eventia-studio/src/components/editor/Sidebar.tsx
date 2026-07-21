@@ -16,6 +16,9 @@ interface Props {
 }
 
 const GOLD = '#C9A96E';
+const TEXT = '#2A1F18';
+const BG_SIDEBAR = '#F3EDE4';
+const BORDER = 'rgba(42,31,24,0.1)';
 const sans = "'Jost', sans-serif";
 
 export default function Sidebar({
@@ -29,7 +32,6 @@ export default function Sidebar({
     onSelectBlock(id);
     setMode('config');
   };
-
   const handleBackToLibrary = () => {
     setMode('library');
     onSelectBlock(null);
@@ -39,15 +41,12 @@ export default function Sidebar({
     <div style={{
       width: open ? 300 : 48,
       transition: 'width 0.3s ease',
-      background: 'hsl(20 18% 6%)',
-      borderRight: '1px solid rgba(201,169,110,0.1)',
-      display: 'flex',
-      flexDirection: 'column',
-      overflow: 'hidden',
-      flexShrink: 0,
-      position: 'relative',
+      background: BG_SIDEBAR,
+      borderRight: `1px solid ${BORDER}`,
+      display: 'flex', flexDirection: 'column',
+      overflow: 'hidden', flexShrink: 0, position: 'relative',
     }}>
-      {/* Collapse/expand toggle */}
+      {/* Toggle button */}
       <button
         onClick={onToggle}
         title={open ? 'Réduire' : 'Ouvrir'}
@@ -57,48 +56,39 @@ export default function Sidebar({
           right: open ? 12 : '50%',
           transform: open ? 'none' : 'translateX(50%)',
           width: 24, height: 24,
-          background: 'transparent',
-          border: '1px solid rgba(201,169,110,0.2)',
-          color: GOLD,
-          cursor: 'pointer',
-          fontSize: 10,
+          background: '#fff',
+          border: `1px solid ${BORDER}`,
+          color: TEXT, cursor: 'pointer', fontSize: 11,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           zIndex: 10,
           transition: 'right 0.3s, transform 0.3s',
-          fontFamily: sans,
-          borderRadius: 2,
+          fontFamily: sans, borderRadius: 4,
+          boxShadow: '0 1px 3px rgba(42,31,24,0.08)',
         }}
       >
         {open ? '‹' : '›'}
       </button>
 
+      {/* Collapsed: icons */}
       {!open && (
-        /* Collapsed: show block icons vertically */
-        <div style={{ paddingTop: 48, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
-          {blocks.filter(b => b.enabled).map(b => {
-            const meta = blocks.find(bl => bl.id === b.id);
-            return (
-              <button
-                key={b.id}
-                onClick={() => { onToggle(); handleSelectBlock(b.id); }}
-                title={b.type}
-                style={{
-                  width: 32, height: 32,
-                  background: b.id === selectedId ? 'rgba(201,169,110,0.15)' : 'transparent',
-                  border: 'none',
-                  cursor: 'pointer',
-                  fontSize: 14,
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  color: '#F9F6F1',
-                }}
-              >
-                ◆
-              </button>
-            );
-          })}
+        <div style={{ paddingTop: 48, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3 }}>
+          {blocks.filter(b => b.enabled).map(b => (
+            <button
+              key={b.id}
+              onClick={() => { onToggle(); handleSelectBlock(b.id); }}
+              style={{
+                width: 32, height: 32, background: b.id === selectedId ? 'rgba(201,169,110,0.15)' : 'transparent',
+                border: 'none', cursor: 'pointer', fontSize: 14,
+                display: 'flex', alignItems: 'center', justifyContent: 'center', color: TEXT, borderRadius: 6,
+              }}
+            >
+              ◆
+            </button>
+          ))}
         </div>
       )}
 
+      {/* Expanded content */}
       {open && (
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', paddingTop: 44 }}>
           {mode === 'library' || !selectedBlock ? (

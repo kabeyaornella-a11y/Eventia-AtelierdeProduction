@@ -8,14 +8,19 @@ import Sidebar from '@/components/editor/Sidebar';
 import Preview from '@/components/editor/Preview';
 
 const GOLD = '#C9A96E';
+const TEXT = '#2A1F18';
+const BG = '#FAF6F0';
+const CARD = '#FFFFFF';
+const BORDER = 'rgba(42,31,24,0.1)';
+const MUTED = 'rgba(42,31,24,0.45)';
 const serif = "'Cormorant Garamond', serif";
 const sans = "'Jost', sans-serif";
 
-function makeBlock(type: BlockType, enabled: boolean): Block {
+function makeBlock(type: BlockType): Block {
   return {
     id: `${type}_${Date.now()}_${Math.random().toString(36).slice(2)}`,
     type,
-    enabled,
+    enabled: true,
     content: {},
     typography: makeDefaultTypography(FONT_COMBOS[0]),
     animation: { ...DEFAULT_ANIMATION },
@@ -37,17 +42,15 @@ export default function Editor() {
   const [saved, setSaved] = useState(true);
   const [previewFull, setPreviewFull] = useState(false);
 
-  // Hydrate blocks from API response
   useEffect(() => {
     if (invitation?.blocks && Array.isArray(invitation.blocks)) {
       const loaded = invitation.blocks as any[];
       if (loaded.length > 0) {
         setBlocks(loaded as Block[]);
       } else {
-        // Bootstrap from formula
         const formula = (invitation.formula as Formula) ?? 'signature';
         const types = FORMULA_BLOCKS[formula] ?? FORMULA_BLOCKS.signature;
-        setBlocks(types.map(t => makeBlock(t, true)));
+        setBlocks(types.map(t => makeBlock(t)));
       }
     }
   }, [invitation?.id]);
@@ -83,79 +86,74 @@ export default function Editor() {
   const selectedBlock = blocks.find(b => b.id === selectedId) ?? null;
 
   if (isLoading) return (
-    <div style={{ minHeight: '100vh', background: '#120D0C', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <div style={{ fontFamily: serif, fontStyle: 'italic', fontSize: 22, color: 'rgba(201,169,110,0.6)' }}>Chargement…</div>
+    <div style={{ minHeight: '100vh', background: BG, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ fontFamily: serif, fontStyle: 'italic', fontSize: 22, color: MUTED }}>Chargement…</div>
     </div>
   );
 
   if (!invitation) return (
-    <div style={{ minHeight: '100vh', background: '#120D0C', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: sans, color: '#F9F6F1' }}>
+    <div style={{ minHeight: '100vh', background: BG, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: sans, color: TEXT }}>
       <div>Expérience introuvable. <button onClick={() => navigate('/')} style={{ color: GOLD, background: 'none', border: 'none', cursor: 'pointer' }}>Retour</button></div>
     </div>
   );
 
   return (
-    <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', background: '#120D0C', fontFamily: sans, overflow: 'hidden' }}>
+    <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', background: BG, fontFamily: sans, overflow: 'hidden' }}>
       {/* ── HEADER ── */}
       <header style={{
-        height: 56,
-        background: 'rgba(18,13,12,0.98)',
-        borderBottom: '1px solid rgba(201,169,110,0.12)',
+        height: 56, background: CARD,
+        borderBottom: `1px solid ${BORDER}`,
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        padding: '0 20px 0 0',
-        flexShrink: 0,
-        zIndex: 50,
+        padding: '0 20px 0 0', flexShrink: 0, zIndex: 50,
+        boxShadow: '0 1px 4px rgba(42,31,24,0.06)',
       }}>
-        {/* Left: logo + breadcrumb */}
+        {/* Left */}
         <div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
           <div style={{
-            width: sidebarOpen ? 300 : 48,
+            width: sidebarOpen ? 300 : 56,
             transition: 'width 0.3s ease',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            borderRight: '1px solid rgba(201,169,110,0.1)',
-            height: '100%', flexShrink: 0,
+            borderRight: `1px solid ${BORDER}`, height: '100%', flexShrink: 0,
           }}>
             {sidebarOpen ? (
-              <span style={{ fontFamily: serif, fontStyle: 'italic', fontSize: 17, color: GOLD, padding: '0 20px' }}>
-                Eventia Studio
+              <span style={{ fontFamily: serif, fontSize: 17, color: TEXT, padding: '0 20px' }}>
+                EVENTIA <span style={{ color: GOLD }}>Studio</span>
               </span>
             ) : (
-              <span style={{ fontFamily: serif, fontStyle: 'italic', fontSize: 14, color: GOLD }}>ES</span>
+              <span style={{ fontFamily: serif, fontSize: 14, color: TEXT }}>ES</span>
             )}
           </div>
           <div style={{ padding: '0 20px', display: 'flex', alignItems: 'center', gap: 8 }}>
-            <button onClick={() => navigate('/')} style={{ background: 'none', border: 'none', color: 'rgba(249,246,241,0.35)', cursor: 'pointer', fontSize: 12, fontFamily: sans, padding: 0 }}>
+            <button onClick={() => navigate('/')} style={{ background: 'none', border: 'none', color: MUTED, cursor: 'pointer', fontSize: 12, fontFamily: sans, padding: 0 }}>
               Tableau de bord
             </button>
-            <span style={{ color: 'rgba(249,246,241,0.2)', fontSize: 12 }}>/</span>
-            <span style={{ fontFamily: serif, fontSize: 15, color: '#F9F6F1' }}>
+            <span style={{ color: BORDER, fontSize: 12 }}>/</span>
+            <span style={{ fontFamily: serif, fontSize: 15, color: TEXT }}>
               {invitation.coupleName1}
               <span style={{ color: GOLD, margin: '0 6px', fontStyle: 'italic' }}>&</span>
               {invitation.coupleName2}
             </span>
-            <span style={{ fontSize: 10, color: 'rgba(249,246,241,0.25)', letterSpacing: 2, textTransform: 'uppercase', marginLeft: 4 }}>
+            <span style={{ fontSize: 10, color: MUTED, letterSpacing: 2, textTransform: 'uppercase', marginLeft: 4 }}>
               · {invitation.collection}
             </span>
           </div>
         </div>
 
-        {/* Right: actions */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          {/* Preview toggle */}
+        {/* Right */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <button
             onClick={() => setPreviewFull(p => !p)}
             style={{
-              background: 'transparent', border: '1px solid rgba(249,246,241,0.12)',
-              color: previewFull ? GOLD : 'rgba(249,246,241,0.5)',
-              padding: '7px 14px', fontSize: 10, letterSpacing: 2,
-              textTransform: 'uppercase', cursor: 'pointer', fontFamily: sans,
+              background: 'transparent', border: `1px solid ${BORDER}`,
+              color: previewFull ? GOLD : MUTED,
+              padding: '7px 14px', fontSize: 10, letterSpacing: 1.5,
+              textTransform: 'uppercase', cursor: 'pointer', fontFamily: sans, borderRadius: 6,
             }}
           >
-            {previewFull ? '⊞ Éditeur' : '□ Plein écran'}
+            {previewFull ? '⊞ Éditeur' : '□ Aperçu'}
           </button>
 
-          {/* Save status */}
-          <div style={{ fontSize: 11, color: saved ? 'rgba(74,222,128,0.6)' : GOLD, letterSpacing: 1, minWidth: 80, textAlign: 'center' }}>
+          <div style={{ fontSize: 11, color: saved ? '#4ade80' : GOLD, letterSpacing: 0.5, minWidth: 90, textAlign: 'center' }}>
             {updateMutation.isPending ? 'Sauvegarde…' : saved ? '✓ Sauvegardé' : '● Non sauvegardé'}
           </div>
 
@@ -164,20 +162,20 @@ export default function Editor() {
             disabled={saved || updateMutation.isPending}
             style={{
               background: saved ? 'transparent' : GOLD,
-              border: `1px solid ${saved ? 'rgba(201,169,110,0.2)' : GOLD}`,
-              color: saved ? 'rgba(249,246,241,0.3)' : '#1A1110',
-              padding: '7px 18px', fontSize: 10, letterSpacing: 2,
+              border: `1px solid ${saved ? BORDER : GOLD}`,
+              color: saved ? MUTED : '#fff',
+              padding: '7px 18px', fontSize: 10, letterSpacing: 1.5,
               textTransform: 'uppercase', cursor: saved ? 'default' : 'pointer',
-              fontFamily: sans, transition: 'all 0.2s',
+              fontFamily: sans, transition: 'all 0.2s', borderRadius: 6,
             }}
           >
             Sauvegarder
           </button>
 
           <button style={{
-            background: '#1A1110', border: `1px solid ${GOLD}`, color: GOLD,
-            padding: '7px 18px', fontSize: 10, letterSpacing: 2,
-            textTransform: 'uppercase', cursor: 'pointer', fontFamily: sans,
+            background: TEXT, border: `1px solid ${TEXT}`, color: '#FAF6F0',
+            padding: '7px 18px', fontSize: 10, letterSpacing: 1.5,
+            textTransform: 'uppercase', cursor: 'pointer', fontFamily: sans, borderRadius: 6,
           }}>
             Publier
           </button>
@@ -186,7 +184,6 @@ export default function Editor() {
 
       {/* ── BODY ── */}
       <div style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
-        {/* Sidebar */}
         {!previewFull && (
           <Sidebar
             open={sidebarOpen}
@@ -200,8 +197,6 @@ export default function Editor() {
             formula={(invitation.formula as Formula) ?? 'signature'}
           />
         )}
-
-        {/* Preview */}
         <Preview
           blocks={blocks}
           selectedId={selectedId}

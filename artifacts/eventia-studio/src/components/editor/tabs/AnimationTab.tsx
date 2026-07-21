@@ -7,6 +7,11 @@ interface Props {
 }
 
 const GOLD = '#C9A96E';
+const TEXT = '#2A1F18';
+const MUTED = 'rgba(42,31,24,0.45)';
+const BORDER = 'rgba(42,31,24,0.12)';
+const CARD = '#FFFFFF';
+const sans = "'Jost', sans-serif";
 
 export default function AnimationTab({ block, onUpdate }: Props) {
   const { animation } = block;
@@ -21,21 +26,21 @@ export default function AnimationTab({ block, onUpdate }: Props) {
         <label className="field-label">Déclencheur d'apparition</label>
         <div style={{ display: 'flex', gap: 6 }}>
           {[
-            { v: 'scroll', label: 'Au scroll', desc: 'Le bloc s\'anime quand il entre dans l\'écran' },
-            { v: 'fixed',  label: 'Fixe',      desc: 'Tout est visible dès le chargement' },
+            { v: 'scroll', label: 'Au scroll', desc: 'Apparaît quand l\'écran arrive sur le bloc' },
+            { v: 'fixed',  label: 'Fixe',      desc: 'Visible dès le chargement' },
           ].map(opt => (
             <div
               key={opt.v}
               onClick={() => set('trigger', opt.v)}
               style={{
-                flex: 1, padding: '12px 10px', cursor: 'pointer',
-                border: `1px solid ${animation.trigger === opt.v ? GOLD : 'rgba(249,246,241,0.1)'}`,
-                background: animation.trigger === opt.v ? 'rgba(201,169,110,0.1)' : 'transparent',
-                transition: 'all 0.2s',
+                flex: 1, padding: '12px 10px', cursor: 'pointer', borderRadius: 8,
+                border: `1.5px solid ${animation.trigger === opt.v ? GOLD : BORDER}`,
+                background: animation.trigger === opt.v ? 'rgba(201,169,110,0.06)' : CARD,
+                transition: 'all 0.2s', boxShadow: animation.trigger === opt.v ? '0 2px 6px rgba(201,169,110,0.15)' : 'none',
               }}
             >
-              <div style={{ fontSize: 12, color: animation.trigger === opt.v ? GOLD : '#F9F6F1', marginBottom: 4 }}>{opt.label}</div>
-              <div style={{ fontSize: 10, color: 'rgba(249,246,241,0.3)', lineHeight: 1.5 }}>{opt.desc}</div>
+              <div style={{ fontSize: 12, color: animation.trigger === opt.v ? GOLD : TEXT, marginBottom: 4, fontWeight: 500 }}>{opt.label}</div>
+              <div style={{ fontSize: 10, color: MUTED, lineHeight: 1.5 }}>{opt.desc}</div>
             </div>
           ))}
         </div>
@@ -44,11 +49,7 @@ export default function AnimationTab({ block, onUpdate }: Props) {
       {/* Entrance */}
       <div>
         <label className="field-label">Effet d'entrée du bloc</label>
-        <select
-          className="studio-select"
-          value={animation.entrance}
-          onChange={e => set('entrance', e.target.value)}
-        >
+        <select className="studio-select" value={animation.entrance} onChange={e => set('entrance', e.target.value)}>
           {ENTRANCE_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
         </select>
       </div>
@@ -56,20 +57,14 @@ export default function AnimationTab({ block, onUpdate }: Props) {
       {/* Photo effect */}
       <div>
         <label className="field-label">Effet sur les photos</label>
-        <select
-          className="studio-select"
-          value={animation.photoEffect}
-          onChange={e => set('photoEffect', e.target.value)}
-        >
+        <select className="studio-select" value={animation.photoEffect} onChange={e => set('photoEffect', e.target.value)}>
           {PHOTO_EFFECT_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
         </select>
-
-        {/* Visual hint */}
         {animation.photoEffect !== 'none' && (
-          <div style={{ marginTop: 8, padding: 10, background: 'rgba(201,169,110,0.05)', border: '1px solid rgba(201,169,110,0.1)', fontSize: 11, color: 'rgba(249,246,241,0.4)', lineHeight: 1.5 }}>
+          <div style={{ marginTop: 8, padding: 10, background: 'rgba(201,169,110,0.06)', border: '1px solid rgba(201,169,110,0.15)', borderRadius: 7, fontSize: 11, color: MUTED, lineHeight: 1.5 }}>
             {animation.photoEffect === 'kenBurns'      && '→ Zoom lent + légère translation. Effet cinéma classique.'}
             {animation.photoEffect === 'zoomCinematic' && '→ Zoom progressif fort. Effet dramatique et immersif.'}
-            {animation.photoEffect === 'parallax'      && '→ La photo se déplace à une vitesse différente du scroll. Donne de la profondeur.'}
+            {animation.photoEffect === 'parallax'      && '→ La photo se déplace à une vitesse différente du scroll.'}
           </div>
         )}
       </div>
@@ -77,36 +72,27 @@ export default function AnimationTab({ block, onUpdate }: Props) {
       {/* Text effect */}
       <div>
         <label className="field-label">Effet sur les textes</label>
-        <select
-          className="studio-select"
-          value={animation.textEffect}
-          onChange={e => set('textEffect', e.target.value)}
-        >
+        <select className="studio-select" value={animation.textEffect} onChange={e => set('textEffect', e.target.value)}>
           {TEXT_EFFECT_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
         </select>
       </div>
 
-      {/* Preview info */}
-      <div style={{ padding: 12, background: 'rgba(201,169,110,0.05)', border: '1px solid rgba(201,169,110,0.1)' }}>
-        <div style={{ fontSize: 10, letterSpacing: 2, textTransform: 'uppercase', color: GOLD, marginBottom: 6 }}>
-          Aperçu des animations
+      {/* Summary card */}
+      <div style={{ padding: 14, background: CARD, border: `1px solid ${BORDER}`, borderRadius: 8, boxShadow: '0 1px 4px rgba(42,31,24,0.06)' }}>
+        <div style={{ fontSize: 10, letterSpacing: 2, textTransform: 'uppercase', color: GOLD, marginBottom: 10 }}>
+          Récapitulatif
         </div>
-        <div style={{ fontSize: 11, color: 'rgba(249,246,241,0.35)', lineHeight: 1.6 }}>
-          Les animations sont prévisualisées dans l'aperçu en direct à droite. Elles sont pleinement actives dans l'expérience finale envoyée aux convives.
-        </div>
-        <div style={{ marginTop: 10, display: 'flex', flexDirection: 'column', gap: 4 }}>
-          {[
-            { k: 'Déclencheur', v: animation.trigger === 'scroll' ? 'Au scroll' : 'Fixe' },
-            { k: 'Entrée',      v: ENTRANCE_OPTIONS.find(o => o.value === animation.entrance)?.label ?? animation.entrance },
-            { k: 'Photo',       v: PHOTO_EFFECT_OPTIONS.find(o => o.value === animation.photoEffect)?.label ?? animation.photoEffect },
-            { k: 'Texte',       v: TEXT_EFFECT_OPTIONS.find(o => o.value === animation.textEffect)?.label ?? animation.textEffect },
-          ].map(item => (
-            <div key={item.k} style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11 }}>
-              <span style={{ color: 'rgba(249,246,241,0.35)' }}>{item.k}</span>
-              <span style={{ color: GOLD }}>{item.v}</span>
-            </div>
-          ))}
-        </div>
+        {[
+          { k: 'Déclencheur', v: animation.trigger === 'scroll' ? 'Au scroll' : 'Fixe' },
+          { k: 'Entrée',      v: ENTRANCE_OPTIONS.find(o => o.value === animation.entrance)?.label ?? animation.entrance },
+          { k: 'Photo',       v: PHOTO_EFFECT_OPTIONS.find(o => o.value === animation.photoEffect)?.label ?? animation.photoEffect },
+          { k: 'Texte',       v: TEXT_EFFECT_OPTIONS.find(o => o.value === animation.textEffect)?.label ?? animation.textEffect },
+        ].map(item => (
+          <div key={item.k} style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, marginBottom: 6, paddingBottom: 6, borderBottom: `1px solid ${BORDER}` }}>
+            <span style={{ color: MUTED }}>{item.k}</span>
+            <span style={{ color: TEXT, fontWeight: 500 }}>{item.v}</span>
+          </div>
+        ))}
       </div>
     </div>
   );
