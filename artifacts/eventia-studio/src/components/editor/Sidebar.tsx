@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { Block, Formula } from '@/types';
+import type { Block, Layer, LayerKind, Formula } from '@/types';
 import BlockLibrary from './BlockLibrary';
 import BlockConfig from './BlockConfig';
 
@@ -13,6 +13,13 @@ interface Props {
   onToggleBlock: (id: string) => void;
   onUpdateBlock: (id: string, updater: (b: Block) => Block) => void;
   onReorder: (from: number, to: number) => void;
+  // Layer props (block-agnostic; Sidebar binds block ID)
+  selectedLayerId: string | null;
+  onSelectLayer: (id: string | null) => void;
+  onAddLayer: (blockId: string, kind: LayerKind, extra?: Partial<Layer>) => void;
+  onUpdateLayer: (blockId: string, layerId: string, patch: Partial<Layer>) => void;
+  onDeleteLayer: (blockId: string, layerId: string) => void;
+  onReorderLayer: (blockId: string, from: number, to: number) => void;
 }
 
 const GOLD = '#C9A96E';
@@ -24,17 +31,20 @@ const sans = "'Jost', sans-serif";
 export default function Sidebar({
   open, onToggle, blocks, selectedId, formula,
   onSelectBlock, onToggleBlock, onUpdateBlock, onReorder,
+  selectedLayerId, onSelectLayer, onAddLayer, onUpdateLayer, onDeleteLayer, onReorderLayer,
 }: Props) {
   const [mode, setMode] = useState<'library' | 'config'>('library');
   const selectedBlock = blocks.find(b => b.id === selectedId) ?? null;
 
   const handleSelectBlock = (id: string) => {
     onSelectBlock(id);
+    onSelectLayer(null); // clear layer selection when switching blocks
     setMode('config');
   };
   const handleBackToLibrary = () => {
     setMode('library');
     onSelectBlock(null);
+    onSelectLayer(null);
   };
 
   return (
@@ -51,17 +61,14 @@ export default function Sidebar({
         onClick={onToggle}
         title={open ? 'Réduire' : 'Ouvrir'}
         style={{
-          position: 'absolute',
-          top: 12,
+          position: 'absolute', top: 12,
           right: open ? 12 : '50%',
           transform: open ? 'none' : 'translateX(50%)',
           width: 24, height: 24,
-          background: '#fff',
-          border: `1px solid ${BORDER}`,
+          background: '#fff', border: `1px solid ${BORDER}`,
           color: TEXT, cursor: 'pointer', fontSize: 11,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          zIndex: 10,
-          transition: 'right 0.3s, transform 0.3s',
+          zIndex: 10, transition: 'right 0.3s, transform 0.3s',
           fontFamily: sans, borderRadius: 4,
           boxShadow: '0 1px 3px rgba(42,31,24,0.08)',
         }}
@@ -73,17 +80,11 @@ export default function Sidebar({
       {!open && (
         <div style={{ paddingTop: 48, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3 }}>
           {blocks.filter(b => b.enabled).map(b => (
-            <button
-              key={b.id}
-              onClick={() => { onToggle(); handleSelectBlock(b.id); }}
-              style={{
-                width: 32, height: 32, background: b.id === selectedId ? 'rgba(201,169,110,0.15)' : 'transparent',
-                border: 'none', cursor: 'pointer', fontSize: 14,
-                display: 'flex', alignItems: 'center', justifyContent: 'center', color: TEXT, borderRadius: 6,
-              }}
-            >
-              ◆
-            </button>
+            <button key={b.id} onClick={() => { onToggle(); handleSelectBlock(b.id); }} style={{
+              width: 32, height: 32, background: b.id === selectedId ? 'rgba(201,169,110,0.15)' : 'transparent',
+              border: 'none', cursor: 'pointer', fontSize: 14,
+              display: 'flex', alignItems: 'center', justifyContent: 'center', color: TEXT, borderRadius: 6,
+            }}>◆</button>
           ))}
         </div>
       )}
@@ -105,6 +106,12 @@ export default function Sidebar({
               block={selectedBlock}
               onBack={handleBackToLibrary}
               onUpdate={(updater) => onUpdateBlock(selectedBlock.id, updater)}
+              selectedLayerId={selectedLayerId}
+              onSelectLayer={onSelectLayer}
+              onAddLayer={(kind, extra) => onAddLayer(selectedBlock.id, kind, extra)}
+              onUpdateLayer={(layerId, patch) => onUpdateLayer(selectedBlock.id, layerId, patch)}
+              onDeleteLayer={(layerId) => onDeleteLayer(selectedBlock.id, layerId)}
+              onReorderLayer={(from, to) => onReorderLayer(selectedBlock.id, from, to)}
             />
           )}
         </div>

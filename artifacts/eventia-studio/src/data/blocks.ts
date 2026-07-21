@@ -21,6 +21,7 @@ export const BLOCK_META: BlockMeta[] = [
   { type: 'faq',          number: 18, label: 'FAQ',                  icon: '💬', description: 'Questions fréquentes en accordéon',                      formulaMin: 'exception' },
   { type: 'audio_book',   number: 19, label: 'Livre Audio',          icon: '🎙️', description: 'Message vocal ou livre audio des mariés',                formulaMin: 'exception' },
   { type: 'thanks',       number: 20, label: 'Remerciements',        icon: '🤍', description: 'Mot de clôture et signature des mariés',                 formulaMin: 'exception' },
+  { type: 'text_free',   number: 21, label: 'Texte libre',           icon: '✏️', description: 'Zone de texte libre positionnable',                        formulaMin: 'essentielle' },
 ];
 
 export const FORMULA_BLOCKS: Record<Formula, BlockType[]> = {

@@ -18,22 +18,73 @@ export type BlockType =
   | 'playlist'
   | 'faq'
   | 'audio_book'
-  | 'thanks';
+  | 'thanks'
+  | 'text_free'; // Zone de texte libre positionnable
 
 export type Formula = 'essentielle' | 'signature' | 'exception';
-
 export type CollectionSlug = 'voiles' | 'seuils' | 'ecrins' | 'union';
+
+/* ─── Layer (calque) ─────────────────────────────── */
+
+export type LayerKind = 'text' | 'photo' | 'icon' | 'frame';
+
+export interface Layer {
+  id: string;
+  kind: LayerKind;
+  // Source
+  src?: string;       // data URL — photos, frames uploadés
+  emoji?: string;     // icônes bibliothèque
+  text?: string;      // zone de texte libre
+  // Position dans le bloc (% relatif au conteneur)
+  x: number;          // 0–100
+  y: number;          // 0–100
+  width: number;      // 10–100 (% de la largeur du conteneur)
+  rotation: number;   // degrés
+  opacity: number;    // 0–1
+  zIndex: number;
+  // Texte / icône
+  fontSize: number;   // px
+  fontFamily: string;
+  color: string;
+  bold: boolean;
+  italic: boolean;
+  textAlign: 'left' | 'center' | 'right';
+}
+
+export function makeDefaultLayer(kind: LayerKind, extra?: Partial<Layer>): Layer {
+  return {
+    id: `layer_${Date.now()}_${Math.random().toString(36).slice(2)}`,
+    kind,
+    x: 10,
+    y: 10,
+    width: 40,
+    rotation: 0,
+    opacity: 1,
+    zIndex: 1,
+    fontSize: kind === 'icon' ? 36 : 16,
+    fontFamily: 'Cormorant Garamond',
+    color: '#F9F6F1',
+    bold: false,
+    italic: false,
+    textAlign: 'center',
+    text: kind === 'text' ? 'Votre texte ici' : undefined,
+    emoji: kind === 'icon' ? '✦' : undefined,
+    ...extra,
+  };
+}
+
+/* ─── Typography ─────────────────────────────────── */
 
 export interface FontStyle {
   family: string;
-  size: number; // px
+  size: number;
   color: string;
   bold: boolean;
   italic: boolean;
   underline: boolean;
   strikethrough: boolean;
-  highlight: string; // empty = none, else background color
-  letterSpacing: number; // px
+  highlight: string;
+  letterSpacing: number;
   lineHeight: number;
   align: 'left' | 'center' | 'right';
 }
@@ -54,14 +105,15 @@ export interface BlockAnimation {
 }
 
 export interface BlockMedia {
-  video?: string;   // Cloudinary URL (video_intro only) or data URL
-  images: string[]; // data URLs (upload)
-  icons: string[];  // data URLs (upload)
-  audio?: string;   // data URL (audio_book)
+  video?: string;
+  images: string[];
+  icons: string[];
+  audio?: string;
 }
 
-// Content fields vary by block type — typed as generic KV
 export type BlockContent = Record<string, string | number | boolean | string[] | null | undefined>;
+
+/* ─── Block ──────────────────────────────────────── */
 
 export interface Block {
   id: string;
@@ -71,19 +123,20 @@ export interface Block {
   typography: BlockTypography;
   animation: BlockAnimation;
   media: BlockMedia;
+  layers: Layer[]; // calques compositables
 }
 
-// Static block metadata
+/* ─── Meta ───────────────────────────────────────── */
+
 export interface BlockMeta {
   type: BlockType;
   number: number;
   label: string;
-  icon: string; // emoji
+  icon: string;
   description: string;
-  formulaMin: Formula; // minimum formula that includes this block
+  formulaMin: Formula;
 }
 
-// Font combo definition
 export interface FontCombo {
   id: string;
   label: string;
@@ -96,36 +149,36 @@ export interface FontCombo {
 export const FONT_SIZES = [8, 10, 11, 12, 13, 14, 15, 16, 18, 20, 22, 24, 28, 32, 36, 40, 48, 56, 64, 72, 80, 96] as const;
 
 export const FONT_COMBOS: FontCombo[] = [
-  { id: 'maison_classique',  label: 'Maison Classique',  title: 'Cormorant Garamond', subtitle: 'Cormorant Garamond', body: 'Jost',              other: 'Great Vibes' },
-  { id: 'cinematique',       label: 'Cinématique',       title: 'Playfair Display',   subtitle: 'Playfair Display',   body: 'Lato',              other: 'Pinyon Script' },
-  { id: 'contemporain',      label: 'Contemporain',      title: 'DM Serif Display',   subtitle: 'DM Serif Text',      body: 'DM Sans',           other: 'Sacramento' },
-  { id: 'minimaliste',       label: 'Minimaliste',       title: 'EB Garamond',        subtitle: 'EB Garamond',        body: 'Inter',             other: 'Tangerine' },
-  { id: 'romantique',        label: 'Romantique',        title: 'Libre Baskerville',  subtitle: 'Libre Baskerville',  body: 'Nunito',            other: 'Dancing Script' },
+  { id: 'maison_classique', label: 'Maison Classique',  title: 'Cormorant Garamond', subtitle: 'Cormorant Garamond', body: 'Jost',    other: 'Great Vibes' },
+  { id: 'cinematique',      label: 'Cinématique',       title: 'Playfair Display',   subtitle: 'Playfair Display',   body: 'Lato',    other: 'Pinyon Script' },
+  { id: 'contemporain',     label: 'Contemporain',      title: 'DM Serif Display',   subtitle: 'DM Serif Text',      body: 'DM Sans', other: 'Sacramento' },
+  { id: 'minimaliste',      label: 'Minimaliste',       title: 'EB Garamond',        subtitle: 'EB Garamond',        body: 'Inter',   other: 'Tangerine' },
+  { id: 'romantique',       label: 'Romantique',        title: 'Libre Baskerville',  subtitle: 'Libre Baskerville',  body: 'Nunito',  other: 'Dancing Script' },
 ];
 
 export const ENTRANCE_OPTIONS = [
-  { value: 'none',        label: 'Aucun' },
-  { value: 'fadeIn',      label: 'Fondu' },
-  { value: 'slideUp',     label: 'Glissement vers le haut' },
-  { value: 'slideLeft',   label: 'Glissement gauche' },
-  { value: 'slideRight',  label: 'Glissement droite' },
-  { value: 'zoomIn',      label: 'Zoom in' },
-  { value: 'typewriter',  label: 'Machine à écrire (texte)' },
+  { value: 'none',       label: 'Aucun' },
+  { value: 'fadeIn',     label: 'Fondu' },
+  { value: 'slideUp',    label: 'Glissement vers le haut' },
+  { value: 'slideLeft',  label: 'Glissement gauche' },
+  { value: 'slideRight', label: 'Glissement droite' },
+  { value: 'zoomIn',     label: 'Zoom in' },
+  { value: 'typewriter', label: 'Machine à écrire (texte)' },
 ];
 
 export const PHOTO_EFFECT_OPTIONS = [
-  { value: 'none',           label: 'Aucun' },
-  { value: 'kenBurns',       label: 'Ken Burns (zoom lent)' },
-  { value: 'zoomCinematic',  label: 'Zoom cinématique' },
-  { value: 'parallax',       label: 'Parallaxe au scroll' },
+  { value: 'none',          label: 'Aucun' },
+  { value: 'kenBurns',      label: 'Ken Burns (zoom lent)' },
+  { value: 'zoomCinematic', label: 'Zoom cinématique' },
+  { value: 'parallax',      label: 'Parallaxe au scroll' },
 ];
 
 export const TEXT_EFFECT_OPTIONS = [
-  { value: 'none',               label: 'Aucun' },
-  { value: 'wordByWord',         label: 'Mot par mot' },
-  { value: 'letterByLetter',     label: 'Lettre par lettre' },
-  { value: 'fadeProgressive',    label: 'Fondu progressif' },
-  { value: 'underlineAnimated',  label: 'Soulignement animé' },
+  { value: 'none',              label: 'Aucun' },
+  { value: 'wordByWord',        label: 'Mot par mot' },
+  { value: 'letterByLetter',    label: 'Lettre par lettre' },
+  { value: 'fadeProgressive',   label: 'Fondu progressif' },
+  { value: 'underlineAnimated', label: 'Soulignement animé' },
 ];
 
 export const DEFAULT_FONT_STYLE: FontStyle = {
@@ -145,10 +198,10 @@ export const DEFAULT_FONT_STYLE: FontStyle = {
 export function makeDefaultTypography(combo: FontCombo): BlockTypography {
   return {
     combo: combo.id,
-    title: { ...DEFAULT_FONT_STYLE, family: combo.title, size: 48, color: '#F9F6F1', letterSpacing: 0 },
+    title:    { ...DEFAULT_FONT_STYLE, family: combo.title,    size: 48, color: '#F9F6F1', letterSpacing: 0 },
     subtitle: { ...DEFAULT_FONT_STYLE, family: combo.subtitle, size: 22, color: '#C9A96E', italic: true, letterSpacing: 2 },
-    body: { ...DEFAULT_FONT_STYLE, family: combo.body, size: 14, color: 'rgba(249,246,241,0.7)', letterSpacing: 1.5, lineHeight: 1.7 },
-    other: { ...DEFAULT_FONT_STYLE, family: combo.other, size: 36, color: '#C9A96E' },
+    body:     { ...DEFAULT_FONT_STYLE, family: combo.body,     size: 14, color: 'rgba(249,246,241,0.7)', letterSpacing: 1.5, lineHeight: 1.7 },
+    other:    { ...DEFAULT_FONT_STYLE, family: combo.other,    size: 36, color: '#C9A96E' },
   };
 }
 

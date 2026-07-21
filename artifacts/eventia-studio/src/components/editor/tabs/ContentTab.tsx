@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import type { Block, BlockContent } from '@/types';
+import { TIMELINE_TEMPLATES } from '@/data/timelineTemplates';
 
 interface Props {
   block: Block;
@@ -8,6 +10,8 @@ interface Props {
 const GOLD = '#C9A96E';
 const TEXT = '#2A1F18';
 const MUTED = 'rgba(42,31,24,0.45)';
+const BORDER = 'rgba(42,31,24,0.12)';
+const CARD = '#FFFFFF';
 const sans = "'Jost', sans-serif";
 
 function set(onUpdate: Props['onUpdate'], key: string, value: string | boolean | number) {
@@ -25,10 +29,99 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 
 const c = (content: BlockContent, key: string, fallback = '') => String(content[key] ?? fallback);
 
+/* ── Timeline Templates picker ── */
+function TimelineTemplatePicker({ content, onUpdate }: { content: BlockContent; onUpdate: Props['onUpdate'] }) {
+  const [open, setOpen] = useState(false);
+  const activeId = c(content, 'timelineStyle', '');
+  const active = TIMELINE_TEMPLATES.find(t => t.id === activeId);
+
+  return (
+    <div style={{ marginBottom: 16 }}>
+      <label className="field-label">Modèle de timeline</label>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+        {active ? (
+          <div style={{ flex: 1, padding: '8px 10px', background: 'rgba(201,169,110,0.08)', border: `1px solid ${GOLD}`, borderRadius: 7 }}>
+            <div style={{ fontSize: 12, color: TEXT, fontWeight: 500 }}>{active.label}</div>
+            <div style={{ fontSize: 10, color: MUTED, marginTop: 2 }}>{active.description}</div>
+          </div>
+        ) : (
+          <div style={{ flex: 1, padding: '8px 10px', background: CARD, border: `1px solid ${BORDER}`, borderRadius: 7 }}>
+            <div style={{ fontSize: 11, color: MUTED }}>Aucun modèle — édition JSON manuelle</div>
+          </div>
+        )}
+        <button onClick={() => setOpen(o => !o)} style={{
+          padding: '8px 12px', background: GOLD, border: 'none', color: '#fff',
+          fontSize: 10, letterSpacing: 1, cursor: 'pointer', borderRadius: 6, fontFamily: sans,
+          whiteSpace: 'nowrap',
+        }}>
+          {open ? 'Fermer' : 'Choisir'}
+        </button>
+      </div>
+
+      {open && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginBottom: 10 }}>
+          {TIMELINE_TEMPLATES.map(tpl => (
+            <div key={tpl.id} onClick={() => {
+              onUpdate(b => ({
+                ...b,
+                content: {
+                  ...b.content,
+                  timelineStyle: tpl.id,
+                  timeline: JSON.stringify(tpl.items),
+                },
+              }));
+              setOpen(false);
+            }} style={{
+              padding: '10px 12px', background: CARD,
+              border: `1.5px solid ${activeId === tpl.id ? GOLD : BORDER}`,
+              borderRadius: 8, cursor: 'pointer',
+              boxShadow: activeId === tpl.id ? '0 2px 8px rgba(201,169,110,0.15)' : '0 1px 3px rgba(42,31,24,0.06)',
+              transition: 'all 0.15s',
+            }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                <div>
+                  <div style={{ fontSize: 12, color: TEXT, fontWeight: 500, marginBottom: 2 }}>{tpl.label}</div>
+                  <div style={{ fontSize: 10, color: MUTED }}>{tpl.description}</div>
+                </div>
+                {activeId === tpl.id && <span style={{ color: GOLD, fontSize: 13 }}>✓</span>}
+              </div>
+              <div style={{ marginTop: 8, display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+                {tpl.items.slice(0, 3).map((item, i) => (
+                  <span key={i} style={{ fontSize: 9, color: GOLD, background: 'rgba(201,169,110,0.08)', padding: '2px 6px', borderRadius: 10 }}>
+                    {item.date}
+                  </span>
+                ))}
+                {tpl.items.length > 3 && <span style={{ fontSize: 9, color: MUTED }}>+{tpl.items.length - 3}</span>}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function ContentTab({ block, onUpdate }: Props) {
   const { type, content } = block;
 
   switch (type) {
+    case 'text_free':
+      return (
+        <div>
+          <div style={{ padding: 12, background: 'rgba(201,169,110,0.06)', border: '1px solid rgba(201,169,110,0.15)', borderRadius: 8, marginBottom: 16 }}>
+            <div style={{ fontSize: 11, color: TEXT, lineHeight: 1.6 }}>
+              Ce bloc est une <strong style={{ color: GOLD }}>zone de texte libre</strong>. Configurez la mise en forme via l'onglet <strong>Typo</strong> et ajoutez des éléments décoratifs via <strong>Calques</strong>.
+            </div>
+          </div>
+          <Field label="Texte">
+            <textarea className="studio-input" value={c(content,'text')} onChange={e => set(onUpdate,'text',e.target.value)} placeholder="Votre texte libre ici…" rows={4} style={{ resize: 'vertical' }} />
+          </Field>
+          <Field label="Hauteur minimale (px)">
+            <input type="number" className="studio-input" value={c(content,'minHeight','80')} onChange={e => set(onUpdate,'minHeight',e.target.value)} />
+          </Field>
+        </div>
+      );
+
     case 'video_intro':
       return (
         <div>
@@ -132,7 +225,7 @@ export default function ContentTab({ block, onUpdate }: Props) {
           <Field label="Description">
             <textarea className="studio-input" value={c(content,'description')} onChange={e => set(onUpdate,'description',e.target.value)} placeholder="Tenue de soirée élégante. Palette de tons ivoire, champagne et or." rows={3} style={{ resize: 'vertical' }} />
           </Field>
-          <Field label="Palette de couleurs (HEX séparés par virgule)">
+          <Field label="Palette (HEX séparés par virgule)">
             <input className="studio-input" value={c(content,'colors')} onChange={e => set(onUpdate,'colors',e.target.value)} placeholder="#FAF8F5, #C9A96E, #2A1F18" />
           </Field>
         </div>
@@ -143,8 +236,9 @@ export default function ContentTab({ block, onUpdate }: Props) {
         <div>
           <Field label="Titre"><input className="studio-input" value={c(content,'title','Notre Histoire')} onChange={e => set(onUpdate,'title',e.target.value)} /></Field>
           <Field label="Sous-titre"><input className="studio-input" value={c(content,'subtitle','De la première rencontre au grand jour')} onChange={e => set(onUpdate,'subtitle',e.target.value)} /></Field>
-          <Field label="Timeline (JSON)">
-            <textarea className="studio-input" value={c(content,'timeline','[{"date":"2018","text":"Notre première rencontre"},{"date":"2022","text":"Notre voyage au Japon"},{"date":"2026","text":"Le grand jour"}]')} onChange={e => set(onUpdate,'timeline',e.target.value)} rows={6} style={{ fontSize: 11, fontFamily: 'monospace', resize: 'vertical' }} />
+          <TimelineTemplatePicker content={content} onUpdate={onUpdate} />
+          <Field label="Étapes (JSON — modifiez si besoin)">
+            <textarea className="studio-input" value={c(content,'timeline','[{"date":"2018","text":"Notre première rencontre"},{"date":"2022","text":"Notre voyage au Japon"},{"date":"2026","text":"Le grand jour"}]')} onChange={e => set(onUpdate,'timeline',e.target.value)} rows={7} style={{ fontSize: 11, fontFamily: 'monospace', resize: 'vertical' }} />
           </Field>
         </div>
       );
@@ -235,7 +329,7 @@ export default function ContentTab({ block, onUpdate }: Props) {
     case 'live_album':
       return (
         <div>
-          <Field label="URL de l'album live (QR Code)"><input className="studio-input" value={c(content,'albumUrl')} onChange={e => set(onUpdate,'albumUrl',e.target.value)} placeholder="https://photos.google.com/..." /></Field>
+          <Field label="URL de l'album live"><input className="studio-input" value={c(content,'albumUrl')} onChange={e => set(onUpdate,'albumUrl',e.target.value)} placeholder="https://photos.google.com/..." /></Field>
           <Field label="Titre"><input className="studio-input" value={c(content,'title','Album Photo Live')} onChange={e => set(onUpdate,'title',e.target.value)} /></Field>
           <Field label="Consigne"><textarea className="studio-input" value={c(content,'instructions','Scannez le QR code pour partager vos photos de la soirée.')} onChange={e => set(onUpdate,'instructions',e.target.value)} rows={2} style={{ resize: 'vertical' }} /></Field>
         </div>
@@ -246,7 +340,7 @@ export default function ContentTab({ block, onUpdate }: Props) {
         <div style={{ textAlign: 'center', padding: '32px 0', color: MUTED }}>
           <div style={{ fontSize: 28, marginBottom: 12, color: GOLD }}>✦</div>
           <div style={{ fontSize: 12 }}>Ce bloc sera configurable dans une prochaine version.</div>
-          <div style={{ fontSize: 11, marginTop: 6, color: MUTED }}>Type : {type}</div>
+          <div style={{ fontSize: 11, marginTop: 6 }}>Type : {type}</div>
         </div>
       );
   }
