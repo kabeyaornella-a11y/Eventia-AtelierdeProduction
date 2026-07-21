@@ -1,22 +1,24 @@
 openapi: 3.1.0
 info:
-  # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: Eventia Studio API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: invitations
+    description: Invitation management
+  - name: collections
+    description: Collection catalog
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,6 +26,111 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /invitations:
+    get:
+      operationId: listInvitations
+      tags: [invitations]
+      summary: List all invitations
+      responses:
+        "200":
+          description: List of invitations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Invitation"
+    post:
+      operationId: createInvitation
+      tags: [invitations]
+      summary: Create a new invitation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InvitationInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Invitation"
+
+  /invitations/{id}:
+    get:
+      operationId: getInvitation
+      tags: [invitations]
+      summary: Get a single invitation
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Invitation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Invitation"
+        "404":
+          description: Not found
+    patch:
+      operationId: updateInvitation
+      tags: [invitations]
+      summary: Update an invitation
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InvitationUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Invitation"
+    delete:
+      operationId: deleteInvitation
+      tags: [invitations]
+      summary: Delete an invitation
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /collections:
+    get:
+      operationId: listCollections
+      tags: [collections]
+      summary: List all collections
+      responses:
+        "200":
+          description: Collections
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Collection"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +141,81 @@ components:
       required:
         - status
 
+    Invitation:
+      type: object
+      required: [id, coupleName1, coupleName2, collection, formula, blocks, status, createdAt, updatedAt]
+      properties:
+        id:
+          type: integer
+        coupleName1:
+          type: string
+        coupleName2:
+          type: string
+        collection:
+          type: string
+        formula:
+          type: string
+        blocks:
+          type: array
+          items: {}
+        status:
+          type: string
+        slug:
+          type: ["string", "null"]
+        eventDate:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+
+    InvitationInput:
+      type: object
+      required: [coupleName1, coupleName2, collection, formula]
+      properties:
+        coupleName1:
+          type: string
+        coupleName2:
+          type: string
+        collection:
+          type: string
+        formula:
+          type: string
+        eventDate:
+          type: ["string", "null"]
+
+    InvitationUpdate:
+      type: object
+      properties:
+        coupleName1:
+          type: string
+        coupleName2:
+          type: string
+        collection:
+          type: string
+        formula:
+          type: string
+        blocks:
+          type: array
+          items: {}
+        status:
+          type: string
+        eventDate:
+          type: ["string", "null"]
+
+    Collection:
+      type: object
+      required: [id, slug, name, videoUrl]
+      properties:
+        id:
+          type: integer
+        slug:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        videoUrl:
+          type: string
+        previewImageUrl:
+          type: string

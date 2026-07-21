@@ -1,0 +1,27 @@
+kind = "web"
+previewPath = "/eventia-studio/"
+title = "Studio Eventia — Moteur d'invitation"
+version = "1.0.0"
+id = "artifacts/eventia-studio"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/eventia-studio/" ]
+localPort = 24788
+
+[services.development]
+run = "pnpm --filter @workspace/eventia-studio run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/eventia-studio", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/eventia-studio/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "24788"
+BASE_PATH = "/eventia-studio/"
