@@ -11,6 +11,9 @@ export const modules: ModuleMap = {
   "./components/mockups/eventia-landing/IvoireEditorial.tsx": () => import("../components/mockups/eventia-landing/IvoireEditorial.tsx"),
   "./components/mockups/eventia-rsvp/ConversationIntime.tsx": () => import("../components/mockups/eventia-rsvp/ConversationIntime.tsx"),
   "./components/mockups/eventia-rsvp/FormulaireLuxe.tsx": () => import("../components/mockups/eventia-rsvp/FormulaireLuxe.tsx"),
+  "./components/mockups/eventia-site/EditoralePure.tsx": () => import("../components/mockups/eventia-site/EditoralePure.tsx"),
+  "./components/mockups/eventia-site/MaisonCinematique.tsx": () => import("../components/mockups/eventia-site/MaisonCinematique.tsx"),
+  "./components/mockups/eventia-site/SignaturePrecieuse.tsx": () => import("../components/mockups/eventia-site/SignaturePrecieuse.tsx"),
   "./components/mockups/eventia-std/CompteARebours.tsx": () => import("../components/mockups/eventia-std/CompteARebours.tsx"),
   "./components/mockups/eventia-std/ScratchDore.tsx": () => import("../components/mockups/eventia-std/ScratchDore.tsx")
 };
