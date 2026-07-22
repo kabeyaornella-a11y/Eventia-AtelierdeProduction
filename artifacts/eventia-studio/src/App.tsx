@@ -5,6 +5,7 @@ import { Route, Switch, Router as WouterRouter } from 'wouter';
 import Dashboard from '@/pages/Dashboard';
 import NewInvitation from '@/pages/NewInvitation';
 import Editor from '@/pages/Editor';
+import InvitationViewer from '@/pages/InvitationViewer';
 import NotFound from '@/pages/not-found';
 
 const queryClient = new QueryClient({
@@ -14,6 +15,8 @@ const queryClient = new QueryClient({
 function Router() {
   return (
     <Switch>
+      {/* Route publique viewer — doit être avant les routes Studio */}
+      <Route path="/i/:slug" component={InvitationViewer} />
       <Route path="/" component={Dashboard} />
       <Route path="/invitations/new" component={NewInvitation} />
       <Route path="/invitations/:id/edit" component={Editor} />

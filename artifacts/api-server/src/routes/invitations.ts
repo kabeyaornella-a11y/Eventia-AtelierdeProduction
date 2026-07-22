@@ -93,6 +93,24 @@ router.post("/invitations", async (req, res) => {
   }
 });
 
+// GET /invitations/slug/:slug  — accès public par slug (viewer)
+router.get("/invitations/slug/:slug", async (req, res) => {
+  const slug = req.params.slug;
+  if (!slug) return void res.status(400).json({ error: "slug required" });
+  try {
+    const { sql } = await import("drizzle-orm");
+    const [row] = await db.select().from(invitationsTable).where(sql`${invitationsTable.slug} = ${slug}`);
+    if (!row) return void res.status(404).json({ error: "Not found" });
+    res.json({
+      id: row.id, coupleName1: row.coupleName1, coupleName2: row.coupleName2,
+      collection: row.collection, formula: row.formula, blocks: row.blocks,
+      status: row.status, slug: row.slug ?? null,
+      eventDate: row.eventDate ?? null,
+      createdAt: row.createdAt.toISOString(), updatedAt: row.updatedAt.toISOString(),
+    });
+  } catch (e) { res.status(500).json({ error: "Failed to get invitation" }); }
+});
+
 // GET /invitations/:id
 router.get("/invitations/:id", async (req, res) => {
   const parsed = GetInvitationParams.safeParse({ id: Number(req.params.id) });
