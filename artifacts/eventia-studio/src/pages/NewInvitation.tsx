@@ -127,9 +127,9 @@ export default function NewInvitation() {
                     key={col.slug}
                     onClick={() => setForm(f => ({ ...f, collection: col.slug }))}
                     style={{
-                      padding: '18px 16px', background: CARD, cursor: 'pointer', borderRadius: 8,
-                      border: `2px solid ${form.collection === col.slug ? GOLD : BORDER}`,
+                      padding: '18px 16px', cursor: 'pointer', borderRadius: 8,
                       background: form.collection === col.slug ? 'rgba(201,169,110,0.05)' : CARD,
+                      border: `2px solid ${form.collection === col.slug ? GOLD : BORDER}`,
                       transition: 'all 0.2s',
                       boxShadow: form.collection === col.slug ? '0 2px 8px rgba(201,169,110,0.15)' : '0 1px 4px rgba(42,31,24,0.06)',
                     }}
@@ -166,9 +166,9 @@ export default function NewInvitation() {
                     key={f.id}
                     onClick={() => setForm(frm => ({ ...frm, formula: f.id }))}
                     style={{
-                      padding: '18px 22px', background: CARD, cursor: 'pointer', borderRadius: 8,
-                      border: `2px solid ${form.formula === f.id ? GOLD : BORDER}`,
+                      padding: '18px 22px', cursor: 'pointer', borderRadius: 8,
                       background: form.formula === f.id ? 'rgba(201,169,110,0.05)' : CARD,
+                      border: `2px solid ${form.formula === f.id ? GOLD : BORDER}`,
                       transition: 'all 0.2s', display: 'flex', justifyContent: 'space-between', alignItems: 'center',
                       boxShadow: form.formula === f.id ? '0 2px 8px rgba(201,169,110,0.15)' : '0 1px 4px rgba(42,31,24,0.06)',
                     }}
