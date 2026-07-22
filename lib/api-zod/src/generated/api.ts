@@ -97,6 +97,7 @@ export const UpdateInvitationBody = zod.object({
   "formula": zod.string().optional(),
   "blocks": zod.array(zod.unknown()).optional(),
   "status": zod.string().optional(),
+  "slug": zod.string().nullish(),
   "eventDate": zod.string().nullish()
 })
 
