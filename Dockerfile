@@ -7,8 +7,9 @@ WORKDIR /app
 # Copie tout le monorepo
 COPY . .
 
-# Installation sans vérification du lockfile
-RUN pnpm install --no-frozen-lockfile
+# Supprime le lockfile pour éviter ERR_PNPM_LOCKFILE_CONFIG_MISMATCH
+# pnpm en génère un propre compatible avec cet environnement
+RUN rm -f pnpm-lock.yaml && pnpm install
 
 # Build de l'API server uniquement
 RUN pnpm --filter @workspace/api-server run build
