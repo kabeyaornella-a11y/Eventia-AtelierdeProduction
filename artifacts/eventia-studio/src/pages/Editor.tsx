@@ -242,6 +242,20 @@ export default function Editor() {
             fontFamily: sans, transition: 'all 0.2s', borderRadius: 6,
           }}>Sauvegarder</button>
 
+          {slug && (
+            <button
+              onClick={() => window.open(`${window.location.origin}${import.meta.env.BASE_URL}i/${slug}`, '_blank')}
+              style={{
+                background: 'transparent', border: `1px solid rgba(201,169,110,0.4)`, color: GOLD,
+                padding: '6px 14px', fontSize: 10, letterSpacing: 1.5,
+                textTransform: 'uppercase', cursor: 'pointer', fontFamily: sans, borderRadius: 6,
+              }}
+              title={`Ouvrir /i/${slug}`}
+            >
+              ↗ Voir l'invitation
+            </button>
+          )}
+
           <button style={{
             background: TEXT, border: `1px solid ${TEXT}`, color: '#FAF6F0',
             padding: '6px 16px', fontSize: 10, letterSpacing: 1.5,
